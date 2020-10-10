@@ -2,13 +2,15 @@ import React from "react";
 import test_data from "./test_data";
 import status_colors from "./status_colors";
 
-const ancestorTileStyle = {
-  margin: "100px",
-};
-
-const columnStyle = {
-  height: "70px",
-  width: "70px",
+const imageStyle = function (length) {
+  return {
+    width: `${length}px`,
+    height: `${length}px`,
+    position: "relative",
+    objectFit: "cover",
+    overflow: "hidden",
+    borderRadius: "50%",
+  };
 };
 
 function Profile() {
@@ -16,13 +18,13 @@ function Profile() {
     <section className="section is-white">
       <div className="container">
         <div className="content">
-          <div className="tile is-ancestor" style={ancestorTileStyle}>
+          <div className="tile is-ancestor" style={{ margin: "100px" }}>
             <div className="tile" id="profile-card">
               <div className="card">
                 <div className="card-image">
-                  <figure className="image is-4by3">
+                  <figure className="image" style={{ margin: "10px" }}>
                     <img
-                      className="is-rounded"
+                      style={imageStyle(200)}
                       src={
                         "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941"
                       }
@@ -44,17 +46,12 @@ function Profile() {
                   <br></br>
                   <div className="columns is-mobile is-multiline is-centered">
                     {status_colors.map((color) => (
-                      <div
-                        className="column is-narrow"
-                        style={columnStyle}
-                        key={color.hex}
-                      >
-                          <img
-                            style={{borderRadius:"50%"}}
-                            className="is-rounded"
-                            src={color.link}
-                            alt={color.color + " status"}
-                          ></img>
+                      <div className="column is-narrow" key={color.hex}>
+                        <img
+                          style={imageStyle(55)}
+                          src={color.link}
+                          alt={color.color + " status"}
+                        ></img>
                       </div>
                     ))}
                   </div>
@@ -66,15 +63,17 @@ function Profile() {
               </div>
             </div>
             <div className="tile is-parent is-vertical" id="friends-list">
-              <p className="title">Friends</p>
+              <figure>
+              <p className="title"><u>Friends</u></p>
+              </figure>
               <div className="tile">
                 <div className="tile is-child">
                   {test_data.map((obj) => (
                     <article className="media" key={obj.user}>
                       <div className="media-left">
-                        <figure className="image is-128x128">
+                        <figure className="image">
                           <img
-                            className="is-rounded"
+                            style={imageStyle(100)}
                             src={obj.img}
                             alt={obj.name + " profile pic"}
                           ></img>
