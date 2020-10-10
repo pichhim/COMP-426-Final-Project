@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import "bulma/css/bulma.css";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LandingPage from './components/Landing';
 import ProfilePage from './components/Profile';
