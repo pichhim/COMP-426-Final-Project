@@ -33,9 +33,58 @@ function GameBoard(props) {
         }
     }
 
-    const highlightOptions = () => {
-        switch(props.highlightStyle) {
-            
+    const highlightOptions = e => {
+
+        initBase();
+        let { x, y } = calcIndex(e)
+        switch (props.highlightStyle) {
+            case 'column':
+                highlightColumn(x)
+                break;
+            case 'row':
+                highlightRow(y)
+                break;
+            case 'single':
+                highlightSingle(x, y)
+                break;
+            default:
+                break;
+        }
+    }
+
+    const calcIndex = e => {
+        const rowWidth = Math.round(canvasRef.current.height / props.rows)
+        const rowHeight = Math.round(canvasRef.current.width / props.columns)
+
+        let x = Math.floor((e.clientX - e.target.offsetLeft) / rowWidth);
+        let y = Math.floor((e.clientY - e.target.offsetTop) / rowHeight);
+        return { x, y }
+    }
+
+    const highlightSingle = (x, y) => {
+        // Highlights a single tile
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = props.highlightColor;
+
+        const rowWidth = Math.round(canvasRef.current.height / props.rows);
+        const rowHeight = Math.round(canvasRef.current.width / props.columns);
+
+        ctx.strokeRect(x * rowWidth, y * rowHeight, rowWidth, rowHeight);
+
+    }
+
+    const highlightColumn = (x) => {
+        // Highlights all tiles in the same column as the mouse
+        for (let y = 0; y < props.rows; y++) {
+            highlightSingle(x, y);
+        }
+    }
+
+    const highlightRow = (y) => {
+        // Highlights all tiles in the same column as the mouse
+        for (let x = 0; x < props.columns; x++) {
+            highlightSingle(x, y);
         }
     }
 
@@ -45,7 +94,7 @@ function GameBoard(props) {
             ref={canvasRef}
             width={props.width}
             height={props.height}
-            onMouseOver={}
+            onMouseMove={highlightOptions}
         />
 
     )

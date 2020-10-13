@@ -15,7 +15,7 @@ function GamePage() {
             columns={10}
             boardColor={'#44AA44'}
             borderColor={'#FFFFFF'}
-            hightlightColor={'#AA4444'}
+            highlightColor={'#FF4444'}
             highlightStyle={'column'}
         />
     )
