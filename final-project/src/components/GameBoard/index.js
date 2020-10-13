@@ -31,6 +31,18 @@ function GameBoard(props) {
             ctx.lineTo(i * rowHeight, canvasRef.current.height);
             ctx.stroke();
         }
+
+        ctx.fillStyle = props.pieceColor;
+
+        for (let i = 0; i < props.board.length; i++) {
+            for (let j = 0; j < props.board[i].length; j++) {
+                if (props.board[i][j] === true) {
+                    ctx.beginPath();
+                    ctx.arc(j * rowHeight + rowHeight / 2, i * rowWidth + rowWidth / 2, Math.min(rowWidth, rowHeight) * 0.44, 0, 2 * Math.PI, false);
+                    ctx.fill();
+                }
+            }
+        }
     }
 
     const highlightOptions = e => {
@@ -56,8 +68,8 @@ function GameBoard(props) {
         const rowWidth = Math.round(canvasRef.current.height / props.rows)
         const rowHeight = Math.round(canvasRef.current.width / props.columns)
 
-        let x = Math.floor((e.clientX - e.target.offsetLeft) / rowWidth);
-        let y = Math.floor((e.clientY - e.target.offsetTop) / rowHeight);
+        let x = Math.floor((e.clientX - e.target.offsetLeft) / rowHeight);
+        let y = Math.floor((e.clientY - e.target.offsetTop) / rowWidth);
         return { x, y }
     }
 
@@ -70,7 +82,7 @@ function GameBoard(props) {
         const rowWidth = Math.round(canvasRef.current.height / props.rows);
         const rowHeight = Math.round(canvasRef.current.width / props.columns);
 
-        ctx.strokeRect(x * rowWidth, y * rowHeight, rowWidth, rowHeight);
+        ctx.strokeRect(x * rowHeight, y * rowWidth, rowHeight, rowWidth);
 
     }
 
@@ -95,6 +107,7 @@ function GameBoard(props) {
             width={props.width}
             height={props.height}
             onMouseMove={highlightOptions}
+            onMouseLeave={initBase}
         />
 
     )
