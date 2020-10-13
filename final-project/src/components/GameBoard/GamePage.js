@@ -5,20 +5,27 @@ import GameBoard from './index'
 function GamePage() {
 
     const [board, setBoard] = useState([[false]])
-    const rows = 25;
-    const columns = 12
+    const rows = 10;
+    const columns = 10
 
     useEffect(() => {
         let tempBoard = [];
         for (let i = 0; i < rows; i++) {
             tempBoard[i] = []
             for (let j = 0; j < columns; j++) {
-                tempBoard[i][j] = Math.random() > 0.5 ? true : false;
+                tempBoard[i][j] = false;
             }
         }
         setBoard(tempBoard)
         console.log(tempBoard)
     }, []);
+
+    const handleClick = ({x, y}) => {
+        console.log('clicked')
+        let newBoard = board.map((arr) => (arr.slice()));
+        newBoard[y][x] = !newBoard[y][x]
+        setBoard(newBoard)
+    }
 
 
     return (
@@ -33,6 +40,7 @@ function GamePage() {
             pieceColor={'#000000'}
             highlightStyle={'single'}
             board={board}
+            handleClick={handleClick}
         />
     )
 }

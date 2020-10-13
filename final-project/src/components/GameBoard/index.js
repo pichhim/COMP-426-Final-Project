@@ -5,10 +5,10 @@ function GameBoard(props) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
-        initBase()
+        drawBase()
     }, []);
 
-    const initBase = () => {
+    const drawBase = () => {
         const ctx = canvasRef.current.getContext('2d');
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         ctx.fillStyle = props.boardColor;
@@ -47,7 +47,7 @@ function GameBoard(props) {
 
     const highlightOptions = e => {
 
-        initBase();
+        drawBase();
         let { x, y } = calcIndex(e)
         switch (props.highlightStyle) {
             case 'column':
@@ -107,7 +107,8 @@ function GameBoard(props) {
             width={props.width}
             height={props.height}
             onMouseMove={highlightOptions}
-            onMouseLeave={initBase}
+            onMouseLeave={drawBase}
+            onClick={(e) => props.handleClick(calcIndex(e))}
         />
 
     )
