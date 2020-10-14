@@ -10,6 +10,7 @@ const imageStyle = function (length) {
     objectFit: "cover",
     overflow: "hidden",
     borderRadius: "50%",
+    border: "0px solid",
   };
 };
 
@@ -17,29 +18,15 @@ function makeEditForm() {
   console.log("edit");
 }
 
-function renderSwitch(key) {
-  switch(key) {
-    case "sky":
-      return skyHover;
-    case "green":
-      return greenHover;
-    case "coral":
-      return coralHover;
-    case "yellow":
-      return yellowHover;
-    default:
-      return "ERROR";
-  }
-}
-
 // Render status buttons
-function renderStatusButtons(...args) {
+function renderStatusButtons() {
   return (
     <div className="columns is-mobile is-multiline is-centered">
       {status_colors.map((color) => (
         <div className="column is-narrow" key={color.color}>
-          {/* renderswitchkey */}
           <img
+            onMouseEnter={e => e.currentTarget.style.border="3px solid"}
+            onMouseLeave={e => e.currentTarget.style.border="0px solid"}
             style={imageStyle(55)}
             src={color.link}
             alt={color.color + " status"}
@@ -118,18 +105,12 @@ function renderFriendsList() {
 
 // Render overall Profile page
 function Profile(props) {
-  const [skyHover, setSkyHover] = useState(false); // Idle
-  const [greenHover, setGreenHover] = useState(false); // Online
-  const [coralHover, setCoralHover] = useState(false); // Busy
-  const [yellowHover, setYellowHover] = useState(false); // Away
-  const [status, setStatus] = useState("Online"); // User status
-
   return (
     <section className="section is-white">
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile(skyHover, greenHover, coralHover, yellowHover, status)}
+            {renderProfile()}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <p className="title"><u>Friends</u></p>
