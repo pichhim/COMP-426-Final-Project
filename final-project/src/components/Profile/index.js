@@ -3,6 +3,13 @@ import test_data from "./test_data";
 import status_colors from "./status_colors";
 import ReactTooltip from 'react-tooltip';
 
+const demoProfile = {
+  image: "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941",
+  name: "Pich Him",
+  username: "mcpich",
+  description: "My name is Pich Him and I love to play games. My favorite dog is a Shiba Inu.",
+}
+
 const imageStyle = function (length) {
   return {
     width: `${length}px`,
@@ -37,75 +44,68 @@ function renderStatusButtons() {
     </div>)
 }
 
-function renderProfileEdit(editMode, setEditMode) {
-  return (
-    <div className="tile" id="profile-card">
-      <div className="card" style={{minWidth: "100%"}}>
-        <div className="card-image">
-          <figure className="image" style={{ margin: "10px" }}>
-            <img
-              style={imageStyle(200)}
-              src={
-                "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941"
-              }
-              alt={"Pich profile pic"}
-            ></img>
-          </figure>
-        </div>
-        <div className="card-content">
-          <p className="has-text-centered">
-            <strong>Pich Him</strong>
-            <br></br>
-            <em>mcpich</em>
-          </p>
-          <br></br>
-          <p>
-            EDIT MODE
-          </p>
-          <br></br>
-          {renderStatusButtons()}
-          <br></br>
-          <div className="has-text-centered">
-            <button className="button is-dark is-centered" onClick={() => setEditMode(false)}>Edit</button>
-          </div>
-        </div>
-      </div>
-    </div>)
-}
-
 // Render profile card
 function renderProfile(editMode, setEditMode) {
   return (
     editMode ? renderProfileEdit(editMode, setEditMode) :
+      <div className="tile" id="profile-card">
+        <div className="card" style={{ minWidth: "100%" }}>
+          <div className="card-image">
+            <figure className="image" style={{ margin: "10px" }}>
+              <img
+                style={imageStyle(200)}
+                src={demoProfile.image}
+                alt={`Profile Picture: ${demoProfile.name}`}
+              ></img>
+            </figure>
+          </div>
+          <div className="card-content">
+            <p className="has-text-centered">
+              <strong>{demoProfile.name}</strong><br></br><em>{demoProfile.username}</em>
+            </p>
+            <br></br>
+            <p> {demoProfile.description}
+            </p>
+            <br></br>
+            {renderStatusButtons()}
+            <br></br>
+            <div className="has-text-centered">
+              <button className="button is-dark is-centered" onClick={() => setEditMode(true)}>Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>)
+}
+
+// Edit mode for user profile
+function renderProfileEdit(editMode, setEditMode) {
+  return (
     <div className="tile" id="profile-card">
-      <div className="card" style={{minWidth: "100%"}}>
+      <div className="card" style={{ minWidth: "100%" }}>
         <div className="card-image">
           <figure className="image" style={{ margin: "10px" }}>
             <img
               style={imageStyle(200)}
-              src={
-                "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941"
-              }
-              alt={"Pich profile pic"}
+              src={demoProfile.image}
+              alt={`Profile Picture: ${demoProfile.name}`}
             ></img>
           </figure>
         </div>
         <div className="card-content">
           <p className="has-text-centered">
-            <strong>Pich Him</strong>
+            <input class="input" type="text" placeholder={demoProfile.name}></input>
             <br></br>
-            <em>mcpich</em>
+            <input class="input" type="text" placeholder={demoProfile.username}></input>
           </p>
           <br></br>
           <p>
-            My name is Pich Him and I love to play games. My favorite
-            dog is a Shiba Inu.
+            <textarea class="textarea" type="text" placeholder={demoProfile.description}></textarea>
           </p>
           <br></br>
           {renderStatusButtons()}
           <br></br>
           <div className="has-text-centered">
-            <button className="button is-dark is-centered" onClick={() => setEditMode(true)}>Edit</button>
+            <button className="button is-dark is-centered" onClick={() => setEditMode(false)}>Save</button>
           </div>
         </div>
       </div>
