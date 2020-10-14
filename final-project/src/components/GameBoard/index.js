@@ -10,7 +10,6 @@ function GameBoard(props) {
 
     const drawBase = () => {
         const ctx = canvasRef.current.getContext('2d');
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         ctx.fillStyle = props.boardColor;
         ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
@@ -82,7 +81,9 @@ function GameBoard(props) {
         const rowWidth = Math.round(canvasRef.current.height / props.rows);
         const rowHeight = Math.round(canvasRef.current.width / props.columns);
 
-        ctx.strokeRect(x * rowHeight, y * rowWidth, rowHeight, rowWidth);
+        if (props.highlightRules == null || props.highlightRules(x,y)) {
+            ctx.strokeRect(x * rowHeight, y * rowWidth, rowHeight, rowWidth);
+        }
 
     }
 
