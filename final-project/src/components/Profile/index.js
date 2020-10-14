@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import test_data from "./test_data";
 import status_colors from "./status_colors";
+import ReactTooltip from 'react-tooltip';
 
 const imageStyle = function (length) {
   return {
@@ -14,10 +15,6 @@ const imageStyle = function (length) {
   };
 };
 
-function makeEditForm() {
-  console.log("edit");
-}
-
 // Render status buttons
 function renderStatusButtons() {
   return (
@@ -25,23 +22,63 @@ function renderStatusButtons() {
       {status_colors.map((color) => (
         <div className="column is-narrow" key={color.color}>
           <img
-            onMouseEnter={e => e.currentTarget.style.border="3px solid"}
-            onMouseLeave={e => e.currentTarget.style.border="0px solid"}
+            data-tip={color.status}
+            data-place="top"
+            onMouseEnter={e => e.currentTarget.style.border = "3px solid"}
+            onMouseLeave={e => e.currentTarget.style.border = "0px solid"}
             style={imageStyle(55)}
             src={color.link}
-            alt={color.color + " status"}
+            alt={color.status}
           ></img>
+          <ReactTooltip></ReactTooltip>
         </div>
       ))}
 
     </div>)
 }
 
-// Render profile card
-function renderProfile() {
+function renderProfileEdit(editMode, setEditMode) {
   return (
     <div className="tile" id="profile-card">
-      <div className="card">
+      <div className="card" style={{minWidth: "100%"}}>
+        <div className="card-image">
+          <figure className="image" style={{ margin: "10px" }}>
+            <img
+              style={imageStyle(200)}
+              src={
+                "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941"
+              }
+              alt={"Pich profile pic"}
+            ></img>
+          </figure>
+        </div>
+        <div className="card-content">
+          <p className="has-text-centered">
+            <strong>Pich Him</strong>
+            <br></br>
+            <em>mcpich</em>
+          </p>
+          <br></br>
+          <p>
+            EDIT MODE
+          </p>
+          <br></br>
+          {renderStatusButtons()}
+          <br></br>
+          <div className="has-text-centered">
+            <button className="button is-dark is-centered" onClick={() => setEditMode(false)}>Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>)
+}
+
+// Render profile card
+function renderProfile(editMode, setEditMode) {
+  return (
+    editMode ? renderProfileEdit(editMode, setEditMode) :
+    <div className="tile" id="profile-card">
+      <div className="card" style={{minWidth: "100%"}}>
         <div className="card-image">
           <figure className="image" style={{ margin: "10px" }}>
             <img
@@ -68,7 +105,7 @@ function renderProfile() {
           {renderStatusButtons()}
           <br></br>
           <div className="has-text-centered">
-            <button className="button is-dark is-centered" onClick={makeEditForm}>Edit</button>
+            <button className="button is-dark is-centered" onClick={() => setEditMode(true)}>Edit</button>
           </div>
         </div>
       </div>
@@ -79,7 +116,8 @@ function renderProfile() {
 function renderFriendsList() {
   return (<div className="tile is-child">
     {test_data.map((obj) => (
-      <article className="media" key={obj.user}>
+      <article className="media" key={obj.user} onMouseEnter={e => e.currentTarget.style.boxShadow = "0 0 5px #888888"}
+        onMouseLeave={e => e.currentTarget.style.boxShadow = ""}>
         <div className="media-left">
           <figure className="image">
             <img
@@ -104,13 +142,15 @@ function renderFriendsList() {
 }
 
 // Render overall Profile page
-function Profile(props) {
+function Profile() {
+  const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
+
   return (
     <section className="section is-white">
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile()}
+            {renderProfile(editMode, setEditMode)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <p className="title"><u>Friends</u></p>
