@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import GameBoard from './index'
 
-function GamePage() {
+function DemoBoard() {
 
     const [board, setBoard] = useState([[false]])
     const rows = 10;
@@ -52,4 +52,4 @@ function GamePage() {
     )
 }
 
-export default GamePage;
+export default DemoBoard;
