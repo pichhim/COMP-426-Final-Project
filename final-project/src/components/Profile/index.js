@@ -47,7 +47,7 @@ function renderStatusButtons() {
 // Render profile card
 function renderProfile(editMode, setEditMode) {
   return (
-    editMode ? renderProfileEdit(editMode, setEditMode) :
+    editMode ? renderProfileEdit(setEditMode) :
       <div className="tile" id="profile-card">
         <div className="card" style={{ minWidth: "100%" }}>
           <div className="card-image">
@@ -55,7 +55,7 @@ function renderProfile(editMode, setEditMode) {
               <img
                 style={imageStyle(200)}
                 src={demoProfile.image}
-                alt={`Profile Picture: ${demoProfile.name}`}
+                alt={`Profile: ${demoProfile.name}`}
               ></img>
             </figure>
           </div>
@@ -78,7 +78,7 @@ function renderProfile(editMode, setEditMode) {
 }
 
 // Edit mode for user profile
-function renderProfileEdit(editMode, setEditMode) {
+function renderProfileEdit(setEditMode) {
   return (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
@@ -87,26 +87,32 @@ function renderProfileEdit(editMode, setEditMode) {
             <img
               style={imageStyle(200)}
               src={demoProfile.image}
-              alt={`Profile Picture: ${demoProfile.name}`}
+              alt={`Profile: ${demoProfile.name}`}
             ></img>
           </figure>
         </div>
         <div className="card-content">
-          <p className="has-text-centered">
-            <input class="input" type="text" placeholder={demoProfile.name}></input>
-            <br></br>
-            <input class="input" type="text" placeholder={demoProfile.username}></input>
-          </p>
+          <form>
+            <input
+              type="file"
+            />
+          </form>
+        </div>
+        <br></br>
+        <p className="has-text-centered">
+          <input className="input" type="text" placeholder={demoProfile.name}></input>
           <br></br>
-          <p>
-            <textarea class="textarea" type="text" placeholder={demoProfile.description}></textarea>
-          </p>
-          <br></br>
-          {renderStatusButtons()}
-          <br></br>
-          <div className="has-text-centered">
-            <button className="button is-dark is-centered" onClick={() => setEditMode(false)}>Save</button>
-          </div>
+          <input className="input" type="text" placeholder={demoProfile.username}></input>
+        </p>
+        <br></br>
+        <p>
+          <textarea className="textarea" type="text" placeholder={demoProfile.description}></textarea>
+        </p>
+        <br></br>
+        {renderStatusButtons()}
+        <br></br>
+        <div className="has-text-centered">
+          <button className="button is-dark is-centered" onClick={() => setEditMode(false)}>Save</button>
         </div>
       </div>
     </div>)
@@ -123,7 +129,7 @@ function renderFriendsList() {
             <img
               style={imageStyle(100)}
               src={obj.img}
-              alt={obj.name + " profile pic"}
+              alt={obj.name + " profile"}
             ></img>
           </figure>
         </div>
