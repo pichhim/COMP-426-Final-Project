@@ -1,15 +1,12 @@
 import React from 'react';
-import { FirebaseContext } from '../Firebase';
+import { withFirebase } from '../Firebase';
 
 // Assigns sign out functionality on Nav bar
 const SignOutButton = ({ firebase }) => (
-    <FirebaseContext.Consumer>
-        {({ firebase }) =>
-            <button type="button" onClick={firebase.doSignOut}>
-                Sign Out
-            </button>
-        }
-    </FirebaseContext.Consumer>
+    <button type="button" 
+        onClick={firebase.doSignOut}>
+        Sign Out
+    </button>
 );
 
-export default SignOutButton;
+export default withFirebase(SignOutButton);

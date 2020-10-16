@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { FirebaseContext } from '../Firebase';
+import { withRouter } from 'react-router-dom';
+import { withFirebase } from '../Firebase';
 import { SignUpLink } from '../SignUp';
 
 const SignInPage = () => (
   <div>
     <h1>SignIn</h1>
-    <FirebaseContext.Consumer>
-      {firebase => <SignInForm firebase={firebase} />}
-    </FirebaseContext.Consumer>
+    <SignInFormV2></SignInFormV2>
     <SignUpLink></SignUpLink>
   </div>
 );
@@ -32,7 +30,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
         this.setState({ ...INITIAL_STATE }); // Successful request: reset default state
-        this.props.history.push('/');
+        this.props.history.push('/'); // Redirect to landing page
       })
       .catch(error => {
         this.setState({ error });
@@ -49,7 +47,7 @@ class SignInForm extends Component {
     const {
       email,
       password,
-      error, 
+      error,
     } = this.state;
 
     const isInvalid = password === '' || email === '';
@@ -80,6 +78,8 @@ class SignInForm extends Component {
   }
 }
 
+const SignInFormV2 = withRouter(withFirebase(SignInForm));
+
 export default SignInPage;
 
-export { SignInForm };
+export { SignInFormV2 };
