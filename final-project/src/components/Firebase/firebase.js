@@ -1,7 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-import { Redirect } from 'react-router-dom';
 
 const config = {
     apiKey: "AIzaSyB8w5qHB57f3I5QRRqk88wzwILiPJ9Ebo8",

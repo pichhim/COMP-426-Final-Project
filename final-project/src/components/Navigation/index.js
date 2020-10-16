@@ -13,6 +13,7 @@ const NavAuth = () => (
     <Link to={'/'}>Landing   </Link>
     <Link to={'profile'}>Profile   </Link>
     <Link to={'/messages'}>Messages   </Link>
+    <Link to={'/demo'}>Game Board Demo   </Link>
     <SignOutButton />
   </div>
 );
@@ -22,6 +23,7 @@ const NavNonAuth = () => (
     <Link to={'/'}>Landing   </Link>
     <Link to={'/signup'}>Sign Up   </Link>
     <Link to={'/signin'}>Sign In   </Link>
+    <Link to={'/demo'}>Game Board Demo   </Link>
   </div>
 );
 
