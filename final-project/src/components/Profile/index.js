@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import test_data from "./test_data";
 import status_colors from "./status_colors";
 import ReactTooltip from 'react-tooltip';
+import { withFirebase } from '../Firebase';
 
 const demoProfile = {
   image: "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941",
@@ -150,7 +151,7 @@ function renderFriendsList() {
 // Render overall Profile page
 function Profile() {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-
+  
   return (
     <section className="section is-white">
       <div className="container">
@@ -172,4 +173,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default withFirebase(Profile);

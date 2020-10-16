@@ -1,4 +1,7 @@
 import app from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+import { Redirect } from 'react-router-dom';
 
 const config = {
     apiKey: "AIzaSyB8w5qHB57f3I5QRRqk88wzwILiPJ9Ebo8",
@@ -13,8 +16,28 @@ const config = {
 
 class Firebase {
     constructor() {
-        app.initializeApp(config);
+        app.initializeApp(config); // Initialize Firebase
+        this.auth = app.auth(); // Instantiate Firebase auth package
+        this.db = app.database(); // Initialize Firebase Realtime Database
     }
+
+    // Auth API for Firebase
+    doCreateUserWithEmailAndPassword = (email, password) =>
+        this.auth.createUserWithEmailAndPassword(email, password);
+
+    doSignInWithEmailAndPassword = (email, password) =>
+        this.auth.signInWithEmailAndPassword(email, password);
+
+    doSignOut = () => this.auth.signOut(); 
+
+    doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+ 
+    doPasswordUpdate = (password) =>
+      this.auth.currentUser.updatePassword(password);
+
+    // User API for Firebase - gets user by uid or gets all users
+    user = uid => this.db.ref(`users/${uid}`);
+    users = () => this.db.ref('users');
 }
 
-export default Firebase;
+export default Firebase; 
