@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import test_data from "./test_data";
 import status_colors from "./status_colors";
 import ReactTooltip from 'react-tooltip';
@@ -152,8 +152,10 @@ function renderFriendsList() {
 // Render overall Profile page
 function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-  let snapshot = props.firebase.getCurrentUser()
-  snapshot.then(val => console.log(val))
+  const [snapshot, setSnapshot] = useState(null)
+
+  let promise = props.firebase.getCurrentUser()
+  promise.then(val => setSnapshot(val))
 
   return (
     <section className="section is-white">
@@ -163,7 +165,7 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <p className="title"><u>Friends</u></p>
+                <p className="title"><u>{snapshot ? snapshot.fullname : 'Friends'}</u></p>
               </figure>
               <div className="tile">
                 {renderFriendsList()}
