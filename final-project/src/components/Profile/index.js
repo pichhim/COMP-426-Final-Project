@@ -11,6 +11,10 @@ const demoProfile = {
   description: "My name is Pich Him and I love to play games. My favorite dog is a Shiba Inu.",
 }
 
+const inputStyle = {
+  margin: "20px",
+}
+
 const imageStyle = function (length) {
   return {
     width: `${length}px`,
@@ -99,16 +103,13 @@ function renderProfileEdit(setEditMode) {
             />
           </form>
         </div>
-        <br></br>
-        <p className="has-text-centered">
+        <div className="has-text-centered" style={inputStyle}>
           <input className="input" type="text" placeholder={demoProfile.name}></input>
-          <br></br>
           <input className="input" type="text" placeholder={demoProfile.username}></input>
-        </p>
-        <br></br>
-        <p>
+        </div>
+        <div style={inputStyle}>
           <textarea className="textarea" type="text" placeholder={demoProfile.description}></textarea>
-        </p>
+        </div>
         <br></br>
         {renderStatusButtons()}
         <br></br>
@@ -149,9 +150,10 @@ function renderFriendsList() {
 }
 
 // Render overall Profile page
-function Profile() {
+async function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-  
+  console.log(await props.firebase.getCurrentUser());
+
   return (
     <section className="section is-white">
       <div className="container">

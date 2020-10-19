@@ -18,6 +18,7 @@ class Firebase {
         app.initializeApp(config); // Initialize Firebase
         this.auth = app.auth(); // Instantiate Firebase auth package
         this.db = app.database(); // Initialize Firebase Realtime Database
+        this.userData = null;
     }
 
     // Auth API for Firebase
@@ -27,16 +28,49 @@ class Firebase {
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignOut = () => this.auth.signOut(); 
+    doSignOut = () => this.auth.signOut();
 
     doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
- 
+
     doPasswordUpdate = (password) =>
-      this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser.updatePassword(password);
 
     // User API for Firebase - gets user by uid or gets all users
-    user = uid => this.db.ref(`users/${uid}`);
-    users = () => this.db.ref('users');
+    getCurrentUser = function () {
+        // let uid;
+        // if (this.auth.currentUser !== null) {
+        //     uid = this.auth.currentUser.uid;
+        //     var userRef = this.db.ref('/users/' + uid);
+        //     userRef.on('value', function (snapshot) {
+        //         console.log("SNAPSHOT:");
+        //         console.log(snapshot.val());
+        //         return JSON.stringify(snapshot.val());
+        //     });
+        // } else {
+        //     console.log("Bad");
+        //     return "ERROR";
+        // }
+
+        let user = this.auth.currentUser;
+        let uid;
+        if (user !== null) {
+            uid = user.uid;
+        }
+        const fullname = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
+            return (snapshot.val() && snapshot.val().fullname) || 'Anonymous';
+        });
+        const username = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
+            return (snapshot.val() && snapshot.val().username) || 'Anonymous';
+        });
+        return {
+            fullname: fullname,
+            username: username,
+        }
+    }
+
+    getUser = uid => this.db.ref(`users/${uid}`);
+
+    getUsers = () => this.db.ref('users');
 }
 
 export default Firebase; 
