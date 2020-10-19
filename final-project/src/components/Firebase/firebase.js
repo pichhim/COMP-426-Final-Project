@@ -37,18 +37,18 @@ class Firebase {
 
     // User API for Firebase - gets user by uid or gets all users
     getCurrentUser = function () {
-        // let uid;
+        // let user = '';
         // if (this.auth.currentUser !== null) {
-        //     uid = this.auth.currentUser.uid;
-        //     var userRef = this.db.ref('/users/' + uid);
+        //     let uid = this.auth.currentUser.uid;
+        //     let userRef = this.db.ref('/users/' + uid);
         //     userRef.on('value', function (snapshot) {
-        //         // console.log("SNAPSHOT:");
-        //         // console.log(snapshot.val());
-        //         return Promise.resolve(snapshot.val());
+        //         console.log("SNAPSHOT:");
+        //         console.log(snapshot.val());
+        //         user = (snapshot.val());
         //     });
+        //     return user;
         // } else {
-        //     console.log("Bad");
-        //     return "ERROR";
+        //     return "ERROR: User not retrieved";
         // }
 
         let user = this.auth.currentUser;
@@ -56,13 +56,6 @@ class Firebase {
         if (user !== null) {
             uid = user.uid;
         }
-
-        // const fullname = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
-        //     return (snapshot.val() && snapshot.val().fullname) || 'Anonymous';
-        // });
-        // const username = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
-        //     return (snapshot.val() && snapshot.val().username) || 'Anonymous';
-        // });
 
         const snapshot = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
             return (snapshot.val()) || 'Anonymous';

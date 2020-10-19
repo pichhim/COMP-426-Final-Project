@@ -50,9 +50,9 @@ function renderStatusButtons() {
 }
 
 // Render profile card
-function renderProfile(editMode, setEditMode) {
+function renderProfile(editMode, setEditMode, user) {
   return (
-    editMode ? renderProfileEdit(setEditMode) :
+    editMode ? renderProfileEdit(setEditMode, user) :
       <div className="tile" id="profile-card">
         <div className="card" style={{ minWidth: "100%" }}>
           <div className="card-image">
@@ -66,10 +66,10 @@ function renderProfile(editMode, setEditMode) {
           </div>
           <div className="card-content">
             <p className="has-text-centered">
-              <strong>{demoProfile.name}</strong><br></br><em>{demoProfile.username}</em>
+              <strong>{user.fullname}</strong><br></br><em>{user.username}</em>
             </p>
             <br></br>
-            <p> {demoProfile.description}
+            <p> {user.description}
             </p>
             <br></br>
             {renderStatusButtons()}
@@ -83,7 +83,7 @@ function renderProfile(editMode, setEditMode) {
 }
 
 // Edit mode for user profile
-function renderProfileEdit(setEditMode) {
+function renderProfileEdit(setEditMode, user) {
   return (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
@@ -104,11 +104,11 @@ function renderProfileEdit(setEditMode) {
           </form>
         </div>
         <div className="has-text-centered" style={inputStyle}>
-          <input className="input" type="text" placeholder={demoProfile.name}></input>
-          <input className="input" type="text" placeholder={demoProfile.username}></input>
+          <input className="input" type="text" placeholder={user.fullname}></input>
+          <input className="input" type="text" placeholder={user.username}></input>
         </div>
         <div style={inputStyle}>
-          <textarea className="textarea" type="text" placeholder={demoProfile.description}></textarea>
+          <textarea className="textarea" type="text" placeholder={user.description}></textarea>
         </div>
         <br></br>
         {renderStatusButtons()}
@@ -152,29 +152,29 @@ function renderFriendsList() {
 // Render overall Profile page
 function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-  const [snapshot, setSnapshot] = useState(null)
+  const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
 
-
+  // Make func in Firebase
   const getSnapshot = () => {
     let interval = setInterval(() => {
-      let promise = props.firebase.getCurrentUser()
+      let promise = props.firebase.getCurrentUser();
       promise.then(val => {
         if (val != 'Anonymous') {
-          setSnapshot(val)
-          clearInterval(interval)
+          setSnapshot(val);
+          clearInterval(interval);
         }
       })
     }, 200)
   }
 
-  useEffect(getSnapshot, [])
+  useEffect(getSnapshot, []);
 
-  return (
+  return snapshot !== null ? (
     <section className="section is-white">
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile(editMode, setEditMode)}
+            {renderProfile(editMode, setEditMode, snapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <p className="title"><u>Friends</u></p>
@@ -188,7 +188,7 @@ function Profile(props) {
         <p>{(snapshot && snapshot.fullname) ? snapshot.fullname : 'Should hold fullname'}</p>
       </div>
     </section>
-  );
+  ) : <p> Loading... </p>
 }
 
 export default withFirebase(Profile);
