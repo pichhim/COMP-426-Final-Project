@@ -45,7 +45,6 @@ function renderStatusButtons(props) {
   function updateStatus(e) { // Updates status by writing to Firebase DB
     props.firebase.writeUserData("status", e.currentTarget.alt);
   }
-
   return (
     <div className="columns is-mobile is-multiline is-centered">
       {status_colors.map((color) => (
@@ -104,20 +103,12 @@ function renderProfile(editMode, setEditMode, user, props) {
 
 // Edit mode for user profile
 function renderProfileEdit(setEditMode, user, props) {
-  let currUser = {
-    fullname: user.fullname,
-    username: user.username,
-    description: user.description,
-    picture: user.picture,
-  }
-
   function updateProfile() {
+    props.firebase.writeUserData("fullname", user.fullname);
+    props.firebase.writeUserData("username", user.username);
+    props.firebase.writeUserData("description", user.description);
+    // props.firebase.writeUserData("picture", user.picture);
     setEditMode(false);
-    props.firebase.writeUserData("fullname", currUser.fullname);
-    console.log(currUser.fullname);
-    props.firebase.writeUserData("username", currUser.username);
-    props.firebase.writeUserData("description", currUser.description);
-    // props.firebase.writeUserData("picture", currUser.picture);
   }
 
   return (
@@ -140,11 +131,11 @@ function renderProfileEdit(setEditMode, user, props) {
           </form>
         </div>
         <div className="has-text-centered" style={styles.inputStyle}>
-          <input className="input" type="text" id="fullname" placeholder={user.fullname} onChange={e => currUser.fullname = e.target.value}></input>
-          <input className="input" type="text" id="username" placeholder={user.username} onChange={e => currUser.username = e.target.value}></input>
+          <input className="input" type="text" id="fullname" placeholder={user.fullname} onChange={e => user.fullname = e.target.value}></input>
+          <input className="input" type="text" id="username" placeholder={user.username} onChange={e => user.username = e.target.value}></input>
         </div>
         <div style={styles.inputStyle}>
-          <textarea className="textarea" type="text" id="description" placeholder={user.description} onChange={e => currUser.description = e.target.value}></textarea>
+          <textarea className="textarea" type="text" id="description" placeholder={user.description} onChange={e => user.description = e.target.value}></textarea>
         </div>
         <br></br>
         {renderStatusButtons()}
@@ -213,7 +204,7 @@ function Profile(props) {
         </div>
       </div>
     </section>
-  ) : <p>Loading...</p>
+  ) : <p></p>
 }
 
 export default withFirebase(Profile);

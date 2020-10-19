@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 const config = {
     apiKey: "AIzaSyB8w5qHB57f3I5QRRqk88wzwILiPJ9Ebo8",
@@ -18,6 +19,7 @@ class Firebase {
         app.initializeApp(config); // Initialize Firebase
         this.auth = app.auth(); // Instantiate Firebase auth package
         this.db = app.database(); // Initialize Firebase Realtime Database
+        this.storage = app.storage(); // Reference to Firebase Storage
     }
 
     // Auth API for Firebase
