@@ -18,7 +18,6 @@ class Firebase {
         app.initializeApp(config); // Initialize Firebase
         this.auth = app.auth(); // Instantiate Firebase auth package
         this.db = app.database(); // Initialize Firebase Realtime Database
-        this.userData = null;
     }
 
     // Auth API for Firebase

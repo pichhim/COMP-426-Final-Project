@@ -31,6 +31,13 @@ const styles = {
       borderRadius: "50%",
       border: "0px solid",
     };
+  },
+  statusStyle: function (userStatus) {
+    const color = status_colors.filter(color => color.status == userStatus)[0].hex;
+    console.log(color);
+    return {
+      color: `#${color}`,
+    };
   }
 }
 
@@ -52,7 +59,6 @@ function renderStatusButtons() {
           <ReactTooltip></ReactTooltip>
         </div>
       ))}
-
     </div>)
 }
 
@@ -72,9 +78,12 @@ function renderProfile(editMode, setEditMode, user) {
             </figure>
           </div>
           <div className="card-content">
-            <p className="has-text-centered">
+            <div className="has-text-centered">
               <strong>{user.fullname}</strong><br></br><em>{user.username}</em>
-            </p>
+              <div>
+                <p style={styles.statusStyle(user.status)}>{user.status}</p>
+              </div>
+            </div>
             <br></br>
             <p> {user.description}
             </p>
@@ -161,14 +170,10 @@ function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
 
-  // Make func in Firebase
-
   const getSnapshot = () => {
     props.firebase.getUserSnapshot(setSnapshot)
   }
-
   useEffect(getSnapshot, []);
-
 
   return snapshot !== null ? (
     <section className="section is-white">
