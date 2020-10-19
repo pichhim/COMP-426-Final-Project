@@ -37,30 +37,16 @@ class Firebase {
 
     // User API for Firebase - gets user by uid or gets all users
     getCurrentUser = function () {
-        // let user = '';
-        // if (this.auth.currentUser !== null) {
-        //     let uid = this.auth.currentUser.uid;
-        //     let userRef = this.db.ref('/users/' + uid);
-        //     userRef.on('value', function (snapshot) {
-        //         console.log("SNAPSHOT:");
-        //         console.log(snapshot.val());
-        //         user = (snapshot.val());
-        //     });
-        //     return user;
-        // } else {
-        //     return "ERROR: User not retrieved";
-        // }
-
         let user = this.auth.currentUser;
         let uid;
         if (user !== null) {
             uid = user.uid;
         }
 
-        const snapshot = this.db.ref('/users/' + uid).once('value').then(function(snapshot) {
+        const snapshot = this.db.ref('/users/' + uid).once('value').then(function (snapshot) {
             return (snapshot.val()) || 'Anonymous';
         });
-        return snapshot
+        return snapshot;
     }
 
     getUser = uid => this.db.ref(`users/${uid}`);

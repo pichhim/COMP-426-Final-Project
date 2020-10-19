@@ -11,21 +11,28 @@ const demoProfile = {
   description: "My name is Pich Him and I love to play games. My favorite dog is a Shiba Inu.",
 }
 
-const inputStyle = {
-  margin: "20px",
+const styles = {
+  inputStyle: {
+    margin: "20px",
+  },
+  loadStyle: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%"
+  },
+  imageStyle: function (length) {
+    return {
+      width: `${length}px`,
+      height: `${length}px`,
+      position: "relative",
+      objectFit: "cover",
+      overflow: "hidden",
+      borderRadius: "50%",
+      border: "0px solid",
+    };
+  }
 }
-
-const imageStyle = function (length) {
-  return {
-    width: `${length}px`,
-    height: `${length}px`,
-    position: "relative",
-    objectFit: "cover",
-    overflow: "hidden",
-    borderRadius: "50%",
-    border: "0px solid",
-  };
-};
 
 // Render status buttons
 function renderStatusButtons() {
@@ -38,7 +45,7 @@ function renderStatusButtons() {
             data-place="top"
             onMouseEnter={e => e.currentTarget.style.border = "3px solid"}
             onMouseLeave={e => e.currentTarget.style.border = "0px solid"}
-            style={imageStyle(55)}
+            style={styles.imageStyle(55)}
             src={color.link}
             alt={color.status}
           ></img>
@@ -58,7 +65,7 @@ function renderProfile(editMode, setEditMode, user) {
           <div className="card-image">
             <figure className="image" style={{ margin: "10px" }}>
               <img
-                style={imageStyle(200)}
+                style={styles.imageStyle(200)}
                 src={demoProfile.image}
                 alt={`Profile: ${demoProfile.name}`}
               ></img>
@@ -90,7 +97,7 @@ function renderProfileEdit(setEditMode, user) {
         <div className="card-image">
           <figure className="image" style={{ margin: "10px" }}>
             <img
-              style={imageStyle(200)}
+              style={styles.imageStyle(200)}
               src={demoProfile.image}
               alt={`Profile: ${demoProfile.name}`}
             ></img>
@@ -103,11 +110,11 @@ function renderProfileEdit(setEditMode, user) {
             />
           </form>
         </div>
-        <div className="has-text-centered" style={inputStyle}>
+        <div className="has-text-centered" style={styles.inputStyle}>
           <input className="input" type="text" placeholder={user.fullname}></input>
           <input className="input" type="text" placeholder={user.username}></input>
         </div>
-        <div style={inputStyle}>
+        <div style={styles.inputStyle}>
           <textarea className="textarea" type="text" placeholder={user.description}></textarea>
         </div>
         <br></br>
@@ -129,7 +136,7 @@ function renderFriendsList() {
         <div className="media-left">
           <figure className="image">
             <img
-              style={imageStyle(100)}
+              style={styles.imageStyle(100)}
               src={obj.img}
               alt={obj.name + " profile"}
             ></img>
@@ -169,6 +176,7 @@ function Profile(props) {
 
   useEffect(getSnapshot, []);
 
+
   return snapshot !== null ? (
     <section className="section is-white">
       <div className="container">
@@ -185,10 +193,9 @@ function Profile(props) {
             </div>
           </div>
         </div>
-        <p>{(snapshot && snapshot.fullname) ? snapshot.fullname : 'Should hold fullname'}</p>
       </div>
     </section>
-  ) : <p> Loading... </p>
+  ) : <p>Loading...</p>
 }
 
 export default withFirebase(Profile);
