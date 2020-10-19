@@ -35,13 +35,16 @@ class Firebase {
         this.auth.currentUser.updatePassword(password);
 
     // User API for Firebase - gets user by uid or gets all users
+    getUser = (uid) => this.db.ref(`users/${uid}`);
+    getUsers = () => this.db.ref('users');
+
+    // Realtime Database API for Firebase 
     getCurrentUser = function () {
         let user = this.auth.currentUser;
         let uid;
         if (user !== null) {
             uid = user.uid;
         }
-
         const snapshot = this.db.ref('/users/' + uid).once('value').then(function (snapshot) {
             return (snapshot.val()) || 'Anonymous';
         });
@@ -70,9 +73,12 @@ class Firebase {
         }
     }
 
-    getUser = uid => this.db.ref(`users/${uid}`);
-
-    getUsers = () => this.db.ref('users');
+    // Write data
+    writeUserData = function (path, value) {
+        let updates = {};
+        updates[`users/${this.auth.currentUser.uid}/${path}`] = value;
+        return this.db.ref().update(updates);
+    }
 }
 
 export default Firebase; 
