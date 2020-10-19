@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import test_data from "./test_data";
 import status_colors from "./status_colors";
 import ReactTooltip from 'react-tooltip';
@@ -11,17 +11,35 @@ const demoProfile = {
   description: "My name is Pich Him and I love to play games. My favorite dog is a Shiba Inu.",
 }
 
-const imageStyle = function (length) {
-  return {
-    width: `${length}px`,
-    height: `${length}px`,
-    position: "relative",
-    objectFit: "cover",
-    overflow: "hidden",
-    borderRadius: "50%",
-    border: "0px solid",
-  };
-};
+const styles = {
+  inputStyle: {
+    margin: "20px",
+  },
+  loadStyle: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%"
+  },
+  imageStyle: function (length) {
+    return {
+      width: `${length}px`,
+      height: `${length}px`,
+      position: "relative",
+      objectFit: "cover",
+      overflow: "hidden",
+      borderRadius: "50%",
+      border: "0px solid",
+    };
+  },
+  statusStyle: function (userStatus) {
+    const color = status_colors.filter(color => color.status == userStatus)[0].hex;
+    console.log(color);
+    return {
+      color: `#${color}`,
+    };
+  }
+}
 
 // Render status buttons
 function renderStatusButtons() {
@@ -34,38 +52,40 @@ function renderStatusButtons() {
             data-place="top"
             onMouseEnter={e => e.currentTarget.style.border = "3px solid"}
             onMouseLeave={e => e.currentTarget.style.border = "0px solid"}
-            style={imageStyle(55)}
+            style={styles.imageStyle(55)}
             src={color.link}
             alt={color.status}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
       ))}
-
     </div>)
 }
 
 // Render profile card
-function renderProfile(editMode, setEditMode) {
+function renderProfile(editMode, setEditMode, user) {
   return (
-    editMode ? renderProfileEdit(setEditMode) :
+    editMode ? renderProfileEdit(setEditMode, user) :
       <div className="tile" id="profile-card">
         <div className="card" style={{ minWidth: "100%" }}>
           <div className="card-image">
             <figure className="image" style={{ margin: "10px" }}>
               <img
-                style={imageStyle(200)}
+                style={styles.imageStyle(200)}
                 src={demoProfile.image}
                 alt={`Profile: ${demoProfile.name}`}
               ></img>
             </figure>
           </div>
           <div className="card-content">
-            <p className="has-text-centered">
-              <strong>{demoProfile.name}</strong><br></br><em>{demoProfile.username}</em>
-            </p>
+            <div className="has-text-centered">
+              <strong>{user.fullname}</strong><br></br><em>{user.username}</em>
+              <div>
+                <p style={styles.statusStyle(user.status)}>{user.status}</p>
+              </div>
+            </div>
             <br></br>
-            <p> {demoProfile.description}
+            <p> {user.description}
             </p>
             <br></br>
             {renderStatusButtons()}
@@ -79,14 +99,14 @@ function renderProfile(editMode, setEditMode) {
 }
 
 // Edit mode for user profile
-function renderProfileEdit(setEditMode) {
+function renderProfileEdit(setEditMode, user) {
   return (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
         <div className="card-image">
           <figure className="image" style={{ margin: "10px" }}>
             <img
-              style={imageStyle(200)}
+              style={styles.imageStyle(200)}
               src={demoProfile.image}
               alt={`Profile: ${demoProfile.name}`}
             ></img>
@@ -99,16 +119,13 @@ function renderProfileEdit(setEditMode) {
             />
           </form>
         </div>
-        <br></br>
-        <p className="has-text-centered">
-          <input className="input" type="text" placeholder={demoProfile.name}></input>
-          <br></br>
-          <input className="input" type="text" placeholder={demoProfile.username}></input>
-        </p>
-        <br></br>
-        <p>
-          <textarea className="textarea" type="text" placeholder={demoProfile.description}></textarea>
-        </p>
+        <div className="has-text-centered" style={styles.inputStyle}>
+          <input className="input" type="text" placeholder={user.fullname}></input>
+          <input className="input" type="text" placeholder={user.username}></input>
+        </div>
+        <div style={styles.inputStyle}>
+          <textarea className="textarea" type="text" placeholder={user.description}></textarea>
+        </div>
         <br></br>
         {renderStatusButtons()}
         <br></br>
@@ -128,7 +145,7 @@ function renderFriendsList() {
         <div className="media-left">
           <figure className="image">
             <img
-              style={imageStyle(100)}
+              style={styles.imageStyle(100)}
               src={obj.img}
               alt={obj.name + " profile"}
             ></img>
@@ -149,15 +166,21 @@ function renderFriendsList() {
 }
 
 // Render overall Profile page
-function Profile() {
+function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-  
-  return (
+  const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
+
+  const getSnapshot = () => {
+    props.firebase.getUserSnapshot(setSnapshot)
+  }
+  useEffect(getSnapshot, []);
+
+  return snapshot !== null ? (
     <section className="section is-white">
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile(editMode, setEditMode)}
+            {renderProfile(editMode, setEditMode, snapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <p className="title"><u>Friends</u></p>
@@ -170,7 +193,7 @@ function Profile() {
         </div>
       </div>
     </section>
-  );
+  ) : <p>Loading...</p>
 }
 
 export default withFirebase(Profile);

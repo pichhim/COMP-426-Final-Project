@@ -27,16 +27,52 @@ class Firebase {
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignOut = () => this.auth.signOut(); 
+    doSignOut = () => this.auth.signOut();
 
     doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
- 
+
     doPasswordUpdate = (password) =>
-      this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser.updatePassword(password);
 
     // User API for Firebase - gets user by uid or gets all users
-    user = uid => this.db.ref(`users/${uid}`);
-    users = () => this.db.ref('users');
+    getCurrentUser = function () {
+        let user = this.auth.currentUser;
+        let uid;
+        if (user !== null) {
+            uid = user.uid;
+        }
+
+        const snapshot = this.db.ref('/users/' + uid).once('value').then(function (snapshot) {
+            return (snapshot.val()) || 'Anonymous';
+        });
+        return snapshot;
+    }
+
+    // This function takes a setter from a component and calls getCurrentUser repeatedly until a valid value is given
+    // Then it sets that value using the setter.
+    getUserSnapshot = function (setter) {
+        if (setter) {
+            let counter = 100;
+            let interval = setInterval(() => {
+                let promise = this.getCurrentUser();
+                promise.then(val => {
+                if (val !== 'Anonymous') {
+                    clearInterval(interval);
+                    setter(val)
+                } else if (counter < 0) {
+                    clearInterval(interval)
+                    alert('ERROR: Interval timed out. Please try again later')
+                } else {
+                    counter--;
+                }
+                })
+            }, 200)
+        }
+    }
+
+    getUser = uid => this.db.ref(`users/${uid}`);
+
+    getUsers = () => this.db.ref('users');
 }
 
 export default Firebase; 
