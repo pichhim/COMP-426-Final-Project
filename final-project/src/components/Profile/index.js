@@ -150,9 +150,10 @@ function renderFriendsList() {
 }
 
 // Render overall Profile page
-async function Profile(props) {
+function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
-  console.log(await props.firebase.getCurrentUser());
+  let snapshot = props.firebase.getCurrentUser()
+  snapshot.then(val => console.log(val))
 
   return (
     <section className="section is-white">
