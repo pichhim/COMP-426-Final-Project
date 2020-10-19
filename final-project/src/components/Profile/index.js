@@ -162,16 +162,9 @@ function Profile(props) {
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
 
   // Make func in Firebase
+
   const getSnapshot = () => {
-    let interval = setInterval(() => {
-      let promise = props.firebase.getCurrentUser();
-      promise.then(val => {
-        if (val != 'Anonymous') {
-          setSnapshot(val);
-          clearInterval(interval);
-        }
-      })
-    }, 200)
+    props.firebase.getUserSnapshot(setSnapshot)
   }
 
   useEffect(getSnapshot, []);

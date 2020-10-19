@@ -49,6 +49,22 @@ class Firebase {
         return snapshot;
     }
 
+    // This function takes a setter from a component and calls getCurrentUser repeatedly until a valid value is given
+    // Then it sets that value using the setter.
+    getUserSnapshot = function (setter) {
+        if (setter) {
+            let interval = setInterval(() => {
+                let promise = this.getCurrentUser();
+                promise.then(val => {
+                if (val !== 'Anonymous') {
+                    clearInterval(interval);
+                    setter(val)
+                }
+                })
+            }, 200)
+        }
+    }
+
     getUser = uid => this.db.ref(`users/${uid}`);
 
     getUsers = () => this.db.ref('users');
