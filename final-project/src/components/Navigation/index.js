@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+//import 'react-bulma-components/dist/react-bulma-components.min.css';
+//import { Button } from 'react-bulma-components'
 
 import SignOutButton from '../SignOut';
 
@@ -10,12 +12,14 @@ const Navigation = ({ authUser }) => (
 
 const NavAuth = () => (
   <div>
+    
     <Link to={'/'}>Landing   </Link>
     <Link to={'profile'}>Profile   </Link>
     <Link to={'/messages'}>Messages   </Link>
     <Link to={'/demo'}>Game Board Demo   </Link>
     <SignOutButton />
   </div>
+  
 );
 
 const NavNonAuth = () => (
