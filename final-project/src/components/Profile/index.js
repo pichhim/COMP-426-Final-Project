@@ -154,8 +154,20 @@ function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null)
 
-  let promise = props.firebase.getCurrentUser()
-  promise.then(val => setSnapshot(val))
+
+  const getSnapshot = () => {
+    let interval = setInterval(() => {
+      let promise = props.firebase.getCurrentUser()
+      promise.then(val => {
+        if (val != 'Anonymous') {
+          setSnapshot(val)
+          clearInterval(interval)
+        }
+      })
+    }, 200)
+  }
+
+  useEffect(getSnapshot, [])
 
   return (
     <section className="section is-white">
@@ -165,7 +177,7 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <p className="title"><u>{snapshot ? snapshot.fullname : 'Friends'}</u></p>
+                <p className="title"><u>Friends</u></p>
               </figure>
               <div className="tile">
                 {renderFriendsList()}
@@ -173,6 +185,7 @@ function Profile(props) {
             </div>
           </div>
         </div>
+        <p>{(snapshot && snapshot.fullname) ? snapshot.fullname : 'Should hold fullname'}</p>
       </div>
     </section>
   );
