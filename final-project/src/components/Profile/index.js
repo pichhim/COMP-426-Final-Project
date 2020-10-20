@@ -45,6 +45,15 @@ function renderStatusButtons(props) {
   function updateStatus(e) { // Updates status by writing to Firebase DB
     props.firebase.writeUserData("status", e.currentTarget.alt);
   }
+  function handleCursor(e, action) { // Cursor and border effect for buttons
+    if (action === "enter") {
+      e.currentTarget.style.border = "3px solid";
+      e.currentTarget.style.cursor = "pointer";
+    } else {
+      e.currentTarget.style.border = "";
+      e.currentTarget.style.cursor = "";
+    }
+  }
   return (
     <div className="columns is-mobile is-multiline is-centered">
       {status_colors.map((color) => (
@@ -52,8 +61,8 @@ function renderStatusButtons(props) {
           <img
             data-tip={color.status}
             data-place="top"
-            onMouseEnter={e => e.currentTarget.style.border = "3px solid"}
-            onMouseLeave={e => e.currentTarget.style.border = "0px solid"}
+            onMouseEnter={e => handleCursor(e, "enter")}
+            onMouseLeave={e => handleCursor(e, "leave")}
             onClick={e => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
@@ -110,7 +119,6 @@ function renderProfileEdit(setEditMode, user, props) {
     // props.firebase.writeUserData("picture", user.picture);
     setEditMode(false);
   }
-
   return (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
@@ -131,11 +139,28 @@ function renderProfileEdit(setEditMode, user, props) {
           </form>
         </div>
         <div className="has-text-centered" style={styles.inputStyle}>
-          <input className="input" type="text" id="fullname" placeholder={user.fullname} onChange={e => user.fullname = e.target.value}></input>
-          <input className="input" type="text" id="username" placeholder={user.username} onChange={e => user.username = e.target.value}></input>
+          <input
+            className="input"
+            type="text"
+            id="fullname"
+            placeholder={user.fullname}
+            onChange={e => user.fullname = e.target.value}
+          ></input>
+          <input
+            className="input"
+            type="text" id="username"
+            placeholder={user.username}
+            onChange={e => user.username = e.target.value}
+          ></input>
         </div>
         <div style={styles.inputStyle}>
-          <textarea className="textarea" type="text" id="description" placeholder={user.description} onChange={e => user.description = e.target.value}></textarea>
+          <textarea
+            className="textarea"
+            type="text"
+            id="description"
+            placeholder={user.description}
+            onChange={e => user.description = e.target.value}
+          ></textarea>
         </div>
         <br></br>
         {renderStatusButtons()}

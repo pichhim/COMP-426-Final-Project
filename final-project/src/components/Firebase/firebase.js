@@ -31,10 +31,10 @@ class Firebase {
 
     doSignOut = () => this.auth.signOut();
 
-    doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+    /*doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
     doPasswordUpdate = (password) =>
-        this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser.updatePassword(password);*/
 
     // User API for Firebase - gets user by uid or gets all users
     getUser = (uid) => this.db.ref(`users/${uid}`);
