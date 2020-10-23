@@ -23,11 +23,11 @@ const demoUser1 = {
     message: "I'm hungry too"
 }
 
-// const imageStyle = function () {
-//     return {
-//         borderRadius: "50%"
-//     }
-// }
+const imageStyle = function () {
+    return {
+        borderRadius: "50%"
+    }
+}
 
 
 /**
