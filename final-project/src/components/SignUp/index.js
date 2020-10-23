@@ -13,6 +13,10 @@ const INITIAL_STATE = {
     fullname: '',
     username: '',
     email: '',
+    picture: '',
+    description: 'Hello! Welcome to your new profile. Update your profile description here.',
+    status: 'Online',
+    friends: [],
     passwordOne: '',
     passwordTwo: '',
     error: null,
@@ -25,16 +29,16 @@ class SignUpForm extends Component {
   }
  
   onSubmit = event => {
-    const { fullname, username, email, passwordOne } = this.state;
+    const { fullname, username, email, passwordOne, picture, description, status, friends} = this.state;
  
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Add new user to Firebase realtime database
         return this.props.firebase
-        .user(authUser.user.uid) // Creates user based on Firebase uid
+        .getUser(authUser.user.uid) // Creates user based on Firebase uid
         .set({
-          fullname, username, email, // Additional info about user
+          fullname, username, email, picture, description, status, friends, // Additional info about user
         });
       })
       .then(authUser => {
