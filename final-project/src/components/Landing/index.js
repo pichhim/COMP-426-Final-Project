@@ -1,9 +1,10 @@
 import React from "react";
 import 'react-bulma-components/dist/react-bulma-components.min.css';
 import { Section, Container, Level, Heading, Button, Figure, Image } from 'react-bulma-components';
-//import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import { Parallax } from "react-parallax";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {useSpring, animated} from 'react-spring'
+
 import 'font-awesome/css/font-awesome.min.css';
 
 function Landing() {
@@ -46,7 +47,7 @@ function Landing() {
         },
 
         emptySpace: {
-            height: '300px',
+            height: '300git px',
         },
 
         styleBlock: {
@@ -91,8 +92,41 @@ function Landing() {
     const bobaBackground =
         "https://color-hex.org/colors/eccdc2.png";
 
+      //let's build the chutes
+for (var i = 0; i < 20; ++i) {
+    $('<div/>', {
+        class: 'chute'
+    }).appendTo('#box');
+}
+
+//cache a few static values
+var box = $('#box');
+var width = box.width();
+var height = box.height();
+var chute = $('.chute');
+
+//our main animation "loop"
+
+chute.each(function foo() {
+
+    //generate random values
+    var top = (Math.random() * height) | 0;
+    var left = (Math.random() * width) | 0;
+    var time = Math.random() * (700-30)  + 10000| 0;
+
+    //animate
+    //we introduce a random value so that they aren't moving together
+    //after the animation, we call foo for the current element
+    //to animate the current element again
+    $(this).animate({
+        left: left,
+        top: top
+    }, time, foo);
+});
+
     return (
         <Parallax bgImage={bobaBackground} strength={500}>
+            <div id='box'></div>
             <Section style={style.landingSpacing}>
                 <Level>
                     <Level.Item>
