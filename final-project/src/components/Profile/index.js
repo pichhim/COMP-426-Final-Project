@@ -33,7 +33,7 @@ const styles = {
     };
   },
   statusStyle: function (userStatus) {
-    const color = status_colors.filter(color => color.status == userStatus)[0].hex;
+    const color = status_colors.filter(color => color.status === userStatus)[0].hex;
     return {
       color: `#${color}`,
     };

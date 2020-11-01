@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import test_data from "./test_data";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function Messages() {
 
-    return(
+    return (
         <div className="tile is-ancestor">
             <div className="tile is-parent is-4">
                 {renderChatsMenu()}
@@ -39,53 +39,55 @@ const imageStyle = function () {
 * - preview of most recent message received/delivered
 */
 function renderChatsMenu() {
-        return (
-            <div className="tile is-parent is-vertical overflow-auto" style={{ maxHeight: "700px" }}> {/** Attempted scroll */}
-                <article className="tile is-parent media">
-                    <figure className="media-left">
-                        <img className="image is-64x64" src={demoUser1.image} style={{borderRadius: "50%"}}></img>
-                    </figure>
-                    <h1 className="title"><b>Chats</b></h1>
-                </article>
 
-                <div className="field">
-                    <div className="control has-icons-left">
-                        <input className="input is-rounded" type="text" placeholder="Search chats"></input>
-                        <span className="icon is-left">
-                            <FontAwesomeIcon icon={faSearch}/>
-                        </span>
-                    </div> 
-                </div>
-                
-                <div className="tile is-parent is-vertical">
-                    {test_data.map(user => (
-                        <div className="tile is-child is-vertical" 
-                        // onMouseEnter={e => e.currentTarget.style.background="#F0F0F0"}
-                        onMouseEnter={e => e.currentTarget.style.backgroundColor="#F0F0F0"}
-                        onMouseLeave={e => e.currentTarget.style.backgroundColor="#0000"} >
-                            <article className="media" onClick={handleChatClick(user)}>
-                                <figure className="media-left">
-                                    <img className="image is-64x64" src={user.img} style={{borderRadius: "50%"}}></img>
-                                </figure>
-                                <div className="media-content">
-                                    <div className="content">
-                                        <h4>{user.name}</h4>
-                                        <p>{user.message}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    ))}
+
+    return (
+        <div className="tile is-parent is-vertical overflow-auto" style={{ maxHeight: "700px" }}> {/** Attempted scroll */}
+            <article className="tile is-parent media">
+                <figure className="media-left">
+                    <img className="image is-64x64" src={demoUser1.image} style={{ borderRadius: "50%" }}></img>
+                </figure>
+                <h1 className="title"><b>Chats</b></h1>
+            </article>
+
+            <div className="field">
+                <div className="control has-icons-left">
+                    <input className="input is-rounded" type="text" placeholder="Search chats"></input>
+                    <span className="icon is-left">
+                        <FontAwesomeIcon icon={faSearch} />
+                    </span>
                 </div>
             </div>
-        )
+
+            <div className="tile is-parent is-vertical">
+                {test_data.map(user => (
+                    <div className="tile is-child is-vertical"
+                        // onMouseEnter={e => e.currentTarget.style.background="#F0F0F0"}
+                        onMouseEnter={e => e.currentTarget.style.backgroundColor = "#F0F0F0"}
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor = "#0000"} >
+                        <article className="media" onClick={handleChatClick(user)}>
+                            <figure className="media-left">
+                                <img className="image is-64x64" src={user.img} style={{ borderRadius: "50%" }}></img>
+                            </figure>
+                            <div className="media-content">
+                                <div className="content">
+                                    <h4>{user.name}</h4>
+                                    <p>{user.message}</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
 }
 
 // Not implemented yet!
 function handleChatClick(user) {
     // let chat = document.getElementById("open-chat");
     // $(chat).replaceWith(renderChatWindow(user));
-    
+
     // renderChatWindow(user);
 }
 
@@ -102,7 +104,7 @@ function renderChatWindow(user) {
             <div className="tile is-vertical is-child">
                 <article className="tile is-child media">
                     <figure className="media is-left">
-                        <img className="image is-32x32" src={user.img} alt={user.name} style={{borderRadius: "50%"}}></img>
+                        <img className="image is-32x32" src={user.img} alt={user.name} style={{ borderRadius: "50%" }}></img>
                         <h2 className="subtitle"><b>{user.name}</b></h2>
                     </figure>
                 </article>
@@ -127,23 +129,23 @@ function renderChatWindow(user) {
     )
 }
 
-function renderMessages (user) {
+function renderMessages(user) {
     return (
         <div>
             <p>{user.name}</p>
             <article className="media">
                 <figure className="media is-left">
-                    <img className="image is-32x32" src={user.img} alt={user.name} style={{borderRadius: "50%"}}></img>
+                    <img className="image is-32x32" src={user.img} alt={user.name} style={{ borderRadius: "50%" }}></img>
                     <p className="box">{user.message}</p>
                 </figure>
             </article>
-            
-            
+
+
             {/* <div className="box">
                 <p>{user.message}</p>
             </div> */}
         </div>
-        
+
     )
 }
 
@@ -155,7 +157,7 @@ function renderMessages (user) {
  */
 
 //  function newChatIndicator(user) {
-     
+
 //  }
 
 export default Messages;
