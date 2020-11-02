@@ -62,8 +62,9 @@ function renderChatsMenu() {
                         <div className="tile is-child is-vertical" 
                         // onMouseEnter={e => e.currentTarget.style.background="#F0F0F0"}
                         onMouseEnter={e => e.currentTarget.style.backgroundColor="#F0F0F0"}
-                        onMouseLeave={e => e.currentTarget.style.backgroundColor="#0000"} >
-                            <article className="media" onClick={handleChatClick(user)}>
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor="#0000"} 
+                        onClick={handleChatSelect} >
+                            <article className="media" id="selected">
                                 <figure className="media-left">
                                     <img className="image is-64x64" src={user.img} style={{borderRadius: "50%"}}></img>
                                 </figure>
@@ -82,11 +83,11 @@ function renderChatsMenu() {
 }
 
 // Not implemented yet!
-function handleChatClick(user) {
-    // let chat = document.getElementById("open-chat");
-    // $(chat).replaceWith(renderChatWindow(user));
-    
-    // renderChatWindow(user);
+function handleChatSelect() {
+    let currentOpen = document.getElementById('open-chat');
+    currentOpen.replaceWith(demoUser1)
+    console.log(currentOpen);
+
 }
 
 /**
@@ -97,6 +98,7 @@ function handleChatClick(user) {
  * - visual rendering of games menu buttons (separate functions?)
  */
 function renderChatWindow(user) {
+
     return (
         <div className="tile is-vertical is-parent is-12" id="open-chat">
             <div className="tile is-vertical is-child">
@@ -137,11 +139,7 @@ function renderMessages (user) {
                     <p className="box">{user.message}</p>
                 </figure>
             </article>
-            
-            
-            {/* <div className="box">
-                <p>{user.message}</p>
-            </div> */}
+
         </div>
         
     )
