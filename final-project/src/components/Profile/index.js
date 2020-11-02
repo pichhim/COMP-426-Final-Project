@@ -33,7 +33,7 @@ const styles = {
     };
   },
   statusStyle: function (userStatus) {
-    const color = status_colors.filter(color => color.status == userStatus)[0].hex;
+    const color = status_colors.filter(color => color.status === userStatus)[0].hex;
     return {
       color: `#${color}`,
     };
@@ -207,8 +207,10 @@ function Profile(props) {
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
 
   const getSnapshot = () => {
-    props.firebase.getUserSnapshot(setSnapshot);
+    let snapPromise = props.firebase.getCurrentUser();
+    snapPromise.then(val => setSnapshot(val));
   }
+  
   useEffect(getSnapshot, []);
 
   return snapshot !== null ? (
