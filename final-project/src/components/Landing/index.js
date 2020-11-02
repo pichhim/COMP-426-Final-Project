@@ -150,7 +150,7 @@ function Landing() {
 
         loginButton: {
             marginRight: '10px',
-            paddingright: '25px',
+            paddingLeft: '25px',
             paddingRight: '25px',
         },
 
@@ -159,7 +159,7 @@ function Landing() {
         },
 
         emptySpace: {
-            height: '300git px',
+            height: `${window.innerHeight / 3}px`,
         },
 
         styleBlock: {
@@ -175,7 +175,7 @@ function Landing() {
         },
 
         descPadding: {
-            paddingleft: '25px',
+            paddingTop: '30px'
         },
 
         iconSize: {
@@ -193,9 +193,14 @@ function Landing() {
         },
 
         submitButton: {
-            marginleft: '20px',
+            marginTop: '20px',
             textAlign: 'center',
         },
+
+        readme: {
+            textAlign: 'center',
+            paddingTop: `${window.innerHeight / 6}px`
+        }
 
     };
 
@@ -231,28 +236,6 @@ function Landing() {
                                 <Button onClick={signup} style={style.signupButton}>sign up</Button>
                             </Level.Item>
                         </Container>
-                        <FadingDiv id="loginPopup" style={style.landingPopupCard}>
-                            <Card>
-                                <Card.Content>
-                                    <Heading style={style.landingPopupTitle}>login</Heading>
-                                    <form>
-                                        <label>username</label>
-                                        <input className="input"
-                                            type="text"
-                                            id="username" />
-                                        <label>password</label>
-                                        <input className="input"
-                                            type="password"
-                                            id="password" />
-                                        <Level>
-                                            <Level.Item>
-                                                <Button onClick={submitLogin} style={style.submitButton}>submit</Button>
-                                            </Level.Item>
-                                        </Level>
-                                    </form>
-                                </Card.Content>
-                            </Card>
-                        </FadingDiv>
                         <FadingDiv id="signupPopup" style={style.landingPopupCard}>
                             <Card>
                                 <Card.Content>
@@ -283,9 +266,36 @@ function Landing() {
                                 </Card.Content>
                             </Card>
                         </FadingDiv>
+                        <FadingDiv id="loginPopup" style={style.landingPopupCard}>
+                            <Card>
+                                <Card.Content>
+                                    <Heading style={style.landingPopupTitle}>login</Heading>
+                                    <form>
+                                        <label>username</label>
+                                        <input className="input"
+                                            type="text"
+                                            id="username" />
+                                        <label>password</label>
+                                        <input className="input"
+                                            type="password"
+                                            id="password" />
+                                    </form>
+                                    <Level>
+                                        <Level.Item>
+                                            <Button onClick={submitLogin} style={style.submitButton}>submit</Button>
+                                        </Level.Item>
+                                    </Level>
+                                </Card.Content>
+                            </Card>
+                        </FadingDiv>
                     </Level.Item>
                 </Level>
                 <Container>
+                    <Boba></Boba>
+                    <Boba></Boba>
+                    <Boba></Boba>
+                    <Boba></Boba>
+                    <Boba></Boba>
                     <Boba></Boba>
                     <Boba></Boba>
                     <Boba></Boba>
@@ -344,8 +354,7 @@ function Landing() {
                     </Level.Item>
                 </Level>
             </Section>
-            <Section style={style.emptySpace}>
-            </Section>
+            <Section style={style.emptySpace}></Section>
             <Section style={whiteSection}>
                 <Level>
                     <Level.Item>
@@ -372,6 +381,9 @@ function Landing() {
                         </Container>
                     </Level.Item>
                 </Level>
+            </Section>
+            <Section style={style.emptySpace}>
+                <div style={style.readme}><a target="_blank" href="https://github.com/pichhim/COMP-426-Final-Project#comp-426-final-project"><Button size="large">README.md</Button></a></div>
             </Section>
         </Parallax>
     )
