@@ -81,6 +81,15 @@ class Firebase {
         updates[`users/${this.auth.currentUser.uid}/${path}`] = value;
         return this.db.ref().update(updates);
     }
+
+    getAuth = _ => {
+        return this.auth;
+    }
+
+    getDB = _ => {
+        return this.db;
+    }
+
 }
 
 export default Firebase; 
