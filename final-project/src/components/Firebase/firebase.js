@@ -55,25 +55,25 @@ class Firebase {
 
     // This function takes a setter from a component and calls getCurrentUser repeatedly until a valid value is given
     // Then it sets that value using the setter.
-    getUserSnapshot = function (setter) {
-        if (setter) {
-            let counter = 100;
-            let interval = setInterval(() => {
-                let promise = this.getCurrentUser();
-                promise.then(val => {
-                if (val !== 'Anonymous') {
-                    clearInterval(interval);
-                    setter(val)
-                } else if (counter < 0) {
-                    clearInterval(interval)
-                    alert('ERROR: Interval timed out. Please try again later')
-                } else {
-                    counter--;
-                }
-                })
-            }, 200)
-        }
-    }
+    // getUserSnapshot = function (setter) {
+    //     if (setter) {
+    //         let counter = 100;
+    //         let interval = setInterval(() => {
+    //             let promise = this.getCurrentUser();
+    //             promise.then(val => {
+    //             if (val !== 'Anonymous') {
+    //                 clearInterval(interval);
+    //                 setter(val)
+    //             } else if (counter < 0) {
+    //                 clearInterval(interval)
+    //                 alert('ERROR: Interval timed out. Please try again later')
+    //             } else {
+    //                 counter--;
+    //             }
+    //             })
+    //         }, 200)
+    //     }
+    // }
 
     // Write data
     writeUserData = function (path, value) {

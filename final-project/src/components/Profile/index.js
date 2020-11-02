@@ -207,8 +207,10 @@ function Profile(props) {
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
 
   const getSnapshot = () => {
-    props.firebase.getUserSnapshot(setSnapshot);
+    let snapPromise = props.firebase.getCurrentUser();
+    snapPromise.then(val => setSnapshot(val));
   }
+  
   useEffect(getSnapshot, []);
 
   return snapshot !== null ? (
