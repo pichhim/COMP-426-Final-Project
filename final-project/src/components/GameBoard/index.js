@@ -6,7 +6,7 @@ function GameBoard(props) {
 
     useEffect(() => {
         drawBase()
-    }, []);
+    });
 
     const drawBase = () => {
         const ctx = canvasRef.current.getContext('2d');
@@ -31,11 +31,20 @@ function GameBoard(props) {
             ctx.stroke();
         }
 
+        placePieces()
+        
+    }
+
+    const placePieces = (board = props.board) => {
+        const ctx = canvasRef.current.getContext('2d');
         ctx.fillStyle = props.pieceColor;
 
-        for (let i = 0; i < props.board.length; i++) {
-            for (let j = 0; j < props.board[i].length; j++) {
-                if (props.board[i][j] === true) {
+        const rowWidth = Math.round(canvasRef.current.height / props.rows)
+        const rowHeight = Math.round(canvasRef.current.width / props.columns)
+
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                if (board[i][j] === true) {
                     ctx.beginPath();
                     ctx.arc(j * rowHeight + rowHeight / 2, i * rowWidth + rowWidth / 2, Math.min(rowWidth, rowHeight) * 0.44, 0, 2 * Math.PI, false);
                     ctx.fill();
@@ -81,7 +90,7 @@ function GameBoard(props) {
         const rowWidth = Math.round(canvasRef.current.height / props.rows);
         const rowHeight = Math.round(canvasRef.current.width / props.columns);
 
-        if (props.highlightRules == null || props.highlightRules(x,y)) {
+        if (props.highlightRules == null || props.highlightRules(x, y)) {
             ctx.strokeRect(x * rowHeight, y * rowWidth, rowHeight, rowWidth);
         }
 
@@ -109,7 +118,9 @@ function GameBoard(props) {
             height={props.height}
             onMouseMove={highlightOptions}
             onMouseLeave={drawBase}
-            onClick={(e) => props.handleClick(calcIndex(e))}
+            onClick={(e) => {
+                props.handleClick(calcIndex(e))
+            }}
         />
 
     )
