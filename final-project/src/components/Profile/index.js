@@ -41,8 +41,9 @@ const styles = {
 }
 
 // Render status buttons
-function renderStatusButtons(props) {
+function renderStatusButtons(props, user, setSnapshot) {
   function updateStatus(e) { // Updates status by writing to Firebase DB
+    setSnapshot({...user, status: e.currentTarget.alt}); // Updates React state
     props.firebase.writeUserData("status", e.currentTarget.alt);
   }
   function handleCursor(e, action) { // Cursor and border effect for buttons
@@ -75,9 +76,9 @@ function renderStatusButtons(props) {
 }
 
 // Render profile card
-function renderProfile(editMode, setEditMode, user, props) {
+function renderProfile(editMode, setEditMode, user, props, setSnapshot) {
   return (
-    editMode ? renderProfileEdit(setEditMode, user, props) :
+    editMode ? renderProfileEdit(setEditMode, user, props, setSnapshot) :
       <div className="tile" id="profile-card">
         <div className="card" style={{ minWidth: "100%" }}>
           <div className="card-image">
@@ -100,7 +101,7 @@ function renderProfile(editMode, setEditMode, user, props) {
             <p> {user.description}
             </p>
             <br></br>
-            {renderStatusButtons(props)}
+            {renderStatusButtons(props, user, setSnapshot)}
             <br></br>
             <div className="has-text-centered">
               <button className="button is-dark is-centered" onClick={() => setEditMode(true)}>Edit</button>
@@ -111,8 +112,9 @@ function renderProfile(editMode, setEditMode, user, props) {
 }
 
 // Edit mode for user profile
-function renderProfileEdit(setEditMode, user, props) {
+function renderProfileEdit(setEditMode, user, props, setSnapshot) {
   function updateProfile() {
+    setSnapshot({...user, fullname: user.fullname, username: user.username, description: user.description});
     props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
@@ -139,31 +141,31 @@ function renderProfileEdit(setEditMode, user, props) {
           </form>
         </div>
         <div className="has-text-centered" style={styles.inputStyle}>
-          <input
+          <textarea
             className="input"
             type="text"
             id="fullname"
-            placeholder={user.fullname}
+            placeholder="Full name"
             onChange={e => user.fullname = e.target.value}
-          ></input>
-          <input
+          >{user.fullname}</textarea>
+          <textarea
             className="input"
             type="text" id="username"
-            placeholder={user.username}
+            placeholder="Username"
             onChange={e => user.username = e.target.value}
-          ></input>
+          >{user.username}</textarea>
         </div>
         <div style={styles.inputStyle}>
           <textarea
             className="textarea"
             type="text"
             id="description"
-            placeholder={user.description}
+            placeholder="Description"
             onChange={e => user.description = e.target.value}
-          ></textarea>
+          >{user.description}</textarea>
         </div>
         <br></br>
-        {renderStatusButtons()}
+        {renderStatusButtons(props, user, setSnapshot)}
         <br></br>
         <div className="has-text-centered">
           <button className="button is-dark is-centered" onClick={() => updateProfile()}>Save</button>
@@ -218,7 +220,7 @@ function Profile(props) {
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile(editMode, setEditMode, snapshot, props)}
+            {renderProfile(editMode, setEditMode, snapshot, props, setSnapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <p className="title"><u>Friends</u></p>
