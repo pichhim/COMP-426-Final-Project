@@ -36,10 +36,6 @@ class Firebase {
     doPasswordUpdate = (password) =>
         this.auth.currentUser.updatePassword(password);*/
 
-  // User API for Firebase - gets user by uid or gets all users
-  getUser = (uid) => this.db.ref(`users/${uid}`);
-  getUsers = () => this.db.ref("users");
-
   // Realtime Database API for Firebase
   getCurrentUser = function () {
     let user = this.auth.currentUser;
@@ -47,6 +43,17 @@ class Firebase {
     if (user !== null) {
       uid = user.uid;
     }
+    const snapshot = this.db
+      .ref("/users/" + uid)
+      .once("value")
+      .then(function (snapshot) {
+        return snapshot.val() || "Anonymous";
+      });
+    return snapshot;
+  };
+
+  // Gets user by uid
+  getUser = function (uid) {
     const snapshot = this.db
       .ref("/users/" + uid)
       .once("value")
@@ -118,8 +125,8 @@ class Firebase {
       return "Already added";
     }
     this.db
-    .ref(`users/${this.auth.currentUser.uid}/${path}`)
-    .push({ uid: friendUID });
+      .ref(`users/${this.auth.currentUser.uid}/${path}`)
+      .push({ uid: friendUID });
     return "Success";
   };
 
@@ -157,7 +164,7 @@ class Firebase {
       this.db
         .ref(`users/${this.auth.currentUser.uid}/friends/${friendListID}`)
         .remove();
-      return "Success"
+      return "Success";
     } else {
       return "Not in friend's list";
     }

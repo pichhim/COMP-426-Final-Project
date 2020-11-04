@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import test_data from "./test_data";
 import status_colors from "./status_colors";
 import ReactTooltip from "react-tooltip";
 import { withFirebase } from "../Firebase";
@@ -13,11 +12,7 @@ import {
 
 const demoProfile = {
   image:
-    "https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941",
-  name: "Pich Him",
-  username: "mcpich",
-  description:
-    "My name is Pich Him and I love to play games. My favorite dog is a Shiba Inu.",
+    "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640",
 };
 
 const styles = {
@@ -58,11 +53,11 @@ const styles = {
 };
 
 // Render status buttons
-function renderStatusButtons(props, user, setSnapshot) {
+function renderStatusButtons(props, user, getSnapshot) {
   function updateStatus(e) {
     // Updates status by writing to Firebase DB
-    setSnapshot({ ...user, status: e.currentTarget.alt }); // Updates React state
     props.firebase.writeUserData("status", e.currentTarget.alt);
+    getSnapshot();
   }
   function handleCursor(e, action) {
     // Cursor and border effect for buttons
@@ -96,9 +91,9 @@ function renderStatusButtons(props, user, setSnapshot) {
 }
 
 // Render profile card
-function renderProfile(editMode, setEditMode, user, props, setSnapshot) {
+function renderProfile(editMode, setEditMode, user, props, getSnapshot) {
   return editMode ? (
-    renderProfileEdit(setEditMode, user, props, setSnapshot)
+    renderProfileEdit(setEditMode, user, props, getSnapshot)
   ) : (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
@@ -123,7 +118,7 @@ function renderProfile(editMode, setEditMode, user, props, setSnapshot) {
           <br></br>
           <p> {user.description}</p>
           <br></br>
-          {renderStatusButtons(props, user, setSnapshot)}
+          {renderStatusButtons(props, user, getSnapshot)}
           <br></br>
           <div className="has-text-centered">
             <button
@@ -140,18 +135,14 @@ function renderProfile(editMode, setEditMode, user, props, setSnapshot) {
 }
 
 // Edit mode for user profile
-function renderProfileEdit(setEditMode, user, props, setSnapshot) {
+function renderProfileEdit(setEditMode, user, props, getSnapshot) {
   function updateProfile() {
-    setSnapshot({
-      ...user,
-      fullname: user.fullname,
-      username: user.username,
-      description: user.description,
-    });
+    props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
     // props.firebase.writeUserData("picture", user.picture);
     setEditMode(false);
+    getSnapshot();
   }
   return (
     <div className="tile" id="profile-card">
@@ -202,7 +193,7 @@ function renderProfileEdit(setEditMode, user, props, setSnapshot) {
           </textarea>
         </div>
         <br></br>
-        {renderStatusButtons(props, user, setSnapshot)}
+        {renderStatusButtons(props, user, getSnapshot)}
         <br></br>
         <div className="has-text-centered">
           <button
@@ -218,13 +209,14 @@ function renderProfileEdit(setEditMode, user, props, setSnapshot) {
 }
 
 // Render friends list
-function renderFriendsList() {
+function renderFriendsList(friendsList) {
   return (
+    friendsList === [] ? "" :
     <div className="tile is-child">
-      {test_data.map((obj) => (
+      {friendsList.map((obj) => (
         <article
           className="media"
-          key={obj.user}
+          key={obj.username}
           onMouseEnter={(e) =>
             (e.currentTarget.style.boxShadow = "0 0 5px #888888")
           }
@@ -234,17 +226,17 @@ function renderFriendsList() {
             <figure className="image">
               <img
                 style={styles.imageStyle(100)}
-                src={obj.img}
-                alt={obj.name + " profile"}
+                src={demoProfile.image}
+                alt={obj.fullname + " profile"}
               ></img>
             </figure>
           </div>
           <div className="media-content">
             <div className="content">
               <div>
-                <strong>{obj.name}</strong>
+                <strong>{obj.fullname}</strong>
                 <br></br>
-                <em>{obj.user}</em>
+                <em>{obj.username}</em>
                 <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
               </div>
             </div>
@@ -259,13 +251,25 @@ function renderFriendsList() {
 function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
+  const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
 
   const getSnapshot = () => {
     let snapPromise = props.firebase.getCurrentUser();
     snapPromise.then((val) => setSnapshot(val));
   };
-
   useEffect(getSnapshot, []);
+
+  const getFriendsList = () => {
+    let friendsPromise = props.firebase.getCurrentUser();
+    friendsPromise.then(async (val) => {
+      let friends = [];
+      for (const friendID in val.friends) {
+        friends.push(await props.firebase.getUser(val.friends[friendID].uid));
+      }
+      setFriendsList(friends);
+    });
+  };
+  useEffect(getFriendsList, []);
 
   // Takes in input and Adds or Removes friend (based on click)
   async function addFriend() {
@@ -278,20 +282,24 @@ function Profile(props) {
       case "Invalid user":
         NotificationManager.warning(
           "",
-          `Username ${username} is an invalid user`
+          `Username ${username} is an invalid user.`
         );
         break;
       case "Already added":
         NotificationManager.warning(
           "",
-          `You have already added ${username} as a friend`
+          `You have already added ${username} as a friend.`
         );
         break;
       case "Success":
-        NotificationManager.success("", `You have added ${username}.`);
+        getFriendsList();
+        NotificationManager.success(
+          "",
+          `You have added ${username} as a friend.`
+        );
         break;
       default:
-        console.log("Error");
+        break; // No input: do nothing
     }
   }
   async function removeFriend() {
@@ -314,10 +322,11 @@ function Profile(props) {
         );
         break;
       case "Success":
+        getFriendsList();
         NotificationManager.error("", `You have unfriended ${username}.`);
         break;
       default:
-        console.log("Error");
+        break; // No input: do nothing
     }
   }
 
@@ -327,7 +336,7 @@ function Profile(props) {
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
-            {renderProfile(editMode, setEditMode, snapshot, props, setSnapshot)}
+            {renderProfile(editMode, setEditMode, snapshot, props, getSnapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <u className="title">Friends</u>
@@ -350,7 +359,7 @@ function Profile(props) {
                         className="button"
                         data-tip="Add Friend"
                         data-place="top"
-                        onClick={addFriend}
+                        onClick={() => addFriend()}
                       >
                         <span className="icon is-small">
                           <FontAwesomeIcon icon={faPlus} />
@@ -361,7 +370,7 @@ function Profile(props) {
                         className="button"
                         data-tip="Unfriend"
                         data-place="top"
-                        onClick={removeFriend}
+                        onClick={() => removeFriend()}
                       >
                         <span className="icon is-small">
                           <FontAwesomeIcon icon={faMinus} />
@@ -371,7 +380,7 @@ function Profile(props) {
                   </div>
                 </div>
               </figure>
-              <div className="tile">{renderFriendsList()}</div>
+              <div className="tile">{renderFriendsList(friendsList)}</div>
             </div>
           </div>
         </div>
