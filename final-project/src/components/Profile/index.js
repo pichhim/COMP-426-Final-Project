@@ -264,7 +264,7 @@ function Profile(props) {
     friendsPromise.then(async (val) => {
       let friends = [];
       for (const friendID in val.friends) {
-        friends.push(await props.firebase.getUser(val.friends[friendID].uid));
+        friends.push(await props.firebase.getUserObject(val.friends[friendID].uid));
       }
       setFriendsList(friends);
     });

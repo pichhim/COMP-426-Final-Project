@@ -36,6 +36,10 @@ class Firebase {
     doPasswordUpdate = (password) =>
         this.auth.currentUser.updatePassword(password);*/
 
+  // User API for Firebase - gets user by uid or gets all users
+  getUser = (uid) => this.db.ref(`users/${uid}`);
+  getUsers = () => this.db.ref("users");
+
   // Realtime Database API for Firebase
   getCurrentUser = function () {
     let user = this.auth.currentUser;
@@ -52,8 +56,8 @@ class Firebase {
     return snapshot;
   };
 
-  // Gets user by uid
-  getUser = function (uid) {
+  // Gets user object by uid
+  getUserObject = function (uid) {
     const snapshot = this.db
       .ref("/users/" + uid)
       .once("value")
