@@ -44,7 +44,21 @@ const styles = {
       color: `#${color}`,
     };
   },
+  addPopup: {
+    display: "none",
+  },
+  removePopup: {
+    display: "none",
+  },
 };
+
+// Shows/hides popup forms to add or remove a friend
+function addFriend() {
+  console.log("add");
+}
+function removeFriend() {
+  console.log("remove");
+}
 
 // Render status buttons
 function renderStatusButtons(props, user, setSnapshot) {
@@ -231,12 +245,12 @@ function renderFriendsList() {
           </div>
           <div className="media-content">
             <div className="content">
-              <p>
+              <div>
                 <strong>{obj.name}</strong>
                 <br></br>
                 <em>{obj.user}</em>
                 <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
-              </p>
+              </div>
             </div>
           </div>
         </article>
@@ -265,26 +279,43 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode, snapshot, props, setSnapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <u className="title">Friends</u>
-                <div class="buttons is-right">
-                  <button
-                    class="button"
-                    data-tip="Add friends"
-                    data-place="top"
-                  >
-                    <span class="icon is-small">
-                      <FontAwesomeIcon icon={faPlus} />
-                    </span>
-                  </button>
-                  <button
-                    class="button"
-                    data-tip="Remove friends"
-                    data-place="top"
-                  >
-                    <span class="icon is-small">
-                      <FontAwesomeIcon icon={faMinus} />
-                    </span>
-                  </button>
+                <u className="title">Friends</u><br></br>&nbsp;
+                <div id="addPopup">
+                  <div className="field has-addons">
+                    {/* Input field */}
+                    <div className="control is-expanded">
+                      <input
+                        className="input is-fullwidth"
+                        type="text"
+                        id ="friendInput"
+                        placeholder="Enter username here"
+                      ></input>
+                    </div> &nbsp;
+                    <div className="buttons is-right">
+                      {/* Friend adder */}
+                      <button
+                        className="button"
+                        data-tip="Add Friend"
+                        data-place="top"
+                        onClick={addFriend}
+                      >
+                        <span className="icon is-small">
+                          <FontAwesomeIcon icon={faPlus} />
+                        </span>
+                      </button>
+                      {/* Friend remover */}
+                      <button
+                        className="button"
+                        data-tip="Unfriend"
+                        data-place="top"
+                        onClick={removeFriend}
+                      >
+                        <span className="icon is-small">
+                          <FontAwesomeIcon icon={faMinus} />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </figure>
               <div className="tile">{renderFriendsList()}</div>
