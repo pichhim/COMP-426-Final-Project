@@ -100,8 +100,7 @@ class Firebase {
         }
       });
     if (friendUID === "") {
-      console.log(`Username ${value} not in DB`);
-      return false;
+      return "Invalid user";
     }
     // Query friends list -> If friend doesn't already exist in list, add UID to friends list
     let exists = false;
@@ -116,13 +115,12 @@ class Firebase {
         }
       });
     if (exists) {
-      console.log(`Friend ${value} already exists in your Friends list`);
-      return false;
+      return "Already added";
     }
-    console.log("Friend added!");
-    return this.db
-      .ref(`users/${this.auth.currentUser.uid}/${path}`)
-      .push({ uid: friendUID });
+    this.db
+    .ref(`users/${this.auth.currentUser.uid}/${path}`)
+    .push({ uid: friendUID });
+    return "Success";
   };
 
   // Removes user data (to remove friends)
@@ -140,8 +138,7 @@ class Firebase {
         }
       });
     if (friendUID === "") {
-      console.log(`Username ${username} not in DB`);
-      return false;
+      return "Invalid user";
     }
     // Given friend UID, Query to retrieve friend list ID in user's friends list
     let friendListID = "";
@@ -157,12 +154,12 @@ class Firebase {
       });
     // If friend exists in friend's list, remove friend
     if (friendListID !== "") {
-      console.log("Friend unfriended :(");
-      return this.db
+      this.db
         .ref(`users/${this.auth.currentUser.uid}/friends/${friendListID}`)
         .remove();
+      return "Success"
     } else {
-      console.log(`Friend ${username} does not exist in friend's list`);
+      return "Not in friend's list";
     }
   };
 

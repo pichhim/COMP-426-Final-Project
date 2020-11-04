@@ -5,6 +5,11 @@ import ReactTooltip from "react-tooltip";
 import { withFirebase } from "../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 const demoProfile = {
   image:
@@ -263,22 +268,62 @@ function Profile(props) {
   useEffect(getSnapshot, []);
 
   // Takes in input and Adds or Removes friend (based on click)
-  function addFriend() {
+  async function addFriend() {
     let username = document.getElementById("friendInput").value;
-    console.log(username);
+    let message = "";
     if (username !== "") {
-      props.firebase.pushUserData("friends", username);
+      message = await props.firebase.pushUserData("friends", username);
+    }
+    switch (message) {
+      case "Invalid user":
+        NotificationManager.warning(
+          "",
+          `Username ${username} is an invalid user`
+        );
+        break;
+      case "Already added":
+        NotificationManager.warning(
+          "",
+          `You have already added ${username} as a friend`
+        );
+        break;
+      case "Success":
+        NotificationManager.success("", `You have added ${username}.`);
+        break;
+      default:
+        console.log("Error");
     }
   }
-  function removeFriend() {
+  async function removeFriend() {
     let username = document.getElementById("friendInput").value;
+    let message = "";
     if (username !== "") {
-      props.firebase.unfriend(username);
+      message = await props.firebase.unfriend(username);
+    }
+    switch (message) {
+      case "Invalid user":
+        NotificationManager.warning(
+          "",
+          `Username ${username} is an invalid user.`
+        );
+        break;
+      case "Not in friend's list":
+        NotificationManager.warning(
+          "",
+          `You do not have ${username} added as a friend.`
+        );
+        break;
+      case "Success":
+        NotificationManager.error("", `You have unfriended ${username}.`);
+        break;
+      default:
+        console.log("Error");
     }
   }
 
   return snapshot !== null ? (
     <section className="section is-white">
+      <NotificationContainer />
       <div className="container">
         <div className="content">
           <div className="tile is-ancestor" style={{ margin: "100px" }}>
