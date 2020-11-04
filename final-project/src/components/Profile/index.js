@@ -52,14 +52,6 @@ const styles = {
   },
 };
 
-// Shows/hides popup forms to add or remove a friend
-function addFriend() {
-  console.log("add");
-}
-function removeFriend() {
-  console.log("remove");
-}
-
 // Render status buttons
 function renderStatusButtons(props, user, setSnapshot) {
   function updateStatus(e) {
@@ -151,7 +143,6 @@ function renderProfileEdit(setEditMode, user, props, setSnapshot) {
       username: user.username,
       description: user.description,
     });
-    props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
     // props.firebase.writeUserData("picture", user.picture);
@@ -271,6 +262,21 @@ function Profile(props) {
 
   useEffect(getSnapshot, []);
 
+  // Takes in input and Adds or Removes friend (based on click)
+  function addFriend() {
+    let username = document.getElementById("friendInput").value;
+    console.log(username);
+    if (username !== "") {
+      props.firebase.pushUserData("friends", username);
+    }
+  }
+  function removeFriend() {
+    let username = document.getElementById("friendInput").value;
+    if (username !== "") {
+      props.firebase.unfriend(username);
+    }
+  }
+
   return snapshot !== null ? (
     <section className="section is-white">
       <div className="container">
@@ -279,7 +285,8 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode, snapshot, props, setSnapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <u className="title">Friends</u><br></br>&nbsp;
+                <u className="title">Friends</u>
+                <br></br>&nbsp;
                 <div id="addPopup">
                   <div className="field has-addons">
                     {/* Input field */}
@@ -287,10 +294,11 @@ function Profile(props) {
                       <input
                         className="input is-fullwidth"
                         type="text"
-                        id ="friendInput"
+                        id="friendInput"
                         placeholder="Enter username here"
                       ></input>
-                    </div> &nbsp;
+                    </div>{" "}
+                    &nbsp;
                     <div className="buttons is-right">
                       {/* Friend adder */}
                       <button
