@@ -18,11 +18,7 @@
     "react": "^16.13.1",
     "react-bulma-components": "^3.4.0",
     "react-dom": "^16.13.1",
-<<<<<<< HEAD
     "react-parallax": "^3.0.3",
-=======
-    "react-notifications": "^1.7.2",
->>>>>>> 8bd0e1b312b359b4d318236389928acf177a0ed0
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-scroll-parallax": "^2.3.4",
