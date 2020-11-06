@@ -229,7 +229,7 @@ function Landing() {
                 <Level>
                     <Level.Item>
                         <Container style={style.landingDisplay}>
-                            <Heading style={style.landingTitle}>a nice name</Heading>
+                            <Heading style={style.landingTitle}>chat-tea</Heading>
                             <Heading subtitle size={4} style={style.landingPadding}>a messaging app</Heading>
                             <Level.Item style={style.buttonContainer}>
                                 <Button onClick={login} style={style.loginButton}>login</Button>
