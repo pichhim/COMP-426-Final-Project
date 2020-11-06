@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { withFirebase } from './components/Firebase';
+import { ParallaxProvider } from 'react-scroll-parallax';
 import 'bulma/css/bulma.css';
 import LandingPage from './components/Landing';
 import ProfilePage from './components/Profile';
@@ -35,17 +36,19 @@ class App extends Component {
   render() {
     return (
       // Defines route paths to specific pages along with Nav bar
-      <Router>
-        <Navigation authUser={this.state.authUser}></Navigation>
-        <div className="App">
-          <Route exact path={"/"} component={LandingPage}></Route>
-          <Route exact path={"/profile"} >{this.state.authUser ? <ProfilePage></ProfilePage> : null}</Route>
-          <Route exact path={"/messages"}>{this.state.authUser ? <MessagesPage user={this.state.authUser}></MessagesPage> : null}</Route>
-          <Route exact path={"/demo"} component={DemoBoard}></Route>
-          <Route exact path={"/signup"} component={SignUpPage}></Route>
-          <Route exact path={"/signin"} component={SignInPage}></Route>
-        </div>
-      </Router>
+      <ParallaxProvider>
+        <Router>
+          <Navigation authUser={this.state.authUser}></Navigation>
+          <div className="App">
+            <Route exact path={"/"} component={LandingPage}></Route>
+            <Route exact path={"/profile"} component={ProfilePage}></Route>
+            <Route exact path={"/messages"} component={MessagesPage}></Route>
+            <Route exact path={"/demo"} component={DemoBoard}></Route>
+            <Route exact path={"/signup"} component={SignUpPage}></Route>
+            <Route exact path={"/signin"} component={SignInPage}></Route>
+          </div>
+        </Router>
+      </ParallaxProvider>
     );
   }
 }
