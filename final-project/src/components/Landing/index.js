@@ -1,12 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import 'react-bulma-components/dist/react-bulma-components.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 import { Section, Container, Level, Heading, Button, Figure, Image, Card, Content } from 'react-bulma-components';
 import { Parallax } from "react-parallax";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useSpring, animated } from 'react-spring'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSpring, animated } from 'react-spring';
+import { withFirebase } from '../Firebase';
+import { Link, withRouter } from 'react-router-dom';
+import { SignUpLink, SignUpFormV2 } from '../SignUp';
 import styled, { keyframes } from 'styled-components'
-
-import 'font-awesome/css/font-awesome.min.css';
+import { SignInFormV2 } from "../SignIn";
 
 function Landing() {
 
@@ -241,6 +244,216 @@ function Landing() {
         document.getElementById("signupPopup").style.display = "none";
     }
 
+    // signup config
+    const INITIAL_STATE = {
+        fullname: '',
+        username: '',
+        email: '',
+        picture: '',
+        description: 'Hello! Welcome to your new profile. Update your profile description here.',
+        status: 'Online',
+        friends: [],
+        passwordOne: '',
+        passwordTwo: '',
+        error: null,
+    };
+
+    class SignUpForm extends Component {
+        constructor(props) {
+            super(props);
+            this.state = { ...INITIAL_STATE };
+        }
+
+        onSubmit = event => {
+            const { fullname, username, email, passwordOne, picture, description, status, friends } = this.state;
+
+            this.props.firebase
+                .doCreateUserWithEmailAndPassword(email, passwordOne)
+                .then(authUser => {
+                    // Add new user to Firebase realtime database
+                    return this.props.firebase
+                        .getUser(authUser.user.uid) // Creates user based on Firebase uid
+                        .set({
+                            fullname, username, email, picture, description, status, friends, // Additional info about user
+                        });
+                })
+                .then(authUser => {
+                    this.setState({ ...INITIAL_STATE }); // Successful request: reset default state
+                    this.props.history.push("/"); // Redirect to landing page by accessing React Router props
+                })
+                .catch(error => {
+                    this.setState({ error });
+                });
+
+            event.preventDefault(); // No reload on submit
+        }
+
+        onChange = event => {
+            this.setState({ [event.target.name]: event.target.value });
+        };
+
+        render() {
+            const {
+                fullname,
+                username,
+                email,
+                passwordOne,
+                passwordTwo,
+                error,
+            } = this.state;
+
+            const isInvalid =
+                passwordOne !== passwordTwo ||
+                passwordOne === '' ||
+                email === '' ||
+                username === '' || fullname === '';
+
+            return (
+                <FadingDiv id="signupPopup" style={style.landingPopupCard}>
+                    <Card>
+                        <Card.Content>
+                            <button className="delete" style={style.xButton} onClick={closePopup}></button>
+                            <Heading style={style.landingPopupTitle}>sign up</Heading>
+                            <form onSubmit={this.onSubmit}>
+                                <label>full name</label>
+                                <input className="input"
+                                    name="fullname"
+                                    value={fullname}
+                                    onChange={this.onChange}
+                                    type="text"
+                                    placeholder="Full Name"
+                                />
+                                <label>username</label>
+                                <input className="input"
+                                    name="username"
+                                    value={username}
+                                    onChange={this.onChange}
+                                    type="text"
+                                    placeholder="Username"
+                                />
+                                <label>email</label>
+                                <input className="input"
+                                    name="email"
+                                    value={email}
+                                    onChange={this.onChange}
+                                    type="text"
+                                    placeholder="Email Address"
+                                />
+                                <label>password</label>
+                                <input className="input"
+                                    name="passwordOne"
+                                    value={passwordOne}
+                                    onChange={this.onChange}
+                                    type="password"
+                                    placeholder="Password"
+                                />
+                                <label>confirm password</label>
+                                <input className="input"
+                                    name="passwordTwo"
+                                    value={passwordTwo}
+                                    onChange={this.onChange}
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                />
+                                <Level>
+                                    <Level.Item>
+                                        <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>submit</button>
+                                        {error && <p>{error.message}</p>}
+                                    </Level.Item>
+                                </Level>
+                            </form>
+                        </Card.Content>
+                    </Card>
+                </FadingDiv>
+            );
+        }
+    }
+
+    // Set sign up form to be able to access React Router and Firebase context
+    const SignUpFormV2 = withRouter(withFirebase(SignUpForm));
+
+    // signin config
+    const INITIAL_STATE2 = {
+        email: '',
+        password: '',
+        error: null,
+    };
+
+    class SignInForm extends Component {
+        constructor(props) {
+            super(props);
+            this.state = { ...INITIAL_STATE2 };
+        }
+
+        onSubmit = event => {
+            const { email, password } = this.state;
+
+            this.props.firebase
+                .doSignInWithEmailAndPassword(email, password)
+                .then(authUser => {
+                    this.setState({ ...INITIAL_STATE2 }); // Successful request: reset default state
+                    this.props.history.push('/'); // Redirect to landing page
+                })
+                .catch(error => {
+                    this.setState({ error });
+                });
+
+            event.preventDefault(); // No reload on submit
+        }
+
+        onChange = event => {
+            this.setState({ [event.target.name]: event.target.value });
+        };
+
+        render() {
+            const {
+                email,
+                password,
+                error,
+            } = this.state;
+
+            const isInvalid = password === '' || email === '';
+
+            return (
+                <FadingDiv id="loginPopup" style={style.landingPopupCard}>
+                    <Card>
+                        <Card.Content>
+                            <button className="delete" style={style.xButton} onClick={closePopup}></button>
+                            <Heading style={style.landingPopupTitle}>login</Heading>
+                            <form onSubmit={this.onSubmit}>
+                                <label>email</label>
+                                <input className="input"
+                                    name="email"
+                                    value={email}
+                                    onChange={this.onChange}
+                                    type="text"
+                                    placeholder="Email Address"
+                                />
+                                <label>password</label>
+                                <input className="input"
+                                    name="password"
+                                    value={password}
+                                    onChange={this.onChange}
+                                    type="password"
+                                    placeholder="Password"
+                                />
+                                <Level>
+                                    <Level.Item>
+                                        <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>login</button>
+                                        {error && <p>{error.message}</p>}
+                                    </Level.Item>
+                                </Level>
+
+                            </form>
+                        </Card.Content>
+                    </Card>
+                </FadingDiv>
+            );
+        }
+    }
+
+    const SignInFormV2 = withRouter(withFirebase(SignInForm));
+
     return (
         <Parallax bgImage={bobaBackground} strength={window.innerWidth}>
             <div id='box'></div>
@@ -255,38 +468,9 @@ function Landing() {
                                 <Button onClick={signup} style={style.signupButton}>sign up</Button>
                             </Level.Item>
                         </Container>
-                        <FadingDiv id="signupPopup" style={style.landingPopupCard}>
-                            <Card>
-                                <Card.Content>
-                                    <button className="delete" style={style.xButton} onClick={closePopup}></button>
-                                    <Heading style={style.landingPopupTitle}>sign up</Heading>
-                                    <form>
-                                        <label>username</label>
-                                        <input className="input"
-                                            type="text"
-                                            id="username" />
-                                        <label>email</label>
-                                        <input className="input"
-                                            type="text"
-                                            id="email" />
-                                        <label>password</label>
-                                        <input className="input"
-                                            type="password"
-                                            id="password" />
-                                        <label>confirm password</label>
-                                        <input className="input"
-                                            type="password"
-                                            id="password" />
-                                    </form>
-                                    <Level>
-                                        <Level.Item>
-                                            <Button onClick={submitSignup} style={style.submitButton}>submit</Button>
-                                        </Level.Item>
-                                    </Level>
-                                </Card.Content>
-                            </Card>
-                        </FadingDiv>
-                        <FadingDiv id="loginPopup" style={style.landingPopupCard}>
+                        <SignUpFormV2></SignUpFormV2>
+                        <SignInFormV2></SignInFormV2>
+                        {/* <FadingDiv id="loginPopup" style={style.landingPopupCard}>
                             <Card>
                                 <Card.Content>
                                     <button className="delete" style={style.xButton} onClick={closePopup}></button>
@@ -308,7 +492,7 @@ function Landing() {
                                     </Level>
                                 </Card.Content>
                             </Card>
-                        </FadingDiv>
+                        </FadingDiv> */}
                     </Level.Item>
                 </Level>
                 <Container>
@@ -412,5 +596,6 @@ function Landing() {
         </Parallax>
     )
 }
+
 
 export default Landing;
