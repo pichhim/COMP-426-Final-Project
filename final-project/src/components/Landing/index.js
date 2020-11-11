@@ -186,6 +186,7 @@ function Landing() {
             display: 'none',
             marginright: '30px',
             width: '400px',
+            zIndex: '1',
         },
 
         landingPopupTitle: {
@@ -200,16 +201,28 @@ function Landing() {
         readme: {
             textAlign: 'center',
             paddingTop: `${window.innerHeight / 6}px`
+        },
+
+        xButton: {
+            float: 'right',
         }
 
     };
 
     // popup for login and signup loads when buttons are pressed
     function login() {
+        if (document.getElementById("signupPopup").style.display != "none") {
+            document.getElementById("signupPopup").style.display = "none";
+        }
+
         document.getElementById("loginPopup").style.display = "block";
     };
 
     function signup() {
+        if (document.getElementById("loginPopup").style.display != "none") {
+            document.getElementById("loginPopup").style.display = "none";
+        }
+
         document.getElementById("signupPopup").style.display = "block";
     };
 
@@ -219,6 +232,12 @@ function Landing() {
     }
 
     function submitSignup() {
+        document.getElementById("signupPopup").style.display = "none";
+    }
+
+    // gets rid of login/submit popup
+    function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
         document.getElementById("signupPopup").style.display = "none";
     }
 
@@ -239,6 +258,7 @@ function Landing() {
                         <FadingDiv id="signupPopup" style={style.landingPopupCard}>
                             <Card>
                                 <Card.Content>
+                                    <button className="delete" style={style.xButton} onClick={closePopup}></button>
                                     <Heading style={style.landingPopupTitle}>sign up</Heading>
                                     <form>
                                         <label>username</label>
@@ -269,6 +289,7 @@ function Landing() {
                         <FadingDiv id="loginPopup" style={style.landingPopupCard}>
                             <Card>
                                 <Card.Content>
+                                    <button className="delete" style={style.xButton} onClick={closePopup}></button>
                                     <Heading style={style.landingPopupTitle}>login</Heading>
                                     <form>
                                         <label>username</label>
@@ -291,6 +312,9 @@ function Landing() {
                     </Level.Item>
                 </Level>
                 <Container>
+                    <Boba></Boba>
+                    <Boba></Boba>
+                    <Boba></Boba>
                     <Boba></Boba>
                     <Boba></Boba>
                     <Boba></Boba>
