@@ -8,8 +8,10 @@ import { useSpring, animated } from 'react-spring';
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 import { SignUpLink, SignUpFormV2 } from '../SignUp';
-import styled, { keyframes } from 'styled-components'
 import { SignInFormV2 } from "../SignIn";
+import styled, { keyframes } from 'styled-components'
+import squiggle from './boba-squiggle.png'
+
 
 function Landing() {
 
@@ -130,7 +132,7 @@ function Landing() {
         },
 
         landingSpacing: {
-            padding: '270px',
+            padding: '160px',
             width: '100vw',
             height: '100vh'
         },
@@ -187,7 +189,7 @@ function Landing() {
 
         landingPopupCard: {
             display: 'none',
-            marginright: '30px',
+            marginRight: '10%',
             width: '400px',
             zIndex: '1',
         },
@@ -208,6 +210,13 @@ function Landing() {
 
         xButton: {
             float: 'right',
+        },
+        
+        wave: {
+            backgroundImage: `url(${squiggle})`,
+            backgroundSize: 'cover',
+            zIndex: '2',
+            height: '90px',
         }
 
     };
@@ -219,6 +228,7 @@ function Landing() {
         }
 
         document.getElementById("loginPopup").style.display = "block";
+        document.getElementById("landing").style.padding = "120px";
     };
 
     function signup() {
@@ -227,21 +237,14 @@ function Landing() {
         }
 
         document.getElementById("signupPopup").style.display = "block";
+        document.getElementById("landing").style.padding = "30px";
     };
-
-    // popup disappears and submits login/sign up info
-    function submitLogin() {
-        document.getElementById("loginPopup").style.display = "none";
-    }
-
-    function submitSignup() {
-        document.getElementById("signupPopup").style.display = "none";
-    }
 
     // gets rid of login/submit popup
     function closePopup() {
         document.getElementById("loginPopup").style.display = "none";
         document.getElementById("signupPopup").style.display = "none";
+        document.getElementById("landing").style.padding = "160px";
     }
 
     // signup config
@@ -456,8 +459,9 @@ function Landing() {
 
     return (
         <Parallax bgImage={bobaBackground} strength={window.innerWidth}>
+            <div style={style.wave}></div>
             <div id='box'></div>
-            <Section style={style.landingSpacing}>
+            <Section id="landing" style={style.landingSpacing}>
                 <Level>
                     <Level.Item>
                         <Container style={style.landingDisplay}>
@@ -470,29 +474,6 @@ function Landing() {
                         </Container>
                         <SignUpFormV2></SignUpFormV2>
                         <SignInFormV2></SignInFormV2>
-                        {/* <FadingDiv id="loginPopup" style={style.landingPopupCard}>
-                            <Card>
-                                <Card.Content>
-                                    <button className="delete" style={style.xButton} onClick={closePopup}></button>
-                                    <Heading style={style.landingPopupTitle}>login</Heading>
-                                    <form>
-                                        <label>username</label>
-                                        <input className="input"
-                                            type="text"
-                                            id="username" />
-                                        <label>password</label>
-                                        <input className="input"
-                                            type="password"
-                                            id="password" />
-                                    </form>
-                                    <Level>
-                                        <Level.Item>
-                                            <Button onClick={submitLogin} style={style.submitButton}>submit</Button>
-                                        </Level.Item>
-                                    </Level>
-                                </Card.Content>
-                            </Card>
-                        </FadingDiv> */}
                     </Level.Item>
                 </Level>
                 <Container>

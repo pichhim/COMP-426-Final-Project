@@ -11,32 +11,57 @@ const Navigation = ({ authUser }) => (
   <div>{authUser ? <NavAuth /> : <NavNonAuth />}</div>
 );
 
-const LandingNav = ({ authUser}) => (
-  // Selectively renders Nav bar based on path 
-  <div>{authUser ? <NavAuthLanding /> : <NavNonAuthLanding />}</div>
-);
+const imageStyle = function (length) {
+  return {
+    width: `${length}px`,
+    height: `${length}px`,
+    position: "relative",
+    objectFit: "cover",
+    overflow: "hidden",
+    borderRadius: "50%",
+    border: "0px solid",
+    zIndex: "2",
+    maxHeight: "100%",
+  };
+};
 
-const NavAuthLanding = () => (
-  <div>
+const style = {
+  profilePic: {
+    padding: "15px",
+    paddingBottom: "0px",
+  },
 
-    <Link to={'/'}>Landing   </Link>
-    <Link to={'profile'}>Profile   </Link>
-    <Link to={'/messages'}>Messages   </Link>
-    <Link to={'/demo'}>Game Board Demo   </Link>
-    <SignOutButton />
-  </div>
-);
+  profLinks: {
+    maxHeight: "100%",
+  }
+}
 
-const NavNonAuthLanding = () => (
-  <div>
+// const LandingNav = ({ authUser}) => (
+//   // Selectively renders Nav bar based on path 
+//   <div>{authUser ? <NavAuthLanding /> : <NavNonAuthLanding />}</div>
+// );
 
-    <Link to={'/'}>Landing   </Link>
-    <Link to={'profile'}>Profile   </Link>
-    <Link to={'/messages'}>Messages   </Link>
-    <Link to={'/demo'}>-pee pee po poo  </Link>
-    <SignOutButton />
-  </div>
-);
+// const NavAuthLanding = () => (
+//   <div>
+
+//     <Link to={'/'}>Landing   </Link>
+//     <Link to={'profile'}>Profile   </Link>
+//     <Link to={'/messages'}>Messages   </Link>
+//     <Link to={'/demo'}>Game Board Demo   </Link>
+//     <SignOutButton />
+//   </div>
+// );
+
+// const NavNonAuthLanding = () => (
+//   <div>
+
+//     <Link to={'/'}>Landing   </Link>
+//     <Link to={'profile'}>Profile   </Link>
+//     <Link to={'/messages'}>Messages   </Link>
+//     <Link to={'/demo'}>-pee pee po poo  </Link>
+//     <SignOutButton />
+//   </div>
+// );
 
 const NavAuth = () => (
   // <div>
@@ -49,58 +74,41 @@ const NavAuth = () => (
   // </div>
 
   <nav className="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
-      </a>
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+    <div className="navbar-brand">
+      <a className="navbar-item" href="/">
+        <h1 className="title is-2">logo?</h1>
+        {/* <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
       </a>
     </div>
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item">
-          home
-      </a>
-
-        <a class="navbar-item">
-          sign up
-      </a>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            sign in
+    <div id="navbarBasicExample" className="navbar-menu">
+      <div className="navbar-start">
+        <a href="/" className="navbar-item">
+          <h1 className="subtitle is-4">home</h1>
         </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-          </a>
-            <a class="navbar-item">
-              Jobs
-          </a>
-            <a class="navbar-item">
-              Contact
-          </a>
-            <hr class="navbar-divider" />
-            <a class="navbar-item">
-              Report an issue
-          </a>
-          </div>
-        </div>
+        <a href="/messages" className="navbar-item">
+          <h1 className="subtitle is-4">messages</h1>
+        </a>
+        <a href="/demo" className="navbar-item">
+          <h1 className="subtitle is-4">games</h1>
+        </a>
       </div>
 
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
+      <div className="navbar-end">
+        <div className="navbar-item has-dropdown is-hoverable">
+          <a className="navbar-link is-arrowless">
+            <div style={style.profilePic}>
+              <a href="/profile">
+                <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
+              </a>
+            </div>
           </a>
+          <div className="navbar-dropdown">
+              <a className="navbar-item">
+                profile
+              </a>
+              <a className="navbar-item">
+                <SignOutButton />
+              </a>
           </div>
         </div>
       </div>
@@ -118,4 +126,4 @@ const NavNonAuth = () => (
   </div>
 );
 
-export default Navigation && LandingNav;
+export default Navigation;
