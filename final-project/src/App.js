@@ -10,6 +10,8 @@ import DemoBoard from './components/GameBoard/DemoBoard';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
 import Navigation from './components/Navigation';
+import LandingNav from './components/Navigation';
+import Landing from './components/Landing';
 
 class App extends Component {
   constructor(props) {
@@ -38,7 +40,9 @@ class App extends Component {
       // Defines route paths to specific pages along with Nav bar
       <ParallaxProvider>
         <Router>
-          <Navigation authUser={this.state.authUser}></Navigation>
+          {this.state.authUser ? <Navigation authUser={this.state.authUser}></Navigation> : null}
+          {/* <Route exact path={"/"} component={LandingNav} authUser={this.state.authUser}></Route> */}
+          {/* <Route exact path={"/profile", "/messages", "/demo"} component={Navigation} authUser={this.state.authUser}></Route> */}
           <div className="App">
             <Route exact path={"/"} component={LandingPage}></Route>
             <Route exact path={"/profile"} component={ProfilePage}></Route>
