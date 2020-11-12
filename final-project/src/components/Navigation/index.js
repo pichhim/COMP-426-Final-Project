@@ -94,6 +94,9 @@ const NavAuth = () => (
       </div>
 
       <div className="navbar-end">
+      <a href="/demo" className="navbar-item">
+          <h1 className="subtitle is-5">welcome, blah</h1>
+        </a>
         <div className="navbar-item has-dropdown is-hoverable">
           <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
