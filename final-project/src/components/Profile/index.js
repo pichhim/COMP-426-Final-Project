@@ -257,6 +257,7 @@ function Profile(props) {
     let snapPromise = props.firebase.getCurrentUser();
     snapPromise.then((val) => setSnapshot(val));
   };
+  
   useEffect(getSnapshot, []);
 
   const getFriendsList = () => {
