@@ -166,8 +166,7 @@ function renderProfileEdit(setEditMode, user, props) {
             placeholder="Full name"
             onChange={(e) => (user.fullname = e.target.value)}
             defaultValue={user.fullname}
-          >
-          </textarea>
+          />
           <textarea
             className="input"
             type="text"
@@ -175,8 +174,7 @@ function renderProfileEdit(setEditMode, user, props) {
             placeholder="Username"
             onChange={(e) => (user.username = e.target.value)}
             defaultValue={user.username}
-          >
-          </textarea>
+          />
         </div>
         <div style={styles.inputStyle}>
           <textarea
@@ -186,8 +184,7 @@ function renderProfileEdit(setEditMode, user, props) {
             placeholder="Description"
             onChange={(e) => (user.description = e.target.value)}
             defaultValue={user.description}
-          >
-          </textarea>
+          />
         </div>
         <br></br>
         {renderStatusButtons(props, user)}
