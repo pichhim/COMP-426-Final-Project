@@ -16,6 +16,9 @@ const demoProfile = {
 };
 
 const styles = {
+  overallContainerStyle: {
+    margin: "25px 100px",
+  },
   inputStyle: {
     margin: "20px",
   },
@@ -43,12 +46,6 @@ const styles = {
     return {
       color: `#${color}`,
     };
-  },
-  addPopup: {
-    display: "none",
-  },
-  removePopup: {
-    display: "none",
   },
 };
 
@@ -332,17 +329,17 @@ function Profile(props) {
   }
 
   return snapshot !== null ? (
-    <section className="section is-white">
+    <section className="section">
       <NotificationContainer />
       <div className="container">
         <div className="content">
-          <div className="tile is-ancestor" style={{ margin: "100px" }}>
+          <div className="tile is-ancestor" style={styles.overallContainerStyle}>
             {renderProfile(editMode, setEditMode, snapshot, props, getSnapshot)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
                 <u className="title">Friends</u>
                 <br></br>&nbsp;
-                <div id="addPopup">
+                <div>
                   <div className="field has-addons">
                     {/* Input field */}
                     <div className="control is-expanded">
