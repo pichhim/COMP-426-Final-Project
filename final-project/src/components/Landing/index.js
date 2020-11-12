@@ -1,44 +1,15 @@
 import React, { Component } from "react";
 import 'react-bulma-components/dist/react-bulma-components.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import { Section, Container, Level, Heading, Button, Figure, Image, Card, Content } from 'react-bulma-components';
+import { Section, Container, Level, Heading, Button, Card } from 'react-bulma-components';
 import { Parallax } from "react-parallax";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSpring, animated } from 'react-spring';
 import { withFirebase } from '../Firebase';
-import { Link, withRouter } from 'react-router-dom';
-import { SignUpLink, SignUpFormV2 } from '../SignUp';
-import { SignInFormV2 } from "../SignIn";
+import { withRouter } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components'
 import squiggle from './boba-squiggle.png'
 
-
-function Landing() {
-
-    const whiteSection = {
-        backgroundColor: 'white',
-        width: '100vw',
-        position: 'inherit',
-        height: '550px'
-    };
-
-    const imageStyle = function (length) {
-        return {
-            width: `${length}px`,
-            height: `${length}px`,
-            position: "relative",
-            objectFit: "cover",
-            overflow: "hidden",
-            borderRadius: "50%",
-            border: "0px solid",
-        };
-    };
-
-    const bobaBackground =
-        "https://color-hex.org/colors/eccdc2.png";
-
-    // fading animation
-    const fadeIn = keyframes`
+// fading animation
+const fadeIn = keyframes`
         from {
             opacity: 0;
         }
@@ -46,22 +17,9 @@ function Landing() {
             opacity: 1;
         }
     `
-    const FadingDiv = styled.div`
-        animation: 0.5s ${fadeIn} ease-out;
-    `
-    const fadeOut = keyframes`
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    `
-    const FadingOut = styled.div`
-        animation: 0.5s ${fadeOut} ease-out;
-    `
-    // moving boba
-    const move = () => keyframes`
+
+// moving boba
+const move = () => keyframes`
         0%, 100% {
             right: 0px;
             left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
@@ -115,7 +73,10 @@ function Landing() {
             }
     `
 
-    const Boba = styled.div`
+const FadingDiv = styled.div`
+        animation: 0.5s ${fadeIn} ease-out;
+    `
+const Boba = styled.div`
         height: 50px;
         width: 50px;
         background-color: #000;
@@ -125,6 +86,30 @@ function Landing() {
         zIndex: -2;
         animation: ${move} 200s linear infinite;
     `
+
+function Landing() {
+
+    const whiteSection = {
+        backgroundColor: 'white',
+        width: '100vw',
+        position: 'inherit',
+        height: '550px'
+    };
+
+    const imageStyle = function (length) {
+        return {
+            width: `${length}px`,
+            height: `${length}px`,
+            position: "relative",
+            objectFit: "cover",
+            overflow: "hidden",
+            borderRadius: "50%",
+            border: "0px solid",
+        };
+    };
+
+    const bobaBackground =
+        "https://color-hex.org/colors/eccdc2.png";
 
     const style = {
         landingBackground: {
@@ -211,7 +196,7 @@ function Landing() {
         xButton: {
             float: 'right',
         },
-        
+
         wave: {
             backgroundImage: `url(${squiggle})`,
             backgroundSize: 'cover',
@@ -223,7 +208,7 @@ function Landing() {
 
     // popup for login and signup loads when buttons are pressed
     function login() {
-        if (document.getElementById("signupPopup").style.display != "none") {
+        if (document.getElementById("signupPopup").style.display !== "none") {
             document.getElementById("signupPopup").style.display = "none";
         }
 
@@ -232,7 +217,7 @@ function Landing() {
     };
 
     function signup() {
-        if (document.getElementById("loginPopup").style.display != "none") {
+        if (document.getElementById("loginPopup").style.display !== "none") {
             document.getElementById("loginPopup").style.display = "none";
         }
 
@@ -551,19 +536,19 @@ function Landing() {
                             <Heading style={style.landingTitle}>developers</Heading>
                             <Level style={style.devSection}>
                                 <Level.Item style={style.styleBlock}>
-                                    <img style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941' />
+                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941' />
                                     <Heading style={style.descPadding}>pich</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/0/09/Naruto_newshot.png/revision/latest/scale-to-width-down/340?cb=20170621101134' />
+                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/0/09/Naruto_newshot.png/revision/latest/scale-to-width-down/340?cb=20170621101134' />
                                     <Heading style={style.descPadding}>eden</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/97/Hinata.png/revision/latest?cb=20141010104729' />
+                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/97/Hinata.png/revision/latest?cb=20141010104729' />
                                     <Heading style={style.descPadding}>jessica</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/9a/Shikamaru_Nara.png/revision/latest?cb=20180701024126' />
+                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/9a/Shikamaru_Nara.png/revision/latest?cb=20180701024126' />
                                     <Heading style={style.descPadding}>lucas</Heading>
                                 </Level.Item>
                             </Level>
@@ -572,11 +557,10 @@ function Landing() {
                 </Level>
             </Section>
             <Section style={style.emptySpace}>
-                <div style={style.readme}><a target="_blank" href="https://github.com/pichhim/COMP-426-Final-Project#comp-426-final-project"><Button size="large">README.md</Button></a></div>
+                <div style={style.readme}><a target="_blank" rel="noopener noreferrer" href="https://github.com/pichhim/COMP-426-Final-Project#comp-426-final-project"><Button size="large">README.md</Button></a></div>
             </Section>
         </Parallax>
     )
 }
-
 
 export default Landing;
