@@ -132,7 +132,7 @@ class Firebase {
     // Generate a channelID off the two userIDs
     let channelId = this.auth.currentUser.uid > friendUID ? `${this.auth.currentUser.uid}<=>${friendUID}` : `${friendUID}<=>${this.auth.currentUser.uid}`;
     // Create channel
-    this.db.ref('channels').child(channelId).set({ thread: 'HEAD' })
+    this.db.ref('channels').child(channelId).set({ thread: { HEAD: { type: 'HEAD', author: 'SYSTEM', content: 'HEAD'}} })
     // Add to own list
     this.db
       .ref(`users/${this.auth.currentUser.uid}/${path}`).child(friendUID)
