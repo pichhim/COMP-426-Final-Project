@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'react-bulma-components/dist/react-bulma-components.min.css';
-//import { Button } from 'react-bulma-components'
-
 import SignOutButton from '../SignOut';
-import Landing from '../Landing';
 
 const Navigation = ({ authUser }) => (
   // Selectively renders Nav bar based on authUser state
@@ -77,7 +74,7 @@ const NavAuth = () => (
     <div className="navbar-brand">
       <Link className="navbar-item" to="/">
         <h1 className="title is-2">logo?</h1>
-        {/* <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
+        {/* <img alt="" src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
       </Link>
     </div>
     <div id="navbarBasicExample" className="navbar-menu">
@@ -94,10 +91,13 @@ const NavAuth = () => (
       </div>
 
       <div className="navbar-end">
+      <a href="/demo" className="navbar-item">
+          <h1 className="subtitle is-5">welcome, blah</h1>
+        </a>
         <div className="navbar-item has-dropdown is-hoverable">
           <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
-              <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
+              <img alt="" style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
             </div>
           </Link>
           <div className="navbar-dropdown">
