@@ -38,7 +38,7 @@ class App extends Component {
       // Defines route paths to specific pages along with Nav bar
       <ParallaxProvider>
         <Router>
-          {this.state.authUser ? <Navigation authUser={this.state.authUser}></Navigation> : null}
+          <Navigation authUser={this.state.authUser}></Navigation>
           {/* <Route exact path={"/"} component={LandingNav} authUser={this.state.authUser}></Route> */}
           {/* <Route exact path={"/profile", "/messages", "/demo"} component={Navigation} authUser={this.state.authUser}></Route> */}
           <div className="App">

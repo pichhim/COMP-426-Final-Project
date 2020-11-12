@@ -104,39 +104,43 @@ const NavAuth = withFirebase(props => {
         </Link>
       </div>
 
-        <div className="navbar-end">
-          <div className="navbar-item">
-            {currUser ? <h1 className="subtitle is-5">Welcome, {currUser.fullname}</h1> : null}
-          </div>
-          <div className="navbar-item has-dropdown is-hoverable">
-            <Link to="/profile" className="navbar-link is-arrowless">
-              <div style={style.profilePic}>
-                <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
-              </div>
-            </Link>
-            <div className="navbar-dropdown">
-              <Link to="/profile" className="navbar-link is-arrowless">
-                Profile
-            </Link>
-              <Link className="navbar-item" to="/">
-                <SignOutButton />
-              </Link>
+      <div className="navbar-end">
+        <div className="navbar-item">
+          {currUser ? <h1 className="subtitle is-5">Welcome, {currUser.fullname}</h1> : null}
+        </div>
+        <div className="navbar-item has-dropdown is-hoverable">
+          <Link to="/profile" className="navbar-link is-arrowless">
+            <div style={style.profilePic}>
+              <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
             </div>
+          </Link>
+          <div className="navbar-dropdown">
+            <Link to="/profile" className="navbar-link is-arrowless">
+              Profile
+            </Link>
+            <Link className="navbar-item" to="/">
+              <SignOutButton />
+            </Link>
           </div>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   );
 });
 
 const NavNonAuth = () => (
-  <div>
-    <Link to={'/'}>Landing   </Link>
-    <Link to={'/signup'}>Sign Up   </Link>
-    <Link to={'/signin'}>Sign In   </Link>
-    <Link to={'/demo'}>Game Board Demo   </Link>
-  </div>
+  <nav className="navbar" role="navigation" aria-label="main navigation">
+    <div className="navbar-brand">
+      <Link className="navbar-item" to="/">
+        <h1 className="title is-2">logo?</h1>
+        {/* <img alt="" src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
+      </Link>
+    </div>
+  </nav>
+
+
 );
 
 export default Navigation;
