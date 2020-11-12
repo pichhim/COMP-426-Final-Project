@@ -10,8 +10,6 @@ import DemoBoard from './components/GameBoard/DemoBoard';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
 import Navigation from './components/Navigation';
-import LandingNav from './components/Navigation';
-import Landing from './components/Landing';
 
 class App extends Component {
   constructor(props) {
