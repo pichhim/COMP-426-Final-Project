@@ -117,7 +117,7 @@ function Landing() {
         },
 
         landingSpacing: {
-            padding: '160px',
+            padding: '140px',
             width: '100vw',
             height: '100vh'
         },
@@ -127,7 +127,8 @@ function Landing() {
         },
 
         landingDisplay: {
-            textAlign: 'center'
+            textAlign: 'center',
+            zIndex: '2'
         },
 
         landingPadding: {
@@ -170,6 +171,7 @@ function Landing() {
 
         iconSize: {
             fontSize: '150px',
+            color: '#ECCDC2',
         },
 
         landingPopupCard: {
@@ -200,9 +202,13 @@ function Landing() {
         wave: {
             backgroundImage: `url(${squiggle})`,
             backgroundSize: 'cover',
-            zIndex: '2',
+            zIndex: '3',
             height: '90px',
-        }
+        },
+
+        error: {
+            width: 'fit-content',
+        },
 
     };
 
@@ -213,7 +219,7 @@ function Landing() {
         }
 
         document.getElementById("loginPopup").style.display = "block";
-        document.getElementById("landing").style.padding = "120px";
+        document.getElementById("landing").style.padding = "100px";
     };
 
     function signup() {
@@ -222,14 +228,14 @@ function Landing() {
         }
 
         document.getElementById("signupPopup").style.display = "block";
-        document.getElementById("landing").style.padding = "30px";
+        document.getElementById("landing").style.padding = "10px";
     };
 
     // gets rid of login/submit popup
     function closePopup() {
         document.getElementById("loginPopup").style.display = "none";
         document.getElementById("signupPopup").style.display = "none";
-        document.getElementById("landing").style.padding = "160px";
+        document.getElementById("landing").style.padding = "140px";
     }
 
     // signup config
@@ -428,7 +434,11 @@ function Landing() {
                                 <Level>
                                     <Level.Item>
                                         <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>login</button>
-                                        {error && <p>{error.message}</p>}
+                                    </Level.Item>
+                                </Level>
+                                <Level>
+                                    <Level.Item style={style.error}>
+                                    {error && <p>{error.message}</p>}
                                     </Level.Item>
                                 </Level>
 
