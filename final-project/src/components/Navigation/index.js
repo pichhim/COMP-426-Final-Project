@@ -75,22 +75,22 @@ const NavAuth = () => (
 
   <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
-      <a className="navbar-item" href="/">
+      <Link className="navbar-item" to="/">
         <h1 className="title is-2">logo?</h1>
         {/* <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
-      </a>
+      </Link>
     </div>
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
-        <a href="/" className="navbar-item">
+        <Link to="/" className="navbar-item">
           <h1 className="subtitle is-4">home</h1>
-        </a>
-        <a href="/messages" className="navbar-item">
+        </Link>
+        <Link to="/messages" className="navbar-item">
           <h1 className="subtitle is-4">messages</h1>
-        </a>
-        <a href="/demo" className="navbar-item">
+        </Link>
+        <Link to="/demo" className="navbar-item">
           <h1 className="subtitle is-4">games</h1>
-        </a>
+        </Link>
       </div>
 
       <div className="navbar-end">
@@ -98,20 +98,18 @@ const NavAuth = () => (
           <h1 className="subtitle is-5">welcome, blah</h1>
         </a>
         <div className="navbar-item has-dropdown is-hoverable">
-          <a className="navbar-link is-arrowless">
+          <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
-              <a href="/profile">
-                <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
-              </a>
+              <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
             </div>
-          </a>
+          </Link>
           <div className="navbar-dropdown">
-              <a className="navbar-item">
-                profile
-              </a>
-              <a className="navbar-item">
-                <SignOutButton />
-              </a>
+            <Link to="/profile" className="navbar-link is-arrowless">
+              Profile
+            </Link>
+            <Link className="navbar-item" to="/">
+              <SignOutButton />
+            </Link>
           </div>
         </div>
       </div>
