@@ -7,7 +7,7 @@ import { faPaperPlane, faSearch } from '@fortawesome/free-solid-svg-icons';
 function Messages(props) {
 
     const [currChat, setCurrChat] = useState('');
-    const [chatList, setChatList] = useState([]);
+    const [chatList, setChatList] = useState([])
 
     function initChat() {
         const db = props.firebase.getDB();
@@ -15,28 +15,37 @@ function Messages(props) {
 
         // Need to find way getting uid to not be null
         try {
-            let listener = db.ref(`/users/${uid}/friends`).on("value", snapshot => {
-                let chatList = [];
+            let listener = db.ref(`/users`).on("value", snapshot => {
+                let self = snapshot.val()[uid];
+                let friends = self.friends;
+                let friendInfo = [];
                 for (let snap in snapshot.val()) {
-                    let currVal = snapshot.val()[snap]
-                    if (currVal !== "HEAD") chatList.push({ 
-                        key: snap, 
-                        channel: currVal.channel,
-                        username: currVal.username,
-                        fullname: currVal.fullname,
-                        uid: currVal.uid,
-                        img: currVal.img
-                    })
+                    if (friends && snap in friends) {
+                        friendInfo.push({
+                            ...snapshot.val()[snap],
+                            key: snap
+                        })
+                    }
                 }
-                setChatList(chatList)
+                setChatList(friendInfo)
+                console.log(self)
             })
-            return () => db.ref(`/users/${uid}/friends`).off("value", listener);
+            return () => db.ref(`/users`).off("value", listener);
         } catch (error) {
             alert("Error reading user channels")
         }
     }
 
     useEffect(initChat, [])
+
+    // if (Object.keys(users).length > 0 && friends.length > 0) {
+    //     friends.forEach(friend => {
+    //         let userInfo = {...users[friend], key: friend};
+    //         chatList.push(userInfo)
+    //     })
+    //     console.log(chatList)
+    // }
+
 
     return (
         <div className="tile is-ancestor">
@@ -73,8 +82,8 @@ function ChatsMenu(props) {
             </div>
 
             <div className="tile is-parent is-vertical">
-                {chatList.map(chat => (
-                    <div className="tile is-child is-vertical"
+                {chatList.map(chat => {
+                    return <div className="tile is-child is-vertical"
                         key={chat.key}
                         // onMouseEnter={e => e.currentTarget.style.background="#F0F0F0"}
                         onMouseEnter={e => e.currentTarget.style.backgroundColor = "#F0F0F0"}
@@ -91,7 +100,7 @@ function ChatsMenu(props) {
                             </div>
                         </article>
                     </div>
-                ))}
+                })}
             </div>
         </div>
     )
@@ -112,7 +121,7 @@ function ChatWindow(props) {
                 </article>
             </div>
 
-            
+
 
             <div className="tile is-vertical is-child is-10">
                 <div className="field">
