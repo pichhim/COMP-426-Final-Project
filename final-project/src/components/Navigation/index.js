@@ -75,10 +75,10 @@ const NavAuth = () => (
 
   <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
-      <a className="navbar-item" href="/">
+      <Link className="navbar-item" to="/">
         <h1 className="title is-2">logo?</h1>
         {/* <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
-      </a>
+      </Link>
     </div>
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
@@ -104,9 +104,9 @@ const NavAuth = () => (
             <Link to="/profile" className="navbar-link is-arrowless">
               Profile
             </Link>
-            <a className="navbar-item">
+            <Link className="navbar-item" to="/">
               <SignOutButton />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
