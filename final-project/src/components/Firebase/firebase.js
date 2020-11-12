@@ -128,9 +128,20 @@ class Firebase {
     if (exists) {
       return "Already added";
     }
+
+    // Generate a channelID off the two userIDs
+    let channelId = this.auth.currentUser.uid > friendUID ? `${this.auth.currentUser.uid}<=>${friendUID}` : `${friendUID}<=>${this.auth.currentUser.uid}`;
+    // Create channel
+    this.db.ref('channels').child(channelId).set({ thread: 'HEAD' })
+    // Add to own list
     this.db
-      .ref(`users/${this.auth.currentUser.uid}/${path}`)
-      .push({ uid: friendUID });
+      .ref(`users/${this.auth.currentUser.uid}/${path}`).child(friendUID)
+      .set({ uid: friendUID });
+    // Add to friend's list
+    this.db
+      .ref(`users/${friendUID}/${path}`).child(this.auth.currentUser.uid)
+      .set({ uid: this.auth.currentUser.uid });
+
     return "Success";
   };
 
@@ -165,8 +176,16 @@ class Firebase {
       });
     // If friend exists in friend's list, remove friend
     if (friendListID !== "") {
+      let channelId = this.auth.currentUser.uid > friendUID ? `${this.auth.currentUser.uid}<=>${friendUID}` : `${friendUID}<=>${this.auth.currentUser.uid}`;
+      // Remove Channel
+      this.db.ref('channels').child(channelId).remove();
+      // Remove from own list
       this.db
         .ref(`users/${this.auth.currentUser.uid}/friends/${friendListID}`)
+        .remove();
+      // Remove from friend's list
+      this.db
+        .ref(`users/${friendListID}/friends/${this.auth.currentUser.uid}`)
         .remove();
       return "Success";
     } else {
