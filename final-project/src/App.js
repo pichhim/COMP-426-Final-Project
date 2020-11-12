@@ -10,6 +10,8 @@ import DemoBoard from './components/GameBoard/DemoBoard';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
 import Navigation from './components/Navigation';
+import LandingNav from './components/Navigation';
+import Landing from './components/Landing';
 
 class App extends Component {
   constructor(props) {
@@ -38,11 +40,13 @@ class App extends Component {
       // Defines route paths to specific pages along with Nav bar
       <ParallaxProvider>
         <Router>
-          <Navigation authUser={this.state.authUser}></Navigation>
+          {this.state.authUser ? <Navigation authUser={this.state.authUser}></Navigation> : null}
+          {/* <Route exact path={"/"} component={LandingNav} authUser={this.state.authUser}></Route> */}
+          {/* <Route exact path={"/profile", "/messages", "/demo"} component={Navigation} authUser={this.state.authUser}></Route> */}
           <div className="App">
             <Route exact path={"/"} component={LandingPage}></Route>
-            <Route exact path={"/profile"} component={ProfilePage}></Route>
-            <Route exact path={"/messages"} component={MessagesPage}></Route>
+            <Route exact path={"/profile"}>{this.state.authUser ? <ProfilePage></ProfilePage> : null}</Route>
+            <Route exact path={"/messages"}>{this.state.authUser ? <MessagesPage user={this.state.authUser}></MessagesPage> : null}</Route>
             <Route exact path={"/demo"} component={DemoBoard}></Route>
             <Route exact path={"/signup"} component={SignUpPage}></Route>
             <Route exact path={"/signin"} component={SignInPage}></Route>
