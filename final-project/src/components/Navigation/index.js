@@ -82,33 +82,31 @@ const NavAuth = () => (
     </div>
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
-        <a href="/" className="navbar-item">
+        <Link to="/" className="navbar-item">
           <h1 className="subtitle is-4">home</h1>
-        </a>
-        <a href="/messages" className="navbar-item">
+        </Link>
+        <Link to="/messages" className="navbar-item">
           <h1 className="subtitle is-4">messages</h1>
-        </a>
-        <a href="/demo" className="navbar-item">
+        </Link>
+        <Link to="/demo" className="navbar-item">
           <h1 className="subtitle is-4">games</h1>
-        </a>
+        </Link>
       </div>
 
       <div className="navbar-end">
         <div className="navbar-item has-dropdown is-hoverable">
-          <a className="navbar-link is-arrowless">
+          <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
-              <a href="/profile">
-                <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
-              </a>
+              <img style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" />
             </div>
-          </a>
+          </Link>
           <div className="navbar-dropdown">
-              <a className="navbar-item">
-                profile
-              </a>
-              <a className="navbar-item">
-                <SignOutButton />
-              </a>
+            <Link to="/profile" className="navbar-link is-arrowless">
+              Profile
+            </Link>
+            <a className="navbar-item">
+              <SignOutButton />
+            </a>
           </div>
         </div>
       </div>
