@@ -1,0 +1,44 @@
+.messages-is-clickable {
+    cursor: pointer;
+}
+
+.messages-is-hoverable:hover {
+    background-color: #F0F0F0;
+}
+
+.messages-window {
+    height: 100%;
+}
+
+.own-messages-container {
+    display: flex;
+    width: 100%;
+}
+
+.own-messages {
+    margin: 8px;
+    margin-left: auto;
+    max-width: 50%;
+    height: auto;
+
+    padding: 4px 16px 4px 16px;
+
+    background: #6FE4F5;
+    border-radius: 1em;
+}
+
+.friend-messages-container {
+    display: flex;
+    width: 100%;
+}
+
+.friend-messages {
+    margin: 8px;
+    max-width: 50%;
+    height: auto;
+
+    padding: 4px 16px 4px 16px;
+
+    background: #6DF473;
+    border-radius: 1em;
+}
