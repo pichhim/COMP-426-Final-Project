@@ -44,7 +44,7 @@ function Messages(props) {
 
     return (
         <div className="columns">
-            <div className="column is-4 container is-" style={{height:'calc(100vh - 200px)', overflow:'auto'}}>
+            <div className="column is-4 container" style={{height:'calc(100vh - 200px)', overflow:'auto'}}>
                 <ChatsMenu user={props.user} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu>
             </div>
             <div className="column is-8 container" style={{height:'calc(100vh - 200px)'}}>

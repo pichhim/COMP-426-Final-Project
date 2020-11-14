@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import GameBoard from './index'
 
-function DemoBoard() {
+function TicTacToe() {
 
     const [board, setBoard] = useState([[false]])
     const rows = 3;
-    const columns = 3;
+    const columns = 3
 
     // Initializes board model width the correct size
     useEffect(() => {
@@ -24,12 +24,6 @@ function DemoBoard() {
     const handleClick = ({x, y}) => {
         let newBoard = board.map((arr) => (arr.slice()));
         newBoard[y][x] = !newBoard[y][x]
-
-        console.log({
-            justPlayed: 'YOU',
-            nextPlayer: 'THEM',
-            board: newBoard
-        })
         setBoard(newBoard)
     }
 
@@ -41,8 +35,8 @@ function DemoBoard() {
 
     return (
         <GameBoard
-            width={800} // Board width (px)
-            height={800} // Board height (px)
+            width={200} // Board width (px)
+            height={200} // Board height (px)
             rows={rows} // Number of rows
             columns={columns} // Number of columns
             boardColor={'#44AA44'} // Color of board
@@ -57,4 +51,4 @@ function DemoBoard() {
     )
 }
 
-export default DemoBoard;
+export default TicTacToe;

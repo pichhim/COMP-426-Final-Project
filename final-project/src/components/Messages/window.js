@@ -4,6 +4,8 @@ import { withFirebase } from '../Firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
+import TicTacToe from '../GameBoard/TicTacToe';
+
 function ChatWindow(props) {
 
     const friend = props.friend;
@@ -21,7 +23,7 @@ function ChatWindow(props) {
         // Need to find way getting uid to not be null
         try {
             let listener = db.ref(`/channels/${channelId}`).on("value", snapshot => {
-                
+
                 if (snapshot.val() == null) {
                     return () => db.ref(`/channels/${channelId}`).off("value", listener);
                 }
@@ -33,6 +35,7 @@ function ChatWindow(props) {
                         newThread.push(entry)
                     }
                 }
+                newThread = newThread.sort((a, b) => new Date(b.date) - new Date(a.date))
                 setThread(newThread)
             })
             return () => db.ref(`/channels/${channelId}`).off("value", listener);
@@ -63,6 +66,21 @@ function ChatWindow(props) {
         }
     }
 
+    function startGame(e) {
+        e.preventDefault();
+
+        const lastState = thread.find(item => item.type !== 'TEXT');
+        if (lastState && !lastState.isOver) console.log('Still Playing')
+        else {
+            console.log('new game')
+        }
+    }
+
+    function sendGameState(e) {
+        e.preventDefault();
+        const db = props.firebase.getDB();
+    }
+
     function handleUpdateInput(e) {
         setTextMessage(e.target.value);
     }
@@ -81,8 +99,8 @@ function ChatWindow(props) {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column-reverse', maxHeight: '100%', overflow: 'auto' }}>
-                {thread.sort((a, b) => new Date(b.date) - new Date(a.date)).map(entry => {
-                    return entry.author === uid ? <OwnMessage entry={entry}></OwnMessage> : <FriendMessage entry={entry}></FriendMessage>
+                {thread.map(entry => {
+                    return entry.author === uid ? <OwnMessage entry={entry} onClick={sendGameState}></OwnMessage> : <FriendMessage entry={entry}></FriendMessage>
                 })}
             </div>
 
@@ -90,6 +108,10 @@ function ChatWindow(props) {
                 <form className="field has-addons" onSubmit={sendTextMessage}>
                     <div className="control" style={{ width: '100%' }}>
                         <input className="input is-rounded" type="text" placeholder="Type a message..." value={textMessage} onChange={handleUpdateInput}></input>
+                    </div>
+                    <div className="control">
+                        <span className="button is-info" onClick={startGame}>Start Game
+                        </span>
                     </div>
                     <div className="control">
                         <span className="button is-info is-rounded" onClick={sendTextMessage}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
@@ -105,20 +127,54 @@ function ChatWindow(props) {
 function OwnMessage(props) {
     let content = props.entry.content;
 
+    function defineContentType() {
+        switch (props.entry.type) {
+            case 'TICTACTOE':
+                return (
+                    <TicTacToe data={content}></TicTacToe>
+                )
+
+            default:
+                return (
+                    content
+                )
+        }
+    }
+
     return (
-        <div className="own-messages-container">
-            <div className="own-messages">{content}</div>
+        <div className="messages-container">
+            <div className="own-messages">
+                {defineContentType()}
+            </div>
         </div>
+
     )
 }
 
 function FriendMessage(props) {
     let content = props.entry.content;
 
+    function defineContentType() {
+        switch (props.entry.type) {
+            case 'TICTACTOE':
+                return (
+                    <TicTacToe data={content}></TicTacToe>
+                )
+                break;
+
+            default:
+                return (
+                    <div className="friend-messages">{content}</div>
+                )
+                break;
+        }
+    }
+
     return (
-        <div className="friend-messages-container">
-            <div className="friend-messages">{content}</div>
+        <div className="messages-container">
+            {defineContentType()}
         </div>
+
     )
 }
 
