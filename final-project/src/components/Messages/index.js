@@ -11,7 +11,8 @@ import './messages.css';
 function Messages(props) {
 
     const [currChat, setCurrChat] = useState('');
-    const [friendList, setFriendList] = useState([])
+    const [friendList, setFriendList] = useState([]);
+    const [self, setSelf] = useState(null)
 
     function initFriends() {
         const db = props.firebase.getDB();
@@ -21,6 +22,7 @@ function Messages(props) {
         try {
             let listener = db.ref(`/users`).on("value", snapshot => {
                 let self = snapshot.val()[uid];
+                setSelf({...self, uid: uid});
                 let friends = self.friends;
                 let friendInfo = [];
                 for (let snap in snapshot.val()) {
@@ -44,11 +46,11 @@ function Messages(props) {
 
     return (
         <div className="columns">
-            <div className="column is-4 container is-" style={{height:'calc(100vh - 200px)', overflow:'auto'}}>
-                <ChatsMenu user={props.user} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu>
+            <div className="column is-4 container" style={{height:'calc(100vh - 200px)', overflow:'auto'}}>
+                <ChatsMenu user={self} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu>
             </div>
             <div className="column is-8 container" style={{height:'calc(100vh - 200px)'}}>
-                {friendList.filter(friend => currChat === friend.key).map(friend => <ChatWindow key={friend.key} user={props.user} friend={friend}></ChatWindow>)}
+                {friendList.filter(friend => currChat === friend.key).map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)}
             </div>
         </div>
     )
