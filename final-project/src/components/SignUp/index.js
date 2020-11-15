@@ -10,6 +10,7 @@ const SignUpPage = () => (
 );
  
 const INITIAL_STATE = {
+    // fullname: '',
     fullname: '',
     username: '',
     email: '',
@@ -30,7 +31,7 @@ class SignUpForm extends Component {
  
   onSubmit = event => {
     const { fullname, username, email, passwordOne, picture, description, status, friends} = this.state;
- 
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
@@ -38,7 +39,7 @@ class SignUpForm extends Component {
         return this.props.firebase
         .getUser(authUser.user.uid) // Creates user based on Firebase uid
         .set({
-          fullname, username, email, picture, description, status, friends, // Additional info about user
+          fullname, username, email, picture: this.generateAvatar(fullname), description, status, friends, // Additional info about user
         });
       })
       .then(authUser => {
@@ -48,13 +49,20 @@ class SignUpForm extends Component {
       .catch(error => {
         this.setState({ error });
       });
- 
+
     event.preventDefault(); // No reload on submit
   }
  
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  generateAvatar = async (name) => {
+    const [first, last] = [name.split(" ")[0], name.split(" ")[1]];
+    let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last;
+    
+    return url;
+  }
  
   render() {
     const {
@@ -70,7 +78,8 @@ class SignUpForm extends Component {
     passwordOne !== passwordTwo ||
     passwordOne === '' ||
     email === '' ||
-    username === '' || fullname === '';
+    username === '' || 
+    fullname === '';
    
     return (
       <form onSubmit={this.onSubmit}>

@@ -89,6 +89,7 @@ function renderStatusButtons(props, user) {
 
 // Render profile card
 function renderProfile(editMode, setEditMode, user, props) {
+  // console.log(user);
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
@@ -98,7 +99,8 @@ function renderProfile(editMode, setEditMode, user, props) {
             <figure className="image" style={{ margin: "10px" }}>
               <img
                 style={styles.imageStyle(200)}
-                src={demoProfile.image}
+                // src={demoProfile.image}
+                src={user.picture}
                 alt={`Profile: ${demoProfile.name}`}
               ></img>
             </figure>
@@ -141,6 +143,7 @@ function renderProfileEdit(setEditMode, user, props) {
     setEditMode(false);
     // getSnapshot();
   }
+
   return (
     <div className="tile" id="profile-card">
       <div className="card" style={{ minWidth: "100%" }}>
@@ -148,7 +151,7 @@ function renderProfileEdit(setEditMode, user, props) {
           <figure className="image" style={{ margin: "10px" }}>
             <img
               style={styles.imageStyle(200)}
-              src={demoProfile.image}
+              src={user.picture}
               alt={`Profile: ${demoProfile.name}`}
             ></img>
           </figure>
