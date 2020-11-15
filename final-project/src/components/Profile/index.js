@@ -253,64 +253,65 @@ function Profile(props) {
 
   // useEffect(getSnapshot, []);
 
-  // gets all list of all usernames
-  const getAllUsers = () => {
-    const db = props.firebase.getDB();
-    let usernames = []; 
+  function getUserList(usernameList) {
+    let userList = usernameList.map((obj) => (obj.username));
+    return userList;
+  }
 
-    try {
-      let listener = db.ref(`/users`).on("value", snapshot => {
-        console.log(snapshot.val())
-        if (snapshot !== null) {
-          snapshot.forEach(function(child) {
-            usernames[usernames.length] = snapshot.val()[child.key].username
-          })
-        }
-      })
+  // gets all list of all usernames
+  // const getAllUsers = () => {
+  //   const db = props.firebase.getDB();
+  //   let usernames = []; 
+
+  //   try {
+  //     let listener = db.ref(`/users`).on("value", snapshot => {
+  //       console.log(snapshot.val())
+  //       if (snapshot !== null) {
+  //         snapshot.forEach(function(child) {
+  //           usernames[usernames.length] = snapshot.val()[child.key].username
+  //         })
+  //       }
+  //     })
 
       
 
-      return usernames;
-    } catch(error) {
-      return error;
-    }
-  };
+  //     return usernames;
+  //   } catch(error) {
+  //     return error;
+  //   }
+  // };
 
-  const getUserList = () => {
-    const db = props.firebase.getDB();
-    const uid = props.user.uid;
+  // const getUserList = () => {
+  //   const db = props.firebase.getDB();
+  //   const uid = props.user.uid;
 
-    try {
-      let listener = db.ref(`/users`).on("value", snapshot => {
-        // let self = snapshot.val()[uid];
-        // setSnapshot(self)
-        // let friends = self.friends;
-        // let friendInfo = [];
-        let usernames = [];
-        console.log(snapshot.val());
-        // for (let snap in snapshot.val()) {
-        //   if (friends && snap in friends) {
-        //     friendInfo.push({
-        //       ...snapshot.val()[snap],
-        //       key: snap
-        //     })
-        //   }
-        // }
+  //   try {
+  //     let listener = db.ref(`/users`).on("value", snapshot => {
+  //       // let self = snapshot.val()[uid];
+  //       // setSnapshot(self)
+  //       // let friends = self.friends;
+  //       // let friendInfo = [];
+  //       let usernames = [];
+  //       console.log(snapshot.val());
+  //       // for (let snap in snapshot.val()) {
+  //       //   if (friends && snap in friends) {
+  //       //     friendInfo.push({
+  //       //       ...snapshot.val()[snap],
+  //       //       key: snap
+  //       //     })
+  //       //   }
+  //       // }
 
         
-        snapshot.forEach(function(child) {
-          usernames[usernames.length] = snapshot.val()[child.key].username
-        })
+  //       snapshot.forEach(function(child) {
+  //         usernames[usernames.length] = snapshot.val()[child.key].username
+  //       })
 
-        //setUsernameList(usernames);
-      })
-      return () => db.ref(`/users`).off("value", listener);
-    } catch (error) {
-      return error;
-    }
-  };
+  //       //setUsernameList(usernames);
 
-  console.log(getUserList());
+  // };
+
+  // console.log(getUserList());
 
   const getFriendsList = () => {
     const db = props.firebase.getDB();
@@ -322,7 +323,12 @@ function Profile(props) {
         setSnapshot(self)
         let friends = self.friends;
         let friendInfo = [];
+        let userList = [];
         for (let snap in snapshot.val()) {
+          userList.push({
+            ...snapshot.val()[snap],
+            key: snap
+          })
           if (friends && snap in friends) {
             friendInfo.push({
               ...snapshot.val()[snap],
@@ -331,6 +337,7 @@ function Profile(props) {
           }
         }
 
+        setUsernameList(userList)
         setFriendsList(friendInfo)
       })
       return () => db.ref(`/users`).off("value", listener);
@@ -422,7 +429,7 @@ function Profile(props) {
                         placeholder="Enter username here"
                       ></input> */}
                       {/* get all the usernames here */}
-                      <Autocomplete suggestions={["jessica", "pichelo", "yeeden", "lhzhang"]} />
+                      <Autocomplete suggestions={getUserList(usernameList)} />
                     </div>{" "}
                     &nbsp;
                     <div className="buttons is-right">

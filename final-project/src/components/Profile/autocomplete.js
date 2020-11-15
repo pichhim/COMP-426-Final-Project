@@ -101,9 +101,8 @@ export class Autocomplete extends Component {
                 suggestionsListComponent = (
                     <div className="suggestions">
                         {filteredSuggestions.map((suggestion, index) => {
-
                             return (
-                                <Suggestion className="box" style={styles.autocomplete} key={suggestion} onClick={onClick}>
+                                <Suggestion className="box" style={styles.autocomplete} key={index} onClick={onClick}>
                                     {suggestion}
                                 </Suggestion>
                             );
