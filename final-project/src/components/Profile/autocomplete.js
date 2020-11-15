@@ -135,10 +135,12 @@ export class Autocomplete extends Component {
                     placeholder="Enter username here"
                     onChange={onChange}
                     onKeyDown={onKeyDown}
+                    value={filteredSuggestions[activeSuggestion]}
                     //value={userInput}
+        
                 />
                 {suggestionsListComponent}
-                {wait(500)}
+                {/* //{wait(500)} */}
             </React.Fragment>
         );
     }
