@@ -61,9 +61,9 @@ const NavAuth = withFirebase(props => {
   useEffect(getUserData, []);
 
   let getProfilePicture = () => {
-    // console.log(currUser);
+    console.log(currUser);
     if (currUser != null) {
-      return currUser.picture;
+      return currUser.picture; 
     }
   }
   
@@ -95,7 +95,7 @@ const NavAuth = withFirebase(props => {
             <div style={style.profilePic}>
               {/* {console.log(currUser)} */}
               {/* <img alt="" style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" /> */}
-              <img alt="" style={imageStyle(45)} src= {`https://ui-avatars.com/api/?name=${getProfilePicture()}`} />
+              {currUser ? <img alt="" style={imageStyle(45)} src= {getProfilePicture()}/> : null}
             </div>
           </Link>
           <div className="navbar-dropdown">
