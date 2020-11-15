@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import status_colors from "./status_colors";
 import ReactTooltip from "react-tooltip";
 import { withFirebase } from "../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "react-notifications/lib/notifications.css";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationContainer, NotificationManager, } from "react-notifications";
+import Autocomplete from "./autocomplete";
 
 const demoProfile = {
   image:
@@ -246,6 +244,7 @@ function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
   const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
+  const [usernameList, setUsernameList] = useState([])
 
   // const getSnapshot = () => {
   //   let snapPromise = props.firebase.getCurrentUser();
@@ -253,6 +252,65 @@ function Profile(props) {
   // };
 
   // useEffect(getSnapshot, []);
+
+  // gets all list of all usernames
+  const getAllUsers = () => {
+    const db = props.firebase.getDB();
+    let usernames = []; 
+
+    try {
+      let listener = db.ref(`/users`).on("value", snapshot => {
+        console.log(snapshot.val())
+        if (snapshot !== null) {
+          snapshot.forEach(function(child) {
+            usernames[usernames.length] = snapshot.val()[child.key].username
+          })
+        }
+      })
+
+      
+
+      return usernames;
+    } catch(error) {
+      return error;
+    }
+  };
+
+  const getUserList = () => {
+    const db = props.firebase.getDB();
+    const uid = props.user.uid;
+
+    try {
+      let listener = db.ref(`/users`).on("value", snapshot => {
+        // let self = snapshot.val()[uid];
+        // setSnapshot(self)
+        // let friends = self.friends;
+        // let friendInfo = [];
+        let usernames = [];
+        console.log(snapshot.val());
+        // for (let snap in snapshot.val()) {
+        //   if (friends && snap in friends) {
+        //     friendInfo.push({
+        //       ...snapshot.val()[snap],
+        //       key: snap
+        //     })
+        //   }
+        // }
+
+        
+        snapshot.forEach(function(child) {
+          usernames[usernames.length] = snapshot.val()[child.key].username
+        })
+
+        //setUsernameList(usernames);
+      })
+      return () => db.ref(`/users`).off("value", listener);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  console.log(getUserList());
 
   const getFriendsList = () => {
     const db = props.firebase.getDB();
@@ -272,6 +330,7 @@ function Profile(props) {
             })
           }
         }
+
         setFriendsList(friendInfo)
       })
       return () => db.ref(`/users`).off("value", listener);
@@ -356,12 +415,14 @@ function Profile(props) {
                   <div className="field has-addons">
                     {/* Input field */}
                     <div className="control is-expanded">
-                      <input
+                      {/* <input
                         className="input is-fullwidth"
                         type="text"
                         id="friendInput"
                         placeholder="Enter username here"
-                      ></input>
+                      ></input> */}
+                      {/* get all the usernames here */}
+                      <Autocomplete suggestions={["jessica", "pichelo", "yeeden", "lhzhang"]} />
                     </div>{" "}
                     &nbsp;
                     <div className="buttons is-right">
