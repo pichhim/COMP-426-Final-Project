@@ -1,128 +1,50 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 
 function GameBoard(props) {
 
-    const canvasRef = useRef(null);
+    const borderThick = 2
 
-    useEffect(() => {
-        drawBase()
-    });
+    const boardStyle = {
+        width: `${props.width - borderThick * 2}px`,
+        height: `${props.height - borderThick * 2}px`,
+        background: `${props.borderColor}`,
+        borderRadius: '0.5rem',
+        margin: '12px 0px 12px 0px',
+        padding: `${borderThick}px`,
+        overflow: 'hidden'
+    };
 
-    const drawBase = () => {
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.fillStyle = props.boardColor;
-        ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    const rowStyle = {
+        width: `100%`,
+        height: `calc(100% / ${props.rows})`,
+        display: 'flex',
+        flexDirection: 'row',
+    };
 
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = props.borderColor
-        const rowWidth = Math.round(canvasRef.current.height / props.rows)
-        for (let i = 1; i < props.rows; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, i * rowWidth);
-            ctx.lineTo(canvasRef.current.width, i * rowWidth);
-            ctx.stroke();
-        }
-
-        const rowHeight = Math.round(canvasRef.current.width / props.columns)
-        for (let i = 1; i < props.columns; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * rowHeight, 0);
-            ctx.lineTo(i * rowHeight, canvasRef.current.height);
-            ctx.stroke();
-        }
-
-        placePieces()
-        
-    }
-
-    const placePieces = (board = props.board) => {
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.fillStyle = props.pieceColor;
-
-        const rowWidth = Math.round(canvasRef.current.height / props.rows)
-        const rowHeight = Math.round(canvasRef.current.width / props.columns)
-
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                if (board[i][j] === true) {
-                    ctx.beginPath();
-                    ctx.arc(j * rowHeight + rowHeight / 2, i * rowWidth + rowWidth / 2, Math.min(rowWidth, rowHeight) * 0.44, 0, 2 * Math.PI, false);
-                    ctx.fill();
-                }
-            }
-        }
-    }
-
-    const highlightOptions = e => {
-
-        drawBase();
-        let { x, y } = calcIndex(e)
-        switch (props.highlightStyle) {
-            case 'column':
-                highlightColumn(x)
-                break;
-            case 'row':
-                highlightRow(y)
-                break;
-            case 'single':
-                highlightSingle(x, y)
-                break;
-            default:
-                break;
-        }
-    }
-
-    const calcIndex = e => {
-        const rowWidth = Math.round(canvasRef.current.height / props.rows)
-        const rowHeight = Math.round(canvasRef.current.width / props.columns)
-
-        let x = Math.floor((e.clientX - e.target.offsetLeft) / rowHeight);
-        let y = Math.floor((e.clientY - e.target.offsetTop) / rowWidth);
-        return { x, y }
-    }
-
-    const highlightSingle = (x, y) => {
-        // Highlights a single tile
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = props.highlightColor;
-
-        const rowWidth = Math.round(canvasRef.current.height / props.rows);
-        const rowHeight = Math.round(canvasRef.current.width / props.columns);
-
-        if (props.highlightRules == null || props.highlightRules(x, y)) {
-            ctx.strokeRect(x * rowHeight, y * rowWidth, rowHeight, rowWidth);
-        }
-
-    }
-
-    const highlightColumn = (x) => {
-        // Highlights all tiles in the same column as the mouse
-        for (let y = 0; y < props.rows; y++) {
-            highlightSingle(x, y);
-        }
-    }
-
-    const highlightRow = (y) => {
-        // Highlights all tiles in the same column as the mouse
-        for (let x = 0; x < props.columns; x++) {
-            highlightSingle(x, y);
-        }
-    }
-
+    const tileStyle = {
+        width: `calc(100% / ${props.columns})`,
+        height: `calc(100% - ${borderThick * 2})`,
+        margin: `${borderThick }px`,
+        background: `${props.boardColor}`,
+        border: `solid ${props.borderColor}`,
+        borderRadius: '0.5rem',
+        transition: '1s'
+    };
 
     return (
-        <canvas
-            ref={canvasRef}
-            width={props.width}
-            height={props.height}
-            onMouseMove={highlightOptions}
-            onMouseLeave={drawBase}
-            onClick={(e) => {
-                props.handleClick(calcIndex(e))
-            }}
-        />
-
+        <div style={boardStyle}>
+            {props.board.map((row, rIndex) => {
+                return (
+                    <div style={rowStyle} key={`${rIndex}`}>{row.map((tile, cIndex) => {
+                        return (
+                            <button style={tileStyle} key={`${rIndex}${cIndex}`} onClick={props.onClick ? () => props.onClick({x: cIndex, y: rIndex}) : null}>
+                                {String(tile) !== 'SYSTEM' ? <span>{String(tile) === String(props.started) ? "X" : "O"}</span> : null}
+                            </button>
+                        )
+                    })}</div>
+                )
+            })}
+        </div>
     )
 }
 

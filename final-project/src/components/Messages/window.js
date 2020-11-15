@@ -12,8 +12,13 @@ function ChatWindow(props) {
     const uid = props.user.uid;
     const friendID = friend.key;
 
+    const GameType = 'TICTACTOE'
+
     const [thread, setThread] = useState([]);
     const [textMessage, setTextMessage] = useState([]);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [showBoard, setShowBoard] = useState(false);
+    const [lastState, setLastState] = useState(null);
 
     function initChat() {
         const db = props.firebase.getDB();
@@ -35,7 +40,14 @@ function ChatWindow(props) {
                         newThread.push(entry)
                     }
                 }
-                newThread = newThread.sort((a, b) => new Date(b.date) - new Date(a.date))
+                newThread = newThread.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                let gameState = newThread.find(item => item.type !== 'TEXT');
+                if (gameState) {
+                    setLastState(gameState);
+                    setIsPlaying(String(gameState.content.nextPlayer) === String(uid));
+                }
+
                 setThread(newThread)
             })
             return () => db.ref(`/channels/${channelId}`).off("value", listener);
@@ -69,20 +81,67 @@ function ChatWindow(props) {
     function startGame(e) {
         e.preventDefault();
 
-        const lastState = thread.find(item => item.type !== 'TEXT');
-        if (lastState && !lastState.isOver) console.log('Still Playing')
+        if (lastState && lastState.winner === 'NONE') console.log('Still Playing')
         else {
-            console.log('new game')
+            const tempState = {
+                date: new Date().toISOString(),
+                author: uid,
+                type: GameType,
+                content: {
+                    board: [["SYSTEM", "SYSTEM", "SYSTEM"],
+                    ["SYSTEM", "SYSTEM", "SYSTEM"],
+                    ["SYSTEM", "SYSTEM", "SYSTEM"]],
+                    justPlayed: "SYSTEM",
+                    nextPlayer: uid,
+                    started: uid,
+                    winner: 'NONE'
+                }
+            }
+            setLastState(tempState);
+            setShowBoard(true);
+            setIsPlaying(true)
         }
     }
 
-    function sendGameState(e) {
-        e.preventDefault();
+    function sendGameState(state) {
         const db = props.firebase.getDB();
+        let channelId = uid > friendID ? `${uid}<=>${friendID}` : `${friendID}<=>${uid}`;
+
+        try {
+            db.ref(`/channels/${channelId}/thread`).push(state)
+            setTextMessage('')
+        } catch (error) {
+            alert(error)
+        }
     }
 
     function handleUpdateInput(e) {
         setTextMessage(e.target.value);
+    }
+
+    function handleBoardClick({ x, y }) {
+        let newBoard = lastState.content.board.map((arr) => (arr.slice()));
+        newBoard[y][x] = `${uid}`
+
+        const tempState = {
+            date: new Date().toISOString(),
+            author: uid,
+            type: GameType,
+            content: {
+                started: lastState.content.started,
+                board: newBoard,
+                justPlayed: uid,
+                nextPlayer: friendID,
+                winner: 'NONE'
+            }
+        }
+        setShowBoard(false);
+        sendGameState(tempState)
+    }
+
+    function openBoard(e) {
+        e.preventDefault();
+        setShowBoard(true)
     }
 
     useEffect(initChat, [])
@@ -98,9 +157,10 @@ function ChatWindow(props) {
                 </article>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column-reverse', maxHeight: '100%', overflow: 'auto' }}>
+            <div style={{ maxHeight: '100%', overflow: 'auto', display: 'flex', flexDirection: 'column-reverse' }}>
+                {isPlaying && showBoard ? <OwnMessage entry={lastState} onClick={handleBoardClick} /> : null}
                 {thread.map(entry => {
-                    return entry.author === uid ? <OwnMessage entry={entry} onClick={sendGameState}></OwnMessage> : <FriendMessage entry={entry}></FriendMessage>
+                    return entry.author === uid ? <OwnMessage entry={entry} key={entry.date} oldState={true} /> : <FriendMessage entry={entry} key={entry.date} oldState={true} />
                 })}
             </div>
 
@@ -110,8 +170,8 @@ function ChatWindow(props) {
                         <input className="input is-rounded" type="text" placeholder="Type a message..." value={textMessage} onChange={handleUpdateInput}></input>
                     </div>
                     <div className="control">
-                        <span className="button is-info" onClick={startGame}>Start Game
-                        </span>
+                        {isPlaying && !showBoard ? <span className="button is-info" onClick={openBoard}>Show Board</span>
+                            : <span className="button is-info" onClick={startGame}>Start Game</span>}
                     </div>
                     <div className="control">
                         <span className="button is-info is-rounded" onClick={sendTextMessage}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
@@ -131,7 +191,7 @@ function OwnMessage(props) {
         switch (props.entry.type) {
             case 'TICTACTOE':
                 return (
-                    <TicTacToe data={content}></TicTacToe>
+                    <TicTacToe data={content} onClick={props.onClick}></TicTacToe>
                 )
 
             default:
@@ -160,19 +220,19 @@ function FriendMessage(props) {
                 return (
                     <TicTacToe data={content}></TicTacToe>
                 )
-                break;
 
             default:
                 return (
-                    <div className="friend-messages">{content}</div>
+                    content
                 )
-                break;
         }
     }
 
     return (
         <div className="messages-container">
-            {defineContentType()}
+            <div className="friend-messages">
+                {defineContentType()}
+            </div>
         </div>
 
     )

@@ -23,7 +23,7 @@ function DemoBoard() {
     // The function defines behavior on mouse click
     const handleClick = ({x, y}) => {
         let newBoard = board.map((arr) => (arr.slice()));
-        newBoard[y][x] = !newBoard[y][x]
+        newBoard[y][x] = 'YOU'
 
         console.log({
             justPlayed: 'YOU',
@@ -43,8 +43,6 @@ function DemoBoard() {
         <GameBoard
             width={800} // Board width (px)
             height={800} // Board height (px)
-            rows={rows} // Number of rows
-            columns={columns} // Number of columns
             boardColor={'#44AA44'} // Color of board
             borderColor={'#228822'} // Border color
             highlightColor={'#FF4444'} // Highlight color
