@@ -28,8 +28,17 @@ function GameBoard(props) {
         background: `${props.boardColor}`,
         border: `solid ${props.borderColor}`,
         borderRadius: '0.5rem',
-        transition: '1s'
+        transition: '1s',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
     };
+
+    const symbolStyle = {
+        color: 'black',
+        fontSize: `${Math.floor(props.height / (props.rows + 1))}px`
+    }
 
     return (
         <div style={boardStyle}>
@@ -38,7 +47,7 @@ function GameBoard(props) {
                     <div style={rowStyle} key={`${rIndex}`}>{row.map((tile, cIndex) => {
                         return (
                             <button style={tileStyle} key={`${rIndex}${cIndex}`} onClick={props.onClick ? () => props.onClick({x: cIndex, y: rIndex}) : null}>
-                                {String(tile) !== 'SYSTEM' ? <span>{String(tile) === String(props.started) ? "X" : "O"}</span> : null}
+                                {String(tile) !== 'SYSTEM' ? <span style={symbolStyle}>{String(tile) === String(props.started) ? "X" : "O"}</span> : null}
                             </button>
                         )
                     })}</div>

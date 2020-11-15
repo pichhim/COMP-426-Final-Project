@@ -37,3 +37,14 @@
     background: #6DF473;
     border-radius: 1em;
 }
+
+.system-messages {
+    text-align: center;
+    width: 100%;
+    margin: 8px;
+    height: auto;
+
+    padding: 4px 16px 4px 16px;
+
+    background: #ECCCC1;
+}

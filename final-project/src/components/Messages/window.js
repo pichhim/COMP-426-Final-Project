@@ -45,7 +45,10 @@ function ChatWindow(props) {
                 let gameState = newThread.find(item => item.type !== 'TEXT');
                 if (gameState) {
                     setLastState(gameState);
-                    setIsPlaying(String(gameState.content.nextPlayer) === String(uid));
+                    // Fix this part
+                    let isPlaying = String(gameState.content.nextPlayer) === String(uid);
+                    setIsPlaying(isPlaying);
+                    setShowBoard(isPlaying);
                 }
 
                 setThread(newThread)
@@ -55,6 +58,9 @@ function ChatWindow(props) {
             alert("Error reading user channels")
         }
     }
+
+    // TO DO: Fix messages and other updates closing the start board
+    // TO DO: Add more games?
 
     function sendTextMessage(e) {
         e.preventDefault();
@@ -81,13 +87,15 @@ function ChatWindow(props) {
     function startGame(e) {
         e.preventDefault();
 
-        if (lastState && lastState.winner === 'NONE') console.log('Still Playing')
+        if (lastState && lastState.content.winner === 'NONE') console.log('Still Playing')
         else {
+            sendSystemMessage(`${props.user.username} is starting a new game...`)
             const tempState = {
                 date: new Date().toISOString(),
                 author: uid,
                 type: GameType,
                 content: {
+                    // System fills the board with placeholder values to symbolize empty values
                     board: [["SYSTEM", "SYSTEM", "SYSTEM"],
                     ["SYSTEM", "SYSTEM", "SYSTEM"],
                     ["SYSTEM", "SYSTEM", "SYSTEM"]],
@@ -107,9 +115,36 @@ function ChatWindow(props) {
         const db = props.firebase.getDB();
         let channelId = uid > friendID ? `${uid}<=>${friendID}` : `${friendID}<=>${uid}`;
 
+        let winner = state.content.winner;
+
         try {
             db.ref(`/channels/${channelId}/thread`).push(state)
-            setTextMessage('')
+            // setTextMessage('');
+            setShowBoard(false);
+        } catch (error) {
+            alert(error)
+        }
+
+        if (String(uid) === String(winner)) {
+            sendSystemMessage(`Congratuations, ${props.user.username} won!`)
+        } else if (String(winner) === 'SYSTEM') {
+            sendSystemMessage(`The System Won! HAHAHAHAHA`)
+        }
+    }
+
+    function sendSystemMessage(message) {
+        const db = props.firebase.getDB();
+        let channelId = uid > friendID ? `${uid}<=>${friendID}` : `${friendID}<=>${uid}`;
+
+        let sysObject = {
+            date: new Date().toISOString(),
+            author: 'SYSTEM',
+            type: 'SYSTEM',
+            content: message
+        }
+
+        try {
+            db.ref(`/channels/${channelId}/thread`).push(sysObject)
         } catch (error) {
             alert(error)
         }
@@ -119,29 +154,68 @@ function ChatWindow(props) {
         setTextMessage(e.target.value);
     }
 
-    function handleBoardClick({ x, y }) {
-        let newBoard = lastState.content.board.map((arr) => (arr.slice()));
-        newBoard[y][x] = `${uid}`
-
-        const tempState = {
-            date: new Date().toISOString(),
-            author: uid,
-            type: GameType,
-            content: {
-                started: lastState.content.started,
-                board: newBoard,
-                justPlayed: uid,
-                nextPlayer: friendID,
-                winner: 'NONE'
-            }
-        }
-        setShowBoard(false);
-        sendGameState(tempState)
+    function toggleBoard(e) {
+        e.preventDefault();
+        setShowBoard(prevState => !prevState)
     }
 
-    function openBoard(e) {
-        e.preventDefault();
-        setShowBoard(true)
+    function OwnMessage(props) {
+        let content = props.entry.content;
+
+        function defineContentType() {
+            switch (props.entry.type) {
+                case 'TICTACTOE':
+                    return (
+                        <TicTacToe data={content} sendState={props.oldState ? null : sendGameState} uid={uid} friendID={friendID}></TicTacToe>
+                    )
+                default:
+                    return (
+                        content
+                    )
+            }
+        }
+
+        return (
+            <div className="messages-container">
+                <div className="own-messages">
+                    {defineContentType()}
+                </div>
+            </div>
+
+        )
+    }
+
+    function FriendMessage(props) {
+        let content = props.entry.content;
+
+        function defineContentType() {
+            switch (props.entry.type) {
+                case 'TICTACTOE':
+                    return (
+                        <div className="friend-messages">
+                            <TicTacToe data={content}></TicTacToe>
+                        </div>
+                    )
+                case 'SYSTEM':
+                    return (
+                        <div className="system-messages">
+                            {content}
+                        </div>
+                    )
+                default:
+                    return (
+                        <div className="friend-messages">
+                            {content}
+                        </div>
+                    )
+            }
+        }
+
+        return (
+            <div className="messages-container">
+                {defineContentType()}
+            </div>
+        )
     }
 
     useEffect(initChat, [])
@@ -158,7 +232,7 @@ function ChatWindow(props) {
             </div>
 
             <div style={{ maxHeight: '100%', overflow: 'auto', display: 'flex', flexDirection: 'column-reverse' }}>
-                {isPlaying && showBoard ? <OwnMessage entry={lastState} onClick={handleBoardClick} /> : null}
+                {isPlaying && showBoard ? <OwnMessage entry={lastState} /> : null}
                 {thread.map(entry => {
                     return entry.author === uid ? <OwnMessage entry={entry} key={entry.date} oldState={true} /> : <FriendMessage entry={entry} key={entry.date} oldState={true} />
                 })}
@@ -170,7 +244,8 @@ function ChatWindow(props) {
                         <input className="input is-rounded" type="text" placeholder="Type a message..." value={textMessage} onChange={handleUpdateInput}></input>
                     </div>
                     <div className="control">
-                        {isPlaying && !showBoard ? <span className="button is-info" onClick={openBoard}>Show Board</span>
+                        {isPlaying && lastState && lastState.content.winner === 'NONE' ?
+                            <span className="button is-info" onClick={toggleBoard}>{!showBoard ? "Show Board" : "Close Board"}</span>
                             : <span className="button is-info" onClick={startGame}>Start Game</span>}
                     </div>
                     <div className="control">
@@ -181,60 +256,6 @@ function ChatWindow(props) {
             </div>
 
         </div>
-    )
-}
-
-function OwnMessage(props) {
-    let content = props.entry.content;
-
-    function defineContentType() {
-        switch (props.entry.type) {
-            case 'TICTACTOE':
-                return (
-                    <TicTacToe data={content} onClick={props.onClick}></TicTacToe>
-                )
-
-            default:
-                return (
-                    content
-                )
-        }
-    }
-
-    return (
-        <div className="messages-container">
-            <div className="own-messages">
-                {defineContentType()}
-            </div>
-        </div>
-
-    )
-}
-
-function FriendMessage(props) {
-    let content = props.entry.content;
-
-    function defineContentType() {
-        switch (props.entry.type) {
-            case 'TICTACTOE':
-                return (
-                    <TicTacToe data={content}></TicTacToe>
-                )
-
-            default:
-                return (
-                    content
-                )
-        }
-    }
-
-    return (
-        <div className="messages-container">
-            <div className="friend-messages">
-                {defineContentType()}
-            </div>
-        </div>
-
     )
 }
 
