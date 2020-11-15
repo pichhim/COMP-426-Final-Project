@@ -87,30 +87,6 @@ const Boba = styled.div`
         animation: ${move} 200s linear infinite;
     `
 
-function Landing() {
-
-    const whiteSection = {
-        backgroundColor: 'white',
-        width: '100vw',
-        position: 'inherit',
-        height: '550px'
-    };
-
-    const imageStyle = function (length) {
-        return {
-            width: `${length}px`,
-            height: `${length}px`,
-            position: "relative",
-            objectFit: "cover",
-            overflow: "hidden",
-            borderRadius: "50%",
-            border: "0px solid",
-        };
-    };
-
-    const bobaBackground =
-        "https://color-hex.org/colors/eccdc2.png";
-
     const style = {
         landingBackground: {
             backgroundColor: '#ECCDC2',
@@ -212,6 +188,253 @@ function Landing() {
 
     };
 
+// gets rid of login/submit popup
+function closePopup() {
+    document.getElementById("loginPopup").style.display = "none";
+    document.getElementById("signupPopup").style.display = "none";
+    document.getElementById("landing").style.padding = "140px";
+}
+
+   // signin config
+   const INITIAL_STATE2 = {
+    email: '',
+    password: '',
+    error: null,
+};
+
+class SignInForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...INITIAL_STATE2 };
+    }
+
+    onSubmit = event => {
+        const { email, password } = this.state;
+
+        this.props.firebase
+            .doSignInWithEmailAndPassword(email, password)
+            .then(authUser => {
+                this.setState({ ...INITIAL_STATE2 }); // Successful request: reset default state
+                this.props.history.push('/'); // Redirect to landing page
+            })
+            .catch(error => {
+                this.setState({ error });
+            });
+
+        event.preventDefault(); // No reload on submit
+    }
+
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    render() {
+        const {
+            email,
+            password,
+            error,
+        } = this.state;
+
+        const isInvalid = password === '' || email === '';
+
+        return (
+            <FadingDiv id="loginPopup" style={style.landingPopupCard}>
+                <Card>
+                    <Card.Content>
+                        <button className="delete" style={style.xButton} onClick={closePopup}></button>
+                        <Heading style={style.landingPopupTitle}>login</Heading>
+                        <form onSubmit={this.onSubmit}>
+                            <label>email</label>
+                            <input className="input"
+                                name="email"
+                                value={email}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Email Address"
+                            />
+                            <label>password</label>
+                            <input className="input"
+                                name="password"
+                                value={password}
+                                onChange={this.onChange}
+                                type="password"
+                                placeholder="Password"
+                            />
+                            <Level>
+                                <Level.Item>
+                                    <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>login</button>
+                                </Level.Item>
+                            </Level>
+                            <Level>
+                                <Level.Item style={style.error}>
+                                {error && <p>{error.message}</p>}
+                                </Level.Item>
+                            </Level>
+
+                        </form>
+                    </Card.Content>
+                </Card>
+            </FadingDiv>
+        );
+    }
+}
+
+const SignInFormV2 = withRouter(withFirebase(SignInForm));
+
+// signup config
+const INITIAL_STATE = {
+    fullname: '',
+    username: '',
+    email: '',
+    picture: '',
+    description: 'Hello! Welcome to your new profile. Update your profile description here.',
+    status: 'Online',
+    friends: [],
+    passwordOne: '',
+    passwordTwo: '',
+    error: null,
+};
+
+class SignUpForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...INITIAL_STATE };
+    }
+
+    onSubmit = event => {
+        const { fullname, username, email, passwordOne, picture, description, status, friends } = this.state;
+
+        this.props.firebase
+            .doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(authUser => {
+                // Add new user to Firebase realtime database
+                return this.props.firebase
+                    .getUser(authUser.user.uid) // Creates user based on Firebase uid
+                    .set({
+                        fullname, username, email, picture, description, status, friends, // Additional info about user
+                    });
+            })
+            .then(authUser => {
+                this.setState({ ...INITIAL_STATE }); // Successful request: reset default state
+                this.props.history.push("/"); // Redirect to landing page by accessing React Router props
+            })
+            .catch(error => {
+                this.setState({ error });
+            });
+
+        event.preventDefault(); // No reload on submit
+    }
+
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    render() {
+        const {
+            fullname,
+            username,
+            email,
+            passwordOne,
+            passwordTwo,
+            error,
+        } = this.state;
+
+        const isInvalid =
+            passwordOne !== passwordTwo ||
+            passwordOne === '' ||
+            email === '' ||
+            username === '' || fullname === '';
+
+        return (
+            <FadingDiv id="signupPopup" style={style.landingPopupCard}>
+                <Card>
+                    <Card.Content>
+                        <button className="delete" style={style.xButton} onClick={closePopup}></button>
+                        <Heading style={style.landingPopupTitle}>sign up</Heading>
+                        <form onSubmit={this.onSubmit}>
+                            <label>full name</label>
+                            <input className="input"
+                                name="fullname"
+                                value={fullname}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Full Name"
+                            />
+                            <label>username</label>
+                            <input className="input"
+                                name="username"
+                                value={username}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Username"
+                            />
+                            <label>email</label>
+                            <input className="input"
+                                name="email"
+                                value={email}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Email Address"
+                            />
+                            <label>password</label>
+                            <input className="input"
+                                name="passwordOne"
+                                value={passwordOne}
+                                onChange={this.onChange}
+                                type="password"
+                                placeholder="Password"
+                            />
+                            <label>confirm password</label>
+                            <input className="input"
+                                name="passwordTwo"
+                                value={passwordTwo}
+                                onChange={this.onChange}
+                                type="password"
+                                placeholder="Confirm Password"
+                            />
+                            <Level>
+                                <Level.Item>
+                                    <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>submit</button>
+                                    {error && <p>{error.message}</p>}
+                                </Level.Item>
+                            </Level>
+                        </form>
+                    </Card.Content>
+                </Card>
+            </FadingDiv>
+        );
+    }
+}
+
+// Set sign up form to be able to access React Router and Firebase context
+const SignUpFormV2 = withRouter(withFirebase(SignUpForm));
+
+function Landing() {
+
+    const whiteSection = {
+        backgroundColor: 'white',
+        width: '100vw',
+        position: 'inherit',
+        height: '550px'
+    };
+
+    const imageStyle = function (length) {
+        return {
+            width: `${length}px`,
+            height: `${length}px`,
+            position: "relative",
+            objectFit: "cover",
+            overflow: "hidden",
+            borderRadius: "50%",
+            border: "0px solid",
+        };
+    };
+
+    const bobaBackground =
+        "https://color-hex.org/colors/eccdc2.png";
+
+
+
     // popup for login and signup loads when buttons are pressed
     function login() {
         if (document.getElementById("signupPopup").style.display !== "none") {
@@ -230,227 +453,6 @@ function Landing() {
         document.getElementById("signupPopup").style.display = "block";
         document.getElementById("landing").style.padding = "10px";
     };
-
-    // gets rid of login/submit popup
-    function closePopup() {
-        document.getElementById("loginPopup").style.display = "none";
-        document.getElementById("signupPopup").style.display = "none";
-        document.getElementById("landing").style.padding = "140px";
-    }
-
-    // signup config
-    const INITIAL_STATE = {
-        fullname: '',
-        username: '',
-        email: '',
-        picture: '',
-        description: 'Hello! Welcome to your new profile. Update your profile description here.',
-        status: 'Online',
-        friends: [],
-        passwordOne: '',
-        passwordTwo: '',
-        error: null,
-    };
-
-    class SignUpForm extends Component {
-        constructor(props) {
-            super(props);
-            this.state = { ...INITIAL_STATE };
-        }
-
-        onSubmit = event => {
-            const { fullname, username, email, passwordOne, picture, description, status, friends } = this.state;
-
-            this.props.firebase
-                .doCreateUserWithEmailAndPassword(email, passwordOne)
-                .then(authUser => {
-                    // Add new user to Firebase realtime database
-                    return this.props.firebase
-                        .getUser(authUser.user.uid) // Creates user based on Firebase uid
-                        .set({
-                            fullname, username, email, picture, description, status, friends, // Additional info about user
-                        });
-                })
-                .then(authUser => {
-                    this.setState({ ...INITIAL_STATE }); // Successful request: reset default state
-                    this.props.history.push("/"); // Redirect to landing page by accessing React Router props
-                })
-                .catch(error => {
-                    this.setState({ error });
-                });
-
-            event.preventDefault(); // No reload on submit
-        }
-
-        onChange = event => {
-            this.setState({ [event.target.name]: event.target.value });
-        };
-
-        render() {
-            const {
-                fullname,
-                username,
-                email,
-                passwordOne,
-                passwordTwo,
-                error,
-            } = this.state;
-
-            const isInvalid =
-                passwordOne !== passwordTwo ||
-                passwordOne === '' ||
-                email === '' ||
-                username === '' || fullname === '';
-
-            return (
-                <FadingDiv id="signupPopup" style={style.landingPopupCard}>
-                    <Card>
-                        <Card.Content>
-                            <button className="delete" style={style.xButton} onClick={closePopup}></button>
-                            <Heading style={style.landingPopupTitle}>sign up</Heading>
-                            <form onSubmit={this.onSubmit}>
-                                <label>full name</label>
-                                <input className="input"
-                                    name="fullname"
-                                    value={fullname}
-                                    onChange={this.onChange}
-                                    type="text"
-                                    placeholder="Full Name"
-                                />
-                                <label>username</label>
-                                <input className="input"
-                                    name="username"
-                                    value={username}
-                                    onChange={this.onChange}
-                                    type="text"
-                                    placeholder="Username"
-                                />
-                                <label>email</label>
-                                <input className="input"
-                                    name="email"
-                                    value={email}
-                                    onChange={this.onChange}
-                                    type="text"
-                                    placeholder="Email Address"
-                                />
-                                <label>password</label>
-                                <input className="input"
-                                    name="passwordOne"
-                                    value={passwordOne}
-                                    onChange={this.onChange}
-                                    type="password"
-                                    placeholder="Password"
-                                />
-                                <label>confirm password</label>
-                                <input className="input"
-                                    name="passwordTwo"
-                                    value={passwordTwo}
-                                    onChange={this.onChange}
-                                    type="password"
-                                    placeholder="Confirm Password"
-                                />
-                                <Level>
-                                    <Level.Item>
-                                        <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>submit</button>
-                                        {error && <p>{error.message}</p>}
-                                    </Level.Item>
-                                </Level>
-                            </form>
-                        </Card.Content>
-                    </Card>
-                </FadingDiv>
-            );
-        }
-    }
-
-    // Set sign up form to be able to access React Router and Firebase context
-    const SignUpFormV2 = withRouter(withFirebase(SignUpForm));
-
-    // signin config
-    const INITIAL_STATE2 = {
-        email: '',
-        password: '',
-        error: null,
-    };
-
-    class SignInForm extends Component {
-        constructor(props) {
-            super(props);
-            this.state = { ...INITIAL_STATE2 };
-        }
-
-        onSubmit = event => {
-            const { email, password } = this.state;
-
-            this.props.firebase
-                .doSignInWithEmailAndPassword(email, password)
-                .then(authUser => {
-                    this.setState({ ...INITIAL_STATE2 }); // Successful request: reset default state
-                    this.props.history.push('/'); // Redirect to landing page
-                })
-                .catch(error => {
-                    this.setState({ error });
-                });
-
-            event.preventDefault(); // No reload on submit
-        }
-
-        onChange = event => {
-            this.setState({ [event.target.name]: event.target.value });
-        };
-
-        render() {
-            const {
-                email,
-                password,
-                error,
-            } = this.state;
-
-            const isInvalid = password === '' || email === '';
-
-            return (
-                <FadingDiv id="loginPopup" style={style.landingPopupCard}>
-                    <Card>
-                        <Card.Content>
-                            <button className="delete" style={style.xButton} onClick={closePopup}></button>
-                            <Heading style={style.landingPopupTitle}>login</Heading>
-                            <form onSubmit={this.onSubmit}>
-                                <label>email</label>
-                                <input className="input"
-                                    name="email"
-                                    value={email}
-                                    onChange={this.onChange}
-                                    type="text"
-                                    placeholder="Email Address"
-                                />
-                                <label>password</label>
-                                <input className="input"
-                                    name="password"
-                                    value={password}
-                                    onChange={this.onChange}
-                                    type="password"
-                                    placeholder="Password"
-                                />
-                                <Level>
-                                    <Level.Item>
-                                        <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>login</button>
-                                    </Level.Item>
-                                </Level>
-                                <Level>
-                                    <Level.Item style={style.error}>
-                                    {error && <p>{error.message}</p>}
-                                    </Level.Item>
-                                </Level>
-
-                            </form>
-                        </Card.Content>
-                    </Card>
-                </FadingDiv>
-            );
-        }
-    }
-
-    const SignInFormV2 = withRouter(withFirebase(SignInForm));
 
     return (
         <Parallax bgImage={bobaBackground} strength={window.innerWidth}>
@@ -574,3 +576,5 @@ function Landing() {
 }
 
 export default Landing;
+
+export { SignInFormV2, SignUpFormV2 };
