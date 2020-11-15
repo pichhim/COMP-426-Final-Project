@@ -311,7 +311,9 @@ class SignUpForm extends Component {
                 return this.props.firebase
                     .getUser(authUser.user.uid) // Creates user based on Firebase uid
                     .set({
-                        fullname, username, email, picture, description, status, friends, // Additional info about user
+                        fullname, username, email, 
+                        picture : this.generateAvatar(fullname), 
+                        description, status, friends, // Additional info about user
                     });
             })
             .then(authUser => {
