@@ -311,7 +311,9 @@ class SignUpForm extends Component {
                 return this.props.firebase
                     .getUser(authUser.user.uid) // Creates user based on Firebase uid
                     .set({
-                        fullname, username, email, picture, description, status, friends, // Additional info about user
+                        fullname, username, email, 
+                        picture : this.generateAvatar(fullname), 
+                        description, status, friends, // Additional info about user
                     });
             })
             .then(authUser => {
@@ -327,6 +329,16 @@ class SignUpForm extends Component {
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
+    };
+
+    generateAvatar(name) {
+        let res = name.split(" ");
+        const [first, last] = [res[0], res[1]];
+        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=random';
+        // console.log('url: ');
+        // console.log(url);
+        
+        return url;
     };
 
     render() {
