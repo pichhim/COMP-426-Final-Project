@@ -60,6 +60,9 @@ function ChatWindow(props) {
     }
 
     // TO DO: Fix messages and other updates closing the start board
+    // TO DO: Improve Styling, like a lot
+    // TO DO: Fix new messages automatically scrolling user to the bottom
+    // TO DO: Figure out how to attach new chat windows to a route switch
     // TO DO: Add more games?
 
     function sendTextMessage(e) {
