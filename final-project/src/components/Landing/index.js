@@ -329,6 +329,16 @@ class SignUpForm extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    generateAvatar(name) {
+        let res = name.split(" ");
+        const [first, last] = [res[0], res[1]];
+        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=random';
+        // console.log('url: ');
+        // console.log(url);
+        
+        return url;
+    };
+
     render() {
         const {
             fullname,
