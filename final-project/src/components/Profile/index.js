@@ -332,15 +332,10 @@ function Profile(props) {
             });
           }
         }
-<<<<<<< HEAD
 
         setUsernameList(userList)
         setFriendsList(friendInfo)
       })
-=======
-        setFriendsList(friendInfo);
-      });
->>>>>>> 1af6490a9cff7f87c62ac8c68661458c04d509c3
       return () => db.ref(`/users`).off("value", listener);
     } catch (error) {
       alert("Error reading friend info");

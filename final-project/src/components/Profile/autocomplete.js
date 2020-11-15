@@ -19,6 +19,14 @@ const Suggestion = styled.button`
     }
 `
 
+function wait(ms) {
+  let start = Date.now(),
+        now = start;
+    while (now - start < ms) {
+      now = Date.now();
+    }
+}
+
 export class Autocomplete extends Component {
     static propTypes = {};
 
@@ -119,7 +127,6 @@ export class Autocomplete extends Component {
         }
 
         return (
-            
             <React.Fragment>
                 <input
                     className="input is-fullwidth"
@@ -128,9 +135,10 @@ export class Autocomplete extends Component {
                     placeholder="Enter username here"
                     onChange={onChange}
                     onKeyDown={onKeyDown}
-                    value={userInput}
+                    //value={userInput}
                 />
                 {suggestionsListComponent}
+                {wait(500)}
             </React.Fragment>
         );
     }
