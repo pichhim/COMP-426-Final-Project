@@ -10,11 +10,6 @@ import {
   NotificationManager,
 } from "react-notifications";
 
-const demoProfile = {
-  image:
-    "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640",
-};
-
 const styles = {
   overallContainerStyle: {
     margin: "25px 100px",
@@ -93,44 +88,44 @@ function renderProfile(editMode, setEditMode, user, props) {
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
-      <div className="tile" id="profile-card">
-        <div className="card" style={{ minWidth: "100%" }}>
-          <div className="card-image">
-            <figure className="image" style={{ margin: "10px" }}>
-              <img
-                style={styles.imageStyle(200)}
-                // src={demoProfile.image}
-                src={user.picture}
-                alt={`Profile: ${demoProfile.name}`}
-              ></img>
-            </figure>
+    <div className="tile" id="profile-card">
+      <div className="card" style={{ minWidth: "100%" }}>
+        <div className="card-image">
+          <figure className="image" style={{ margin: "10px" }}>
+            <img
+              style={styles.imageStyle(200)}
+              // src={demoProfile.image}
+              src={user.picture}
+              alt={`Profile: ${user.fullname}`}
+            ></img>
+          </figure>
+        </div>
+        <div className="card-content">
+          <div className="has-text-centered">
+            <strong>{user.fullname}</strong>
+            <br></br>
+            <em>{user.username}</em>
+            <div>
+              <p style={styles.statusStyle(user.status)}>{user.status}</p>
+            </div>
           </div>
-          <div className="card-content">
-            <div className="has-text-centered">
-              <strong>{user.fullname}</strong>
-              <br></br>
-              <em>{user.username}</em>
-              <div>
-                <p style={styles.statusStyle(user.status)}>{user.status}</p>
-              </div>
-            </div>
-            <br></br>
-            <p> {user.description}</p>
-            <br></br>
-            {renderStatusButtons(props, user)}
-            <br></br>
-            <div className="has-text-centered">
-              <button
-                className="button is-dark is-centered"
-                onClick={() => setEditMode(true)}
-              >
-                Edit
+          <br></br>
+          <p> {user.description}</p>
+          <br></br>
+          {renderStatusButtons(props, user)}
+          <br></br>
+          <div className="has-text-centered">
+            <button
+              className="button is-dark is-centered"
+              onClick={() => setEditMode(true)}
+            >
+              Edit
             </button>
-            </div>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 // Edit mode for user profile
@@ -152,42 +147,39 @@ function renderProfileEdit(setEditMode, user, props) {
             <img
               style={styles.imageStyle(200)}
               src={user.picture}
-              alt={`Profile: ${demoProfile.name}`}
+              alt={`Profile: ${user.fullname}`}
             ></img>
           </figure>
         </div>
         <div className="card-content">
-          <form>
-            <input type="file" />
-          </form>
-        </div>
-        <div className="has-text-centered" style={styles.inputStyle}>
-          <textarea
-            className="input"
-            type="text"
-            id="fullname"
-            placeholder="Full name"
-            onChange={(e) => (user.fullname = e.target.value)}
-            defaultValue={user.fullname}
-          />
-          <textarea
-            className="input"
-            type="text"
-            id="username"
-            placeholder="Username"
-            onChange={(e) => (user.username = e.target.value)}
-            defaultValue={user.username}
-          />
-        </div>
-        <div style={styles.inputStyle}>
-          <textarea
-            className="textarea"
-            type="text"
-            id="description"
-            placeholder="Description"
-            onChange={(e) => (user.description = e.target.value)}
-            defaultValue={user.description}
-          />
+          <div className="has-text-centered" style={styles.inputStyle}>
+            <textarea
+              className="input"
+              type="text"
+              id="fullname"
+              placeholder="Full name"
+              onChange={(e) => (user.fullname = e.target.value)}
+              defaultValue={user.fullname}
+            />
+            <textarea
+              className="input"
+              type="text"
+              id="username"
+              placeholder="Username"
+              onChange={(e) => (user.username = e.target.value)}
+              defaultValue={user.username}
+            />
+          </div>
+          <div style={styles.inputStyle}>
+            <textarea
+              className="textarea"
+              type="text"
+              id="description"
+              placeholder="Description"
+              onChange={(e) => (user.description = e.target.value)}
+              defaultValue={user.description}
+            />
+          </div>
         </div>
         <br></br>
         {renderStatusButtons(props, user)}
@@ -207,40 +199,41 @@ function renderProfileEdit(setEditMode, user, props) {
 
 // Render friends list
 function renderFriendsList(friendsList) {
-  return (
-    friendsList === [] ? "" :
-      <div className="tile is-child">
-        {friendsList.map((obj) => (
-          <article
-            className="media"
-            key={obj.username}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.boxShadow = "0 0 5px #888888")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
-          >
-            <div className="media-left">
-              <figure className="image">
-                <img
-                  style={styles.imageStyle(100)}
-                  src={demoProfile.image}
-                  alt={obj.fullname + " profile"}
-                ></img>
-              </figure>
-            </div>
-            <div className="media-content">
-              <div className="content">
-                <div>
-                  <strong>{obj.fullname}</strong>
-                  <br></br>
-                  <em>{obj.username}</em>
-                  <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
-                </div>
+  return friendsList === [] ? (
+    ""
+  ) : (
+    <div className="tile is-child">
+      {friendsList.map((obj) => (
+        <article
+          className="media"
+          key={obj.username}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.boxShadow = "0 0 5px #888888")
+          }
+          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
+        >
+          <div className="media-left">
+            <figure className="image">
+              <img
+                style={styles.imageStyle(100)}
+                src={obj.picture}
+                alt={obj.fullname + " profile"}
+              ></img>
+            </figure>
+          </div>
+          <div className="media-content">
+            <div className="content">
+              <div>
+                <strong>{obj.fullname}</strong>
+                <br></br>
+                <em>{obj.username}</em>
+                <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
               </div>
             </div>
-          </article>
-        ))}
-      </div>
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }
 
@@ -262,24 +255,24 @@ function Profile(props) {
     const uid = props.user.uid;
 
     try {
-      let listener = db.ref(`/users`).on("value", snapshot => {
+      let listener = db.ref(`/users`).on("value", (snapshot) => {
         let self = snapshot.val()[uid];
-        setSnapshot(self)
+        setSnapshot(self);
         let friends = self.friends;
         let friendInfo = [];
         for (let snap in snapshot.val()) {
           if (friends && snap in friends) {
             friendInfo.push({
               ...snapshot.val()[snap],
-              key: snap
-            })
+              key: snap,
+            });
           }
         }
-        setFriendsList(friendInfo)
-      })
+        setFriendsList(friendInfo);
+      });
       return () => db.ref(`/users`).off("value", listener);
     } catch (error) {
-      alert("Error reading friend info")
+      alert("Error reading friend info");
     }
   };
 
@@ -349,7 +342,10 @@ function Profile(props) {
       <NotificationContainer />
       <div className="container">
         <div className="content">
-          <div className="tile is-ancestor" style={styles.overallContainerStyle}>
+          <div
+            className="tile is-ancestor"
+            style={styles.overallContainerStyle}
+          >
             {renderProfile(editMode, setEditMode, snapshot, props)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
@@ -401,8 +397,8 @@ function Profile(props) {
       </div>
     </section>
   ) : (
-      <p></p>
-    );
+    <p></p>
+  );
 }
 
 export default withFirebase(Profile);
