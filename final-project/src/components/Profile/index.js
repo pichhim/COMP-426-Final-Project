@@ -311,6 +311,11 @@ function Profile(props) {
 
     try {
       let listener = db.ref(`/users`).on("value", (snapshot) => {
+
+        if (snapshot.val() == null) {
+          return () => db.ref(`/users`).off("value", listener);
+        }
+
         let self = snapshot.val()[uid];
         setSnapshot(self);
         let friends = self.friends;

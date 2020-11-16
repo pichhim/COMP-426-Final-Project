@@ -21,6 +21,15 @@ const styles = {
             color: `#${color}`,
         };
     },
+    columnStyle: {
+        height: 'calc(100vh - 100px)'
+    },
+    windowStyle: {
+        height: 'calc(100vh - 200px)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 };
 
 function Messages(props) {
@@ -33,7 +42,6 @@ function Messages(props) {
     const location = useLocation();
     const history = useHistory();
 
-
     function chatSelect(key) {
         setCurrChat(`/${key}`)
     }
@@ -42,10 +50,14 @@ function Messages(props) {
         const db = props.firebase.getDB();
         const uid = props.user.uid;
         // Set current location
-        setCurrChat(location.pathname.replace(match.path, ''))
         // Need to find way getting uid to not be null
         try {
             let listener = db.ref(`/users`).on("value", snapshot => {
+
+                if (snapshot.val() == null) {
+                    return () => db.ref(`/users`).off("value", listener);
+                }
+
                 let self = snapshot.val()[uid];
                 setSelf({ ...self, uid: uid });
                 let friends = self.friends;
@@ -66,18 +78,26 @@ function Messages(props) {
         }
     }
 
-    useEffect(initFriends, [])
+    // Sets current window location using parameters in route
+    function setLocation() {
+        setCurrChat(location.pathname.replace(match.path, ''))
+    }
 
+    useEffect(initFriends, []);
+    useEffect(setLocation);
+
+    const currWindow = friendList.filter(friend => currChat === `/${friend.key}`);
 
     return (
-        <div className="columns is-centered is-vcentered" style={{ height: 'calc(100vh - 100px)' }}>
+        <div className="columns is-centered is-vcentered" style={styles.columnStyle}>
             <div className="column is-4 is-narrow container">
                 {self ? <ChatsMenu user={self} chatList={friendList} chatSelect={chatSelect}></ChatsMenu> : null}
             </div>
             <div className="column is-7 is-narrow container">
                 <div className="card">
-                    <div className="card-content" style={{ height: 'calc(100vh - 200px)' }}>
-                        {friendList.filter(friend => currChat === `/${friend.key}`).map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)}
+                    <div className="card-content has-text-centered" style={styles.windowStyle}>
+                        {currWindow.length > 0 ? currWindow.map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)
+                            : <h3>Please Select a Friend to Chat With</h3>}
                     </div>
                 </div>
             </div>
