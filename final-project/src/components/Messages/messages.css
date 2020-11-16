@@ -5,29 +5,12 @@
 .messages-is-hoverable:hover {
     background-color: #F0F0F0;
 }
-
-.messages-over-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    height: calc(100vh - 200px);
-    border: solid #363636;
-    border-radius: 8px
-}
-
 .messages-window {
     grid-row: 1;
     grid-column: 1;
     height: 100%;
     z-index: 10;
     overflow: auto;
-}
-
-.messages-translucent-background {
-    grid-row: 1;
-    grid-column: 1;
-    background: #FFFFFF;
-    opacity: 90%;
 }
 
 .messages-container {
@@ -38,7 +21,7 @@
 .own-messages {
     margin: 8px;
     margin-left: auto;
-    max-width: 50%;
+    max-width: 500px;
     height: auto;
 
     padding: 4px 16px 4px 16px;
@@ -49,7 +32,7 @@
 
 .friend-messages {
     margin: 8px;
-    max-width: 50%;
+    max-width: 500px;
     height: auto;
 
     padding: 4px 16px 4px 16px;

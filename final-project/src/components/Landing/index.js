@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import 'react-bulma-components/dist/react-bulma-components.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { Section, Container, Level, Heading, Button, Card } from 'react-bulma-components';
-import { Parallax } from "react-parallax";
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components'
@@ -17,74 +16,8 @@ const fadeIn = keyframes`
             opacity: 1;
         }
     `
-
-// moving boba
-const move = () => keyframes`
-        0%, 100% {
-            right: 0px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;
-            
-        }
-        10% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px; 
-        }
-        20% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;     
-           }
-        30% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        40% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;      
-          }
-        50% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;     
-           }
-        60% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;      
-          }
-        70% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        80% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        90% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-    `
-
 const FadingDiv = styled.div`
         animation: 0.5s ${fadeIn} ease-out;
-    `
-const Boba = styled.div`
-        height: 50px;
-        width: 50px;
-        background-color: #000;
-        border-radius: 50%;
-        display: inline-block;
-        position: fixed;
-        zIndex: -2;
-        animation: ${move} 200s linear infinite;
     `
 
     const style = {
