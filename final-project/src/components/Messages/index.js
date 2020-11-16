@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { useHistory, useRouteMatch, useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import './messages.css';
 
@@ -30,6 +31,12 @@ function Messages(props) {
 
     const match = useRouteMatch();
     const location = useLocation();
+    const history = useHistory();
+
+
+    function chatSelect(key) {
+        setCurrChat(`/${key}`)
+    }
 
     function initFriends() {
         const db = props.firebase.getDB();
@@ -64,8 +71,8 @@ function Messages(props) {
 
     return (
         <div className="columns is-centered is-vcentered" style={{ height: 'calc(100vh - 100px)' }}>
-            <div className="column is-3 is-narrow container">
-                {self ? <ChatsMenu user={self} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu> : null}
+            <div className="column is-4 is-narrow container">
+                {self ? <ChatsMenu user={self} chatList={friendList} chatSelect={chatSelect}></ChatsMenu> : null}
             </div>
             <div className="column is-7 is-narrow container">
                 <div className="card">
@@ -82,12 +89,7 @@ function ChatsMenu(props) {
 
     const chatList = props.chatList;
     const user = props.user;
-    const history = useHistory();
-
-    function onClick(key) {
-        props.chatSelect(`/${key}`)
-        history.push(key);
-    }
+    const [query, setQuery] = useState('')
 
     return (
         <div className="card"> {/** Attempted scroll */}
@@ -101,7 +103,7 @@ function ChatsMenu(props) {
 
                 <div className="field">
                     <div className="control has-icons-left">
-                        <input className="input is-rounded" type="text" placeholder="Search chats"></input>
+                        <input className="input is-rounded" type="text" placeholder="Search chats" value={query} onChange={(e) => setQuery(e.target.value)}></input>
                         <span className="icon is-left">
                             <FontAwesomeIcon icon={faSearch} />
                         </span>
@@ -109,21 +111,23 @@ function ChatsMenu(props) {
                 </div>
 
                 <div className="tile is-parent is-vertical" style={{ height: 'calc(100% - 160px)', overflow: 'auto' }}>
-                    {chatList.map(chat => {
-                        return <div className="tile is-child is-vertical messages-is-hoverable"
+                    {chatList.filter(entry => entry.username.includes(query) || entry.fullname.includes(query)).map(chat => {
+                        return <div className="tile is-child is-vertical messages-is-hoverable messages-option"
                             key={chat.key}
-                            onClick={() => onClick(chat.key)}>
-                            <article className="media messages-is-clickable">
-                                <figure className="media-left">
-                                    <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
-                                </figure>
-                                <div className="media-content">
-                                    <div className="content">
-                                        <h6>{chat.fullname} - <i>{chat.username}</i></h6>
-                                        <p style={styles.statusStyle(chat.status)}>{chat.status}</p>
+                            onClick={() => props.chatSelect(chat.key)}>
+                            <Link to={`/messages/${chat.key}`}>
+                                <article className="media messages-is-clickable">
+                                    <figure className="media-left">
+                                        <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
+                                    </figure>
+                                    <div className="media-content">
+                                        <div className="content">
+                                            <h6>{chat.fullname} - <i>{chat.username}</i></h6>
+                                            <p style={styles.statusStyle(chat.status)}>{chat.status}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
+                                </article>
+                            </Link>
                         </div>
                     })}
                 </div>

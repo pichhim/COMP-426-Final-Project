@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.messages-option {
+    max-height: 64px;
+}
+
 .own-messages {
     margin: 8px;
     margin-left: auto;
