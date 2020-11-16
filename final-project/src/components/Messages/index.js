@@ -6,8 +6,6 @@ import { withFirebase } from '../Firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import Background from '../Background';
-
 import './messages.css';
 
 function Messages(props) {
@@ -24,7 +22,7 @@ function Messages(props) {
         try {
             let listener = db.ref(`/users`).on("value", snapshot => {
                 let self = snapshot.val()[uid];
-                setSelf({...self, uid: uid});
+                setSelf({ ...self, uid: uid });
                 let friends = self.friends;
                 let friendInfo = [];
                 for (let snap in snapshot.val()) {
@@ -47,12 +45,13 @@ function Messages(props) {
 
 
     return (
-        <div className="columns">
-            <div className="column is-4 container" style={{height:'calc(100vh - 200px)', overflow:'auto'}}>
-                <ChatsMenu user={self} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu>
+        <div className="columns is-centered is-vcentered" style={{ height: 'calc(100vh - 100px)' }}>
+            <div className="column is-3 is-narrow container">
+                {self ? <ChatsMenu user={self} chatList={friendList} chatSelect={setCurrChat}></ChatsMenu> : null}
             </div>
-            <div className="column is-8 container" style={{height:'calc(100vh - 200px)'}}>
+            <div className="column is-7 is-narrow container messages-over-container">
                 {friendList.filter(friend => currChat === friend.key).map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)}
+                <div className="messages-translucent-background"></div>
             </div>
         </div>
     )
@@ -60,44 +59,47 @@ function Messages(props) {
 
 function ChatsMenu(props) {
 
-    const chatList = props.chatList
+    const chatList = props.chatList;
+    const user = props.user;
 
     return (
-        <div className="tile is-vertical overflow-auto"> {/** Attempted scroll */}
-            <article className="tile is-parent media">
-                <figure className="media-left">
-                    <img className="image is-64x64" src={'lmao'} style={{ borderRadius: "50%" }}></img>
-                </figure>
-                <h1 className="title"><b>Chats</b></h1>
-            </article>
+        <div className="card"> {/** Attempted scroll */}
+            <div className="card-content" style={{ height: 'calc(100vh - 200px)'}}>
+                <article className="tile is-parent media">
+                    <figure className="media-left">
+                        <img className="image is-64x64" src={user.picture} style={{ borderRadius: "50%" }}></img>
+                    </figure>
+                    <h1 className="title"><b>chats</b></h1>
+                </article>
 
-            <div className="field">
-                <div className="control has-icons-left">
-                    <input className="input is-rounded" type="text" placeholder="Search chats"></input>
-                    <span className="icon is-left">
-                        <FontAwesomeIcon icon={faSearch} />
-                    </span>
-                </div>
-            </div>
-
-            <div className="tile is-parent is-vertical">
-                {chatList.map(chat => {
-                    return <div className="tile is-child is-vertical messages-is-hoverable"
-                        key={chat.key}
-                        onClick={() => props.chatSelect(chat.key)}>
-                        <article className="media messages-is-clickable">
-                            <figure className="media-left">
-                                <img className="image is-64x64" src={chat.img} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
-                            </figure>
-                            <div className="media-content">
-                                <div className="content">
-                                    <h4>{chat.username}</h4>
-                                    <p><i>{chat.fullname}</i></p>
-                                </div>
-                            </div>
-                        </article>
+                <div className="field">
+                    <div className="control has-icons-left">
+                        <input className="input is-rounded" type="text" placeholder="Search chats"></input>
+                        <span className="icon is-left">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </span>
                     </div>
-                })}
+                </div>
+
+                <div className="tile is-parent is-vertical" style={{overflow: 'auto'}}>
+                    {chatList.map(chat => {
+                        return <div className="tile is-child is-vertical messages-is-hoverable"
+                            key={chat.key}
+                            onClick={() => props.chatSelect(chat.key)}>
+                            <article className="media messages-is-clickable">
+                                <figure className="media-left">
+                                    <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
+                                </figure>
+                                <div className="media-content">
+                                    <div className="content">
+                                        <h4>{chat.username}</h4>
+                                        <p><i>{chat.fullname}</i></p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    })}
+                </div>
             </div>
         </div>
     )
