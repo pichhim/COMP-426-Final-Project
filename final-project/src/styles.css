@@ -21,3 +21,11 @@
 .Title {
     color: #363636
 }
+
+.custom-is-clickable {
+    cursor: pointer;
+}
+
+.custom-is-hoverable:hover {
+    background-color: #F0F0F0;
+}

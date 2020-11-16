@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'react-bulma-components/dist/react-bulma-components.min.css';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const styles = {
@@ -9,12 +8,13 @@ const styles = {
     padding: '10px',
   },
   absolute: {
-    position: 'absolute'
+    position: 'absolute',
+    zIndex: '100'
   },
 }
 
 const Suggestion = styled.button`
-    width: 33.5vw;
+    width: 400px;
     font-size: 15px;
     border: none;
     :hover {

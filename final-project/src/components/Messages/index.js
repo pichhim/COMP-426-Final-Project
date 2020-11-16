@@ -112,11 +112,11 @@ function ChatsMenu(props) {
 
                 <div className="tile is-parent is-vertical" style={{ height: 'calc(100% - 160px)', overflow: 'auto' }}>
                     {chatList.filter(entry => entry.username.includes(query) || entry.fullname.includes(query)).map(chat => {
-                        return <div className="tile is-child is-vertical messages-is-hoverable messages-option"
+                        return <div className="tile is-child is-vertical custom-is-hoverable messages-option"
                             key={chat.key}
                             onClick={() => props.chatSelect(chat.key)}>
                             <Link to={`/messages/${chat.key}`}>
-                                <article className="media messages-is-clickable">
+                                <article className="media custom-is-clickable">
                                     <figure className="media-left">
                                         <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
                                     </figure>

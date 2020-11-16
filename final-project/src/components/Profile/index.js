@@ -198,7 +198,7 @@ function renderFriendsList(friendsList) {
         {friendsList.map((obj) => (
           <div className="container" style={{ width: '100%', marginBottom: '1rem' }}>
             <article
-              className="media messages-is-hoverable"
+              className="media custom-is-hoverable"
               key={obj.username}
               // onMouseEnter={(e) =>
               //   (e.currentTarget.style.boxShadow = "0 0 5px #888888")
