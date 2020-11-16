@@ -7,6 +7,8 @@ import { withFirebase } from '../Firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
+import { useHistory, useRouteMatch, useLocation } from 'react-router';
+
 import './messages.css';
 
 const styles = {
@@ -26,10 +28,14 @@ function Messages(props) {
     const [friendList, setFriendList] = useState([]);
     const [self, setSelf] = useState(null);
 
+    const match = useRouteMatch();
+    const location = useLocation();
+
     function initFriends() {
         const db = props.firebase.getDB();
         const uid = props.user.uid;
-
+        // Set current location
+        setCurrChat(location.pathname.replace(match.path, ''))
         // Need to find way getting uid to not be null
         try {
             let listener = db.ref(`/users`).on("value", snapshot => {
@@ -64,7 +70,7 @@ function Messages(props) {
             <div className="column is-7 is-narrow container">
                 <div className="card">
                     <div className="card-content" style={{ height: 'calc(100vh - 200px)' }}>
-                        {friendList.filter(friend => currChat === friend.key).map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)}
+                        {friendList.filter(friend => currChat === `/${friend.key}`).map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)}
                     </div>
                 </div>
             </div>
@@ -76,6 +82,12 @@ function ChatsMenu(props) {
 
     const chatList = props.chatList;
     const user = props.user;
+    const history = useHistory();
+
+    function onClick(key) {
+        props.chatSelect(`/${key}`)
+        history.push(key);
+    }
 
     return (
         <div className="card"> {/** Attempted scroll */}
@@ -100,14 +112,14 @@ function ChatsMenu(props) {
                     {chatList.map(chat => {
                         return <div className="tile is-child is-vertical messages-is-hoverable"
                             key={chat.key}
-                            onClick={() => props.chatSelect(chat.key)}>
+                            onClick={() => onClick(chat.key)}>
                             <article className="media messages-is-clickable">
                                 <figure className="media-left">
                                     <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
                                 </figure>
                                 <div className="media-content">
                                     <div className="content">
-                                        <h4>{chat.username} - <i>{chat.fullname}</i></h4>
+                                        <h6>{chat.fullname} - <i>{chat.username}</i></h6>
                                         <p style={styles.statusStyle(chat.status)}>{chat.status}</p>
                                     </div>
                                 </div>
