@@ -8,19 +8,18 @@ const styles = {
     margin: '0px',
     padding: '10px',
   },
-
-  noavail: {
-    margin: '10px',
-  }
+  absolute: {
+    position: 'absolute'
+  },
 }
 
 const Suggestion = styled.button`
-    width: 30vw;
+    width: 33.5vw;
     font-size: 15px;
     border: none;
     :hover {
         background-color: #ECCDC2;
-    }
+    };
 `
 
 function wait(ms, suggestions, userInput) {
@@ -41,7 +40,6 @@ export class Autocomplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: ''
@@ -67,7 +65,6 @@ export class Autocomplete extends Component {
         const filteredSuggestions = wait(50, suggestions, userInput);
 
         this.setState({
-          activeSuggestion: 0,
           filteredSuggestions,
           showSuggestions: true,
           userInput: e.currentTarget.value
@@ -76,14 +73,12 @@ export class Autocomplete extends Component {
 
       onClick = (e) => {
         this.setState({
-          activeSuggestion: 0,
           filteredSuggestions: [],
           showSuggestions: false,
           userInput: e.currentTarget.innerText
         });
       },
       state: {
-        activeSuggestion,
         filteredSuggestions,
         showSuggestions,
         userInput
@@ -94,7 +89,7 @@ export class Autocomplete extends Component {
     if (showSuggestions && userInput) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
-          <div className="suggestions">
+          <div className="suggestions" style={styles.absolute}>
             {filteredSuggestions.map((suggestion, index) => {
               return (
                 <Suggestion className="box" style={styles.autocomplete} key={index} onClick={onClick}>
@@ -106,7 +101,7 @@ export class Autocomplete extends Component {
         );
       } else {
         suggestionsListComponent = (
-          <div className="no-suggestions" style={styles.noAvail}>
+          <div className="no-suggestions" style={styles.absolute}>
             <em>No suggestions!</em>
           </div>
         );
@@ -115,16 +110,15 @@ export class Autocomplete extends Component {
 
     return (
       <React.Fragment>
-        <input
-          className="input is-fullwidth"
-          type="text"
-          id="friendInput"
-          placeholder="Enter username here"
-          onChange={onChange}
-          value={userInput}
-        />
-        {suggestionsListComponent}
-
+          <input
+            className="input is-fullwidth"
+            type="text"
+            id="friendInput"
+            placeholder="Enter username here"
+            onChange={onChange}
+            value={userInput}
+          />
+          {suggestionsListComponent}
       </React.Fragment>
     );
   }

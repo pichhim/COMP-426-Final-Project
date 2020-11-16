@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useEffect, useState } from "react";
 import status_colors from "./status_colors";
 import ReactTooltip from "react-tooltip";
 import { withFirebase } from "../Firebase";
@@ -10,7 +10,7 @@ import Autocomplete from "./autocomplete";
 
 const styles = {
   overallContainerStyle: {
-    margin: "25px 100px",
+    // margin: "25px 100px",
   },
   inputStyle: {
     margin: "20px",
@@ -86,14 +86,12 @@ function renderProfile(editMode, setEditMode, user, props) {
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
-    <div className="tile" id="profile-card">
-      <div className="card" style={{ minWidth: "100%" }}>
-        <div className="card-image">
-          <figure className="image" style={{ margin: "10px" }}>
+      <div className="card" id="profile-card" style={{height: 'calc(100vh - 200px)'}}>
+        <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
+          <figure className="image is-inline-block" style={{ margin: "10px" }}>
             <img
               style={styles.imageStyle(200)}
-              // src={demoProfile.image}
-              src={user.picture}
+              src={`${user.picture}&size=512`}
               alt={`Profile: ${user.fullname}`}
             ></img>
           </figure>
@@ -108,7 +106,7 @@ function renderProfile(editMode, setEditMode, user, props) {
             </div>
           </div>
           <br></br>
-          <p> {user.description}</p>
+          <p className="has-text-centered"> {user.description}</p>
           <br></br>
           {renderStatusButtons(props, user)}
           <br></br>
@@ -122,8 +120,7 @@ function renderProfile(editMode, setEditMode, user, props) {
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 // Edit mode for user profile
@@ -138,58 +135,56 @@ function renderProfileEdit(setEditMode, user, props) {
   }
 
   return (
-    <div className="tile" id="profile-card">
-      <div className="card" style={{ minWidth: "100%" }}>
-        <div className="card-image">
-          <figure className="image" style={{ margin: "10px" }}>
-            <img
-              style={styles.imageStyle(200)}
-              src={user.picture}
-              alt={`Profile: ${user.fullname}`}
-            ></img>
-          </figure>
+    <div className="card" id="profile-card" style={{height: 'calc(100vh - 200px)'}}>
+      <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
+        <figure className="image is-inline-block" style={{ margin: "10px" }}>
+          <img
+            style={styles.imageStyle(200)}
+            src={`${user.picture}&size=512`}
+            alt={`Profile: ${user.fullname}`}
+          ></img>
+        </figure>
+      </div>
+      <div className="card-content">
+        <div className="has-text-centered" style={styles.inputStyle}>
+          <textarea
+            className="input"
+            type="text"
+            id="fullname"
+            placeholder="Full name"
+            onChange={(e) => (user.fullname = e.target.value)}
+            defaultValue={user.fullname}
+          />
+          <textarea
+            className="input"
+            type="text"
+            id="username"
+            placeholder="Username"
+            onChange={(e) => (user.username = e.target.value)}
+            defaultValue={user.username}
+          />
         </div>
-        <div className="card-content">
-          <div className="has-text-centered" style={styles.inputStyle}>
-            <textarea
-              className="input"
-              type="text"
-              id="fullname"
-              placeholder="Full name"
-              onChange={(e) => (user.fullname = e.target.value)}
-              defaultValue={user.fullname}
-            />
-            <textarea
-              className="input"
-              type="text"
-              id="username"
-              placeholder="Username"
-              onChange={(e) => (user.username = e.target.value)}
-              defaultValue={user.username}
-            />
-          </div>
-          <div style={styles.inputStyle}>
-            <textarea
-              className="textarea"
-              type="text"
-              id="description"
-              placeholder="Description"
-              onChange={(e) => (user.description = e.target.value)}
-              defaultValue={user.description}
-            />
-          </div>
+        <div style={styles.inputStyle}>
+          <textarea
+            className="textarea"
+            type="text"
+            id="description"
+            placeholder="Description"
+            onChange={(e) => (user.description = e.target.value)}
+            defaultValue={user.description}
+          />
         </div>
-        <br></br>
-        {renderStatusButtons(props, user)}
-        <br></br>
-        <div className="has-text-centered">
-          <button
-            className="button is-dark is-centered"
-            onClick={() => updateProfile()}
-          >
-            Save
+      </div>
+      <br></br>
+      {/* {renderStatusButtons(props, user)} */}
+      <br></br>
+      <div className="has-text-centered">
+        <button
+          className="button is-dark is-centered"
+          onClick={() => updateProfile()}
+        >
+          Save
           </button>
-        </div>
       </div>
     </div>
   );
@@ -200,39 +195,41 @@ function renderFriendsList(friendsList) {
   return friendsList === [] ? (
     ""
   ) : (
-    <div className="tile is-child">
-      {friendsList.map((obj) => (
-        <article
-          className="media"
-          key={obj.username}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.boxShadow = "0 0 5px #888888")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
-        >
-          <div className="media-left">
-            <figure className="image">
-              <img
-                style={styles.imageStyle(100)}
-                src={obj.picture}
-                alt={obj.fullname + " profile"}
-              ></img>
-            </figure>
-          </div>
-          <div className="media-content">
-            <div className="content">
-              <div>
-                <strong>{obj.fullname}</strong>
-                <br></br>
-                <em>{obj.username}</em>
-                <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
+      <div className="tile is-child" style={{ overflow: 'auto', height: 'calc(100vh - 300px)' }}>
+        {friendsList.map((obj) => (
+          <div className="card" style={{ marginBottom: '1rem' }}>
+            <article
+              className="media card-content"
+              key={obj.username}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.boxShadow = "0 0 5px #888888")
+              }
+              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
+            >
+              <div className="media-left">
+                <figure className="image">
+                  <img
+                    style={styles.imageStyle(100)}
+                    src={`${obj.picture}&size=512`}
+                    alt={obj.fullname + " profile"}
+                  ></img>
+                </figure>
               </div>
-            </div>
+              <div className="media-content">
+                <div className="content">
+                  <div>
+                    <strong>{obj.fullname}</strong>
+                    <br></br>
+                    <em>{obj.username}</em>
+                    <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
-        </article>
-      ))}
-    </div>
-  );
+        ))}
+      </div>
+    );
 }
 
 // Render overall Profile page
@@ -269,7 +266,7 @@ function Profile(props) {
   //       }
   //     })
 
-      
+
 
   //     return usernames;
   //   } catch(error) {
@@ -298,7 +295,7 @@ function Profile(props) {
   //       //   }
   //       // }
 
-        
+
   //       snapshot.forEach(function(child) {
   //         usernames[usernames.length] = snapshot.val()[child.key].username
   //       })
@@ -404,23 +401,26 @@ function Profile(props) {
   }
 
   return snapshot !== null ? (
-    <section className="section">
+    <section>
       <NotificationContainer />
       <div className="container">
-        <div className="content">
+        <div className="columns is-desktop is-vcentered" style={{ height: 'calc(100vh - 90px)' }}>
           <div
-            className="tile is-ancestor"
+            className="column is-half is-narrow"
             style={styles.overallContainerStyle}
           >
             {renderProfile(editMode, setEditMode, snapshot, props)}
-            <div className="tile is-parent is-vertical" id="friends-list">
-              <figure>
+          </div>
+          <div className="column is-half is-narrow">
+
+            <div className="tile is-parent is-vertical  has-text-centered" id="friends-list">
+              <figure style={{height: '100px', zIndex: '100'}}>
                 <u className="title">Friends</u>
                 <br></br>&nbsp;
                 <div>
                   <div className="field has-addons">
                     {/* Input field */}
-                    <div className="control is-expanded">
+                    <div className="control is-expanded" style={{position: 'relative'}}>
                       {/* <input
                         className="input is-fullwidth"
                         type="text"
@@ -429,7 +429,7 @@ function Profile(props) {
                       ></input> */}
                       {/* get all the usernames here */}
                       <Autocomplete suggestions={getUserList(usernameList)} />
-                    </div>{" "}
+                    </div>
                     &nbsp;
                     <div className="buttons is-right">
                       {/* Friend adder */}
@@ -458,15 +458,17 @@ function Profile(props) {
                   </div>
                 </div>
               </figure>
+              <br></br>&nbsp;
               <div className="tile">{renderFriendsList(friendsList)}</div>
             </div>
+
           </div>
         </div>
       </div>
-    </section>
+    </section >
   ) : (
-    <p></p>
-  );
+      <p></p>
+    );
 }
 
 export default withFirebase(Profile);

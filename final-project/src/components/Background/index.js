@@ -80,80 +80,7 @@ const style = {
 
     landingSpacing: {
         width: '100vw',
-        height: 'calc(100vh - 90px)'
-    },
-
-    landingTitle: {
-        fontSize: '90px',
-    },
-
-    landingDisplay: {
-        textAlign: 'center',
-        zIndex: '2'
-    },
-
-    landingPadding: {
-        padding: '15px'
-    },
-
-    signupButton: {
-        marginright: '10px',
-    },
-
-    loginButton: {
-        marginRight: '10px',
-        paddingLeft: '25px',
-        paddingRight: '25px',
-    },
-
-    buttonContainer: {
-        paddingleft: '20px',
-    },
-
-    styleBlock: {
-        display: 'block',
-    },
-
-    devSection: {
-        padding: '50px',
-    },
-
-    aboutSection: {
-        padding: '120px',
-    },
-
-    descPadding: {
-        paddingTop: '30px'
-    },
-
-    iconSize: {
-        fontSize: '150px',
-        color: '#ECCDC2',
-    },
-
-    landingPopupCard: {
-        display: 'none',
-        marginRight: '10%',
-        width: '400px',
-        zIndex: '1',
-    },
-
-    landingPopupTitle: {
-        textAlign: 'center',
-    },
-
-    submitButton: {
-        marginTop: '20px',
-        textAlign: 'center',
-    },
-
-    readme: {
-        textAlign: 'center',
-        paddingTop: `${window.innerHeight / 6}px`
-    },
-
-    xButton: {
-        float: 'right',
+        height: 'calc(100vh)'
     },
 
     wave: {
@@ -163,10 +90,6 @@ const style = {
         height: '90px',
     },
 
-    error: {
-        width: 'fit-content',
-    },
-
 };
 
 function Landing() {
@@ -174,7 +97,7 @@ function Landing() {
     return (
         <div style={style.background}>
             <Parallax strength={window.innerWidth}>
-                <div style={style.wave}></div>
+                {/* <div style={style.wave}></div> */}
                 <Section style={style.landingSpacing}>
                     <Container>
                         <Boba></Boba>
