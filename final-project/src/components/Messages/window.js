@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 import TicTacToe from '../GameBoard/TicTacToe';
+import { Redirect } from "react-router-dom";
 
 function ChatWindow(props) {
 
@@ -19,6 +20,7 @@ function ChatWindow(props) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [showBoard, setShowBoard] = useState(false);
     const [lastState, setLastState] = useState(null);
+    const [redirect, setRedirect] = useState(null);
 
     function initChat() {
         const db = props.firebase.getDB();
@@ -30,6 +32,7 @@ function ChatWindow(props) {
             let listener = db.ref(`/channels/${channelId}`).on("value", snapshot => {
 
                 if (snapshot.val() == null) {
+                    setRedirect(true)
                     return () => db.ref(`/channels/${channelId}`).off("value", listener);
                 }
 
@@ -256,7 +259,7 @@ function ChatWindow(props) {
                     </div>
                 </form>
             </div>
-
+            {redirect ? <Redirect to="/messages"></Redirect> : null}
         </div>
     )
 }
