@@ -467,7 +467,7 @@ function Landing() {
     };
 
     return (
-        <Parallax bgImage={bobaBackground} strength={window.innerWidth}>
+        <div>
             <div style={style.wave}></div>
             <div id='box'></div>
             <Section id="landing" style={style.landingSpacing}>
@@ -485,37 +485,6 @@ function Landing() {
                         <SignInFormV2></SignInFormV2>
                     </Level.Item>
                 </Level>
-                <Container>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                </Container>
             </Section>
             <Section style={whiteSection}>
                 <Level>
@@ -583,7 +552,8 @@ function Landing() {
             <Section style={style.emptySpace}>
                 <div style={style.readme}><a target="_blank" rel="noopener noreferrer" href="https://github.com/pichhim/COMP-426-Final-Project#comp-426-final-project"><Button size="large">README.md</Button></a></div>
             </Section>
-        </Parallax>
+        </div>
+            
     )
 }
 
