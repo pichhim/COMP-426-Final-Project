@@ -86,9 +86,9 @@ function renderProfile(editMode, setEditMode, user, props) {
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
-      <div className="card" id="profile-card" style={{height: 'calc(100vh - 200px)'}}>
+      <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
         <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
-          <figure className="image is-inline-block" style={{ margin: "10px" }}>
+          <figure className="image is-inline-block" style={{ margin: "1rem" }}>
             <img
               style={styles.imageStyle(200)}
               src={`${user.picture}&size=512`}
@@ -135,9 +135,9 @@ function renderProfileEdit(setEditMode, user, props) {
   }
 
   return (
-    <div className="card" id="profile-card" style={{height: 'calc(100vh - 200px)'}}>
+    <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
       <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
-        <figure className="image is-inline-block" style={{ margin: "10px" }}>
+        <figure className="image is-inline-block" style={{ margin: "1rem" }}>
           <img
             style={styles.imageStyle(200)}
             src={`${user.picture}&size=512`}
@@ -174,18 +174,17 @@ function renderProfileEdit(setEditMode, user, props) {
             defaultValue={user.description}
           />
         </div>
-      </div>
-      <br></br>
-      {/* {renderStatusButtons(props, user)} */}
-      <br></br>
-      <div className="has-text-centered">
-        <button
-          className="button is-dark is-centered"
-          onClick={() => updateProfile()}
-        >
-          Save
+        {/* {renderStatusButtons(props, user)} */}
+        <div className="has-text-centered">
+          <button
+            className="button is-dark is-centered"
+            onClick={() => updateProfile()}
+          >
+            Save
           </button>
+        </div>
       </div>
+
     </div>
   );
 }
@@ -195,15 +194,15 @@ function renderFriendsList(friendsList) {
   return friendsList === [] ? (
     ""
   ) : (
-      <div className="tile is-child" style={{ overflow: 'auto', height: 'calc(100vh - 300px)' }}>
+      <div className="tile is-child" style={{ overflow: 'auto', height: 'calc(100vh - 400px)' }}>
         {friendsList.map((obj) => (
-          <div className="card" style={{ marginBottom: '1rem' }}>
+          <div className="container" style={{ width: '100%', marginBottom: '1rem' }}>
             <article
-              className="media card-content"
+              className="media messages-is-hoverable"
               key={obj.username}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow = "0 0 5px #888888")
-              }
+              // onMouseEnter={(e) =>
+              //   (e.currentTarget.style.boxShadow = "0 0 5px #888888")
+              // }
               onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
             >
               <div className="media-left">
@@ -404,62 +403,63 @@ function Profile(props) {
     <section>
       <NotificationContainer />
       <div className="container">
-        <div className="columns is-desktop is-vcentered" style={{ height: 'calc(100vh - 90px)' }}>
+        <div className="columns is-vcentered is-centered" style={{ height: 'calc(100vh - 90px)' }}>
           <div
-            className="column is-half is-narrow"
+            className="column is-5 is-narrow"
             style={styles.overallContainerStyle}
           >
             {renderProfile(editMode, setEditMode, snapshot, props)}
           </div>
-          <div className="column is-half is-narrow">
-
-            <div className="tile is-parent is-vertical  has-text-centered" id="friends-list">
-              <figure style={{height: '100px', zIndex: '100'}}>
-                <u className="title">Friends</u>
-                <br></br>&nbsp;
+          <div className="column is-5 is-narrow">
+            <div className="card has-text-centered" id="friends-list" style={{ height: 'calc(100vh - 200px)' }}>
+              <div className="card-content">
+                <figure style={{ height: '100px', zIndex: '100' }}>
+                  <u className="title">Friends</u>
+                  <br></br>&nbsp;
                 <div>
-                  <div className="field has-addons">
-                    {/* Input field */}
-                    <div className="control is-expanded" style={{position: 'relative'}}>
-                      {/* <input
+                    <div className="field has-addons">
+                      {/* Input field */}
+                      <div className="control is-expanded" style={{ position: 'relative' }}>
+                        {/* <input
                         className="input is-fullwidth"
                         type="text"
                         id="friendInput"
                         placeholder="Enter username here"
                       ></input> */}
-                      {/* get all the usernames here */}
-                      <Autocomplete suggestions={getUserList(usernameList)} />
-                    </div>
+                        {/* get all the usernames here */}
+                        <Autocomplete suggestions={getUserList(usernameList)} />
+                      </div>
                     &nbsp;
                     <div className="buttons is-right">
-                      {/* Friend adder */}
-                      <button
-                        className="button"
-                        data-tip="Add Friend"
-                        data-place="top"
-                        onClick={() => addFriend()}
-                      >
-                        <span className="icon is-small">
-                          <FontAwesomeIcon icon={faPlus} />
-                        </span>
-                      </button>
-                      {/* Friend remover */}
-                      <button
-                        className="button"
-                        data-tip="Unfriend"
-                        data-place="top"
-                        onClick={() => removeFriend()}
-                      >
-                        <span className="icon is-small">
-                          <FontAwesomeIcon icon={faMinus} />
-                        </span>
-                      </button>
+                        {/* Friend adder */}
+                        <button
+                          className="button"
+                          data-tip="Add Friend"
+                          data-place="top"
+                          onClick={() => addFriend()}
+                        >
+                          <span className="icon is-small">
+                            <FontAwesomeIcon icon={faPlus} />
+                          </span>
+                        </button>
+                        {/* Friend remover */}
+                        <button
+                          className="button"
+                          data-tip="Unfriend"
+                          data-place="top"
+                          onClick={() => removeFriend()}
+                        >
+                          <span className="icon is-small">
+                            <FontAwesomeIcon icon={faMinus} />
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </figure>
-              <br></br>&nbsp;
+                </figure>
+                <br></br>&nbsp;
               <div className="tile">{renderFriendsList(friendsList)}</div>
+              </div>
             </div>
 
           </div>
