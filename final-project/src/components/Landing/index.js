@@ -296,11 +296,11 @@ const INITIAL_STATE = {
 };
 
 const COLORS = {
-    '0': 'FFAA7B', // orange
-    '1': 'C58E4C', // coffee
-    '2': 'ECCDC2', // pink
-    '3': 'AFA4CE', // purple
-    '4': 'ECCDC2', // blue
+    one: 'FFAA7B', // orange
+    two: 'C58E4C', // coffee
+    three: 'ECCDC2', // pink
+    four: 'AFA4CE', // purple
+    five: 'ECCDC2', // blue
 }
 
 class SignUpForm extends Component {
@@ -345,32 +345,35 @@ class SignUpForm extends Component {
 
         let random = Math.floor(Math.random() * 10); // randomly picks a number 
         let color = "";
+        console.log(random);
         switch (random) {
-            case '0' || '1':
-                color += COLORS[0];
+            case 0:
+            case 1:
+                color += COLORS.one;
                 break;
             
-            case '2' || '3':
-                color += COLORS[1];
+            case 2:
+            case 3:
+                color += COLORS.two;
                 break;
 
-            case '4' || '5':
-                color += COLORS[2];
+            case 4:
+            case 5:
+                color += COLORS.three;
                 break;
 
-            case '6' || '7':
-                color += COLORS[3];
+            case 6:
+            case 7:
+                color += COLORS.four;
                 break;
 
-            case '8' || '9':
-                color += COLORS[4];
+            case 8:
+            case 9:
+                color += COLORS.five;
                 break;
         }
 
-        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color;
-        // console.log('url: ');
-        // console.log(url);
-        
+        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=256&rounded=true';
         return url;
     };
 
