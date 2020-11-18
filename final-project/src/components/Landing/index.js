@@ -295,6 +295,14 @@ const INITIAL_STATE = {
     error: null,
 };
 
+const COLORS = {
+    '0': 'FFAA7B', // orange
+    '1': 'C58E4C', // coffee
+    '2': 'ECCDC2', // pink
+    '3': 'AFA4CE', // purple
+    '4': 'ECCDC2', // blue
+}
+
 class SignUpForm extends Component {
     constructor(props) {
         super(props);
@@ -334,7 +342,32 @@ class SignUpForm extends Component {
     generateAvatar(name) {
         let res = name.split(" ");
         const [first, last] = [res[0], res[1]];
-        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=random';
+
+        let random = Math.floor(Math.random() * 10); // randomly picks a number 
+        let color = "";
+        switch (random) {
+            case '0' || '1':
+                color += COLORS[0];
+                break;
+            
+            case '2' || '3':
+                color += COLORS[1];
+                break;
+
+            case '4' || '5':
+                color += COLORS[2];
+                break;
+
+            case '6' || '7':
+                color += COLORS[3];
+                break;
+
+            case '8' || '9':
+                color += COLORS[4];
+                break;
+        }
+
+        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color;
         // console.log('url: ');
         // console.log(url);
         
