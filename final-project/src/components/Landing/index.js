@@ -304,7 +304,6 @@ const COLORS = {
 }
 
 export const generateAvatar = (name) => {
-    console.log('in generate');
     let res = name.split(" ");
     const [first, last] = [res[0], res[1]];
 

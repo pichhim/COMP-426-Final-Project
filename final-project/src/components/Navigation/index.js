@@ -61,10 +61,8 @@ const NavAuth = withFirebase(props => {
   useEffect(getUserData, []);
 
   let getProfilePicture = () => {
-    console.log(currUser);
-    if (currUser != null) {
-      return currUser.picture; 
-    }
+    // console.log(currUser);
+    return currUser.picture; 
   }
   
   return (<nav className="navbar" role="navigation" aria-label="main navigation">
@@ -94,7 +92,6 @@ const NavAuth = withFirebase(props => {
           <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
               {/* {console.log(currUser)} */}
-              {/* <img alt="" style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" /> */}
               {currUser ? <img alt="" style={imageStyle(45)} src= {getProfilePicture()}/> : null}
             </div>
           </Link>
