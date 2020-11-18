@@ -7,6 +7,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer, NotificationManager, } from "react-notifications";
 import Autocomplete from "./autocomplete";
+import { generateAvatar } from "../Landing/index.js";
 
 const styles = {
   overallContainerStyle: {
@@ -132,7 +133,7 @@ function renderProfileEdit(setEditMode, user, props) {
     props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
-    // props.firebase.writeUserData("picture", user.picture);
+    props.firebase.writeUserData("picture", generateAvatar(user.fullname));
     setEditMode(false);
     // getSnapshot();
   }
