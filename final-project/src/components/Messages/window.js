@@ -92,7 +92,7 @@ function ChatWindow(props) {
     function startGame(e) {
         e.preventDefault();
         if (lastState == null || lastState.content.winner !== 'NONE') {
-            sendSystemMessage(`${props.user.username} is starting a new game...`)
+            sendSystemMessage(`${props.user.username} is starting a new game of tic-tac-toe...`)
             const tempState = {
                 date: new Date().toISOString(),
                 author: uid,

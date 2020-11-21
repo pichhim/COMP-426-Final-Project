@@ -257,10 +257,12 @@ function Profile(props) {
         let friendInfo = [];
         let userList = [];
         for (let snap in snapshot.val()) {
-          userList.push({
-            ...snapshot.val()[snap],
-            key: snap
-          })
+          if (snapshot.val()[snap].username != null) {
+            userList.push({
+              ...snapshot.val()[snap],
+              key: snap
+            })
+          }
           if (friends && snap in friends) {
             friendInfo.push({
               ...snapshot.val()[snap],
