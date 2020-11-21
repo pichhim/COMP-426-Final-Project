@@ -50,6 +50,11 @@ const NavAuth = withFirebase(props => {
 
     try {
       let listener = db.ref(`/users/${uid}`).on("value", snapshot => {
+
+        if (snapshot.val() == null) {
+          return () => db.ref(`/users/${uid}`).off("value", listener);
+        }
+
         setCurrUser(snapshot.val())
       })
       return () => db.ref(`/users/${uid}`).off("value", listener);

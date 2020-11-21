@@ -1,13 +1,9 @@
-.messages-is-clickable {
-    cursor: pointer;
-}
-
-.messages-is-hoverable:hover {
-    background-color: #F0F0F0;
-}
-
 .messages-window {
+    grid-row: 1;
+    grid-column: 1;
     height: 100%;
+    z-index: 10;
+    overflow: auto;
 }
 
 .messages-container {
@@ -15,10 +11,14 @@
     width: 100%;
 }
 
+.messages-option {
+    max-height: 64px;
+}
+
 .own-messages {
     margin: 8px;
     margin-left: auto;
-    max-width: 50%;
+    max-width: 500px;
     height: auto;
 
     padding: 4px 16px 4px 16px;
@@ -29,7 +29,7 @@
 
 .friend-messages {
     margin: 8px;
-    max-width: 50%;
+    max-width: 500px;
     height: auto;
 
     padding: 4px 16px 4px 16px;
