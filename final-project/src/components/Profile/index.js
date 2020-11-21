@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import status_colors from "./status_colors";
 import ReactTooltip from "react-tooltip";
 import { withFirebase } from "../Firebase";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "react-notifications/lib/notifications.css";
-import { NotificationContainer, NotificationManager, } from "react-notifications";
-import Autocomplete from "./autocomplete";
+import { NotificationContainer } from "react-notifications";
+import FriendCard from "./friendcard";
 import { generateAvatar } from "../Landing/index.js";
 
 const styles = {
@@ -186,56 +184,12 @@ function renderProfileEdit(setEditMode, user, props) {
   );
 }
 
-// Render friends list
-function renderFriendsList(friendsList) {
-  return friendsList === [] ? (
-    ""
-  ) : (
-      <div className="tile is-child" style={{ overflow: 'auto', height: 'calc(100vh - 400px)' }}>
-        {friendsList.map((obj) => (
-          <div className="container" style={{ width: '100%', marginBottom: '1rem' }}>
-            <article
-              className="media custom-is-hoverable"
-              key={obj.username}
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
-            >
-              <div className="media-left">
-                <figure className="image">
-                  <img
-                    style={styles.imageStyle(100)}
-                    src={`${obj.picture}`}
-                    alt={obj.fullname + " profile"}
-                  ></img>
-                </figure>
-              </div>
-              <div className="media-content">
-                <div className="content">
-                  <div>
-                    <strong>{obj.fullname}</strong>
-                    <br></br>
-                    <em>{obj.username}</em>
-                    <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </div>
-        ))}
-      </div>
-    );
-}
-
 // Render overall Profile page
 function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
   const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
-  const [usernameList, setUsernameList] = useState([])
 
-  function getUserList(usernameList) {
-    let userList = usernameList.map((obj) => (obj.username));
-    return userList;
-  }
 
   const getFriendsList = () => {
     const db = props.firebase.getDB();
@@ -252,14 +206,7 @@ function Profile(props) {
         setSnapshot(self);
         let friends = self.friends;
         let friendInfo = [];
-        let userList = [];
         for (let snap in snapshot.val()) {
-          if (snapshot.val()[snap].username != null) {
-            userList.push({
-              ...snapshot.val()[snap],
-              key: snap
-            })
-          }
           if (friends && snap in friends) {
             friendInfo.push({
               ...snapshot.val()[snap],
@@ -268,7 +215,6 @@ function Profile(props) {
           }
         }
 
-        setUsernameList(userList)
         setFriendsList(friendInfo)
       })
       return () => db.ref(`/users`).off("value", listener);
@@ -277,67 +223,7 @@ function Profile(props) {
     }
   };
 
-  console.log(getUserList(usernameList));
   useEffect(getFriendsList, []);
-
-  // Takes in input and Adds or Removes friend (based on click)
-  async function addFriend() {
-    let username = document.getElementById("friendInput").value;
-    let message = "";
-    if (username !== "") {
-      message = await props.firebase.pushUserData("friends", username);
-    }
-    switch (message) {
-      case "invalid user":
-        NotificationManager.warning(
-          "",
-          `username ${username.toLowerCase()} is an invalid user.`
-        );
-        break;
-      case "already added":
-        NotificationManager.warning(
-          "",
-          `you have already added ${username.toLowerCase()} as a friend.`
-        );
-        break;
-      case "success":
-        getFriendsList();
-        NotificationManager.success(
-          "",
-          `you have added ${username.toLowerCase()} as a friend.`
-        );
-        break;
-      default:
-        break; // No input: do nothing
-    }
-  }
-  async function removeFriend() {
-    let username = document.getElementById("friendInput").value;
-    let message = "";
-    if (username !== "") {
-      message = await props.firebase.unfriend(username);
-    }
-    switch (message) {
-      case "Invalid user":
-        NotificationManager.warning(
-          "",
-          `username ${username.toLowerCase()} is an invalid user.`
-        );
-        break;
-      case "not in friend's list":
-        NotificationManager.warning(
-          "",
-          `you do not have ${username.toLowerCase()} added as a friend.`
-        );
-        break;
-      case "success":
-        getFriendsList();
-        NotificationManager.error("", `you have unfriended ${username.toLowerCase()}.`);
-        break;
-      default:
-        break; // No input: do nothing
-    }
-  }
 
   return snapshot !== null ? (
     <section>
@@ -352,46 +238,10 @@ function Profile(props) {
           <div className="column is-5 is-narrow">
             <div className="card has-text-centered" id="friends-list" style={{ height: 'calc(100vh - 200px)' }}>
               <div className="card-content">
-                <figure style={{ height: '100px', zIndex: '100' }}>
-                  <h1 className="title is-2" style={{ marginBottom: '0px', }}>friends</h1>
-                  <br></br>&nbsp;
-                <div>
-                    <div className="field has-addons">
-                      {/* Input field */}
-                      <div className="control is-expanded" style={{ position: 'relative' }}>
-                        {/* get all the usernames here */}
-                        <Autocomplete suggestions={getUserList(usernameList)} />
-                      </div>
-                    &nbsp;
-                    <div className="buttons is-right">
-                        {/* Friend adder */}
-                        <button
-                          className="button"
-                          data-tip="add friend"
-                          data-place="top"
-                          onClick={() => addFriend()}
-                        >
-                          <span className="icon is-small">
-                            <FontAwesomeIcon icon={faPlus} />
-                          </span>
-                        </button>
-                        {/* Friend remover */}
-                        <button
-                          className="button"
-                          data-tip="unfriend"
-                          data-place="top"
-                          onClick={() => removeFriend()}
-                        >
-                          <span className="icon is-small">
-                            <FontAwesomeIcon icon={faMinus} />
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </figure>
-                <br></br>&nbsp;
-              <div className="tile">{renderFriendsList(friendsList)}</div>
+                {/* Autocomplete is in here */}
+                <FriendCard
+                  friendsList={friendsList}
+                />
               </div>
             </div>
 
