@@ -92,7 +92,7 @@ function ChatWindow(props) {
     function startGame(e) {
         e.preventDefault();
         if (lastState == null || lastState.content.winner !== 'NONE') {
-            sendSystemMessage(`${props.user.username} is starting a new game...`)
+            sendSystemMessage(`${props.user.username} is starting a new game of tic-tac-toe...`)
             const tempState = {
                 date: new Date().toISOString(),
                 author: uid,
@@ -122,7 +122,6 @@ function ChatWindow(props) {
 
         try {
             db.ref(`/channels/${channelId}/thread`).push(state)
-            // setTextMessage('');
             setShowBoard(false);
         } catch (error) {
             alert(error)
@@ -228,7 +227,6 @@ function ChatWindow(props) {
             <div className="tile is-vertical is-child">
                 <article className="tile is-child media">
                     <figure className="media is-left">
-                        {/* <img className="image is-32x32" src={user.img} alt={user.name} style={{ borderRadius: "50%" }}></img> */}
                         <h2 className="subtitle"><b>{friend.username}</b></h2>
                     </figure>
                 </article>

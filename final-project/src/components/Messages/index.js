@@ -7,7 +7,7 @@ import { withFirebase } from '../Firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { useHistory, useRouteMatch, useLocation } from 'react-router';
+import { useRouteMatch, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import './messages.css';
@@ -40,7 +40,6 @@ function Messages(props) {
 
     const match = useRouteMatch();
     const location = useLocation();
-    const history = useHistory();
 
     function chatSelect(key) {
         setCurrChat(`/${key}`)
