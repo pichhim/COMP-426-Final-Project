@@ -36,11 +36,6 @@ class Firebase {
     this.auth.signOut();
   }
 
-  /*doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
-
-    doPasswordUpdate = (password) =>
-        this.auth.currentUser.updatePassword(password);*/
-
   // User API for Firebase - gets user by uid or gets all users
   getUser = (uid) => this.db.ref(`users/${uid}`);
   getUsers = () => this.db.ref("users");
@@ -71,28 +66,6 @@ class Firebase {
       });
     return snapshot;
   };
-
-  // This function takes a setter from a component and calls getCurrentUser repeatedly until a valid value is given
-  // Then it sets that value using the setter.
-  // getUserSnapshot = function (setter) {
-  //     if (setter) {
-  //         let counter = 100;
-  //         let interval = setInterval(() => {
-  //             let promise = this.getCurrentUser();
-  //             promise.then(val => {
-  //             if (val !== 'Anonymous') {
-  //                 clearInterval(interval);
-  //                 setter(val)
-  //             } else if (counter < 0) {
-  //                 clearInterval(interval)
-  //                 alert('ERROR: Interval timed out. Please try again later')
-  //             } else {
-  //                 counter--;
-  //             }
-  //             })
-  //         }, 200)
-  //     }
-  // }
 
   // Write data
   writeUserData = function (path, value) {

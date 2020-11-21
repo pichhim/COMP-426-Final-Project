@@ -10,9 +10,6 @@ import Autocomplete from "./autocomplete";
 import { generateAvatar } from "../Landing/index.js";
 
 const styles = {
-  overallContainerStyle: {
-    // margin: "25px 100px",
-  },
   inputStyle: {
     margin: "20px",
   },
@@ -54,7 +51,6 @@ function renderStatusButtons(props, user) {
   function updateStatus(e) {
     // Updates status by writing to Firebase DB
     props.firebase.writeUserData("status", e.currentTarget.alt);
-    // getSnapshot();
   }
   function handleCursor(e, action) {
     // Cursor and border effect for buttons
@@ -89,7 +85,6 @@ function renderStatusButtons(props, user) {
 
 // Render profile card
 function renderProfile(editMode, setEditMode, user, props) {
-  // console.log(user);
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
@@ -138,7 +133,6 @@ function renderProfileEdit(setEditMode, user, props) {
     props.firebase.writeUserData("description", user.description);
     props.firebase.writeUserData("picture", generateAvatar(user.fullname));
     setEditMode(false);
-    // getSnapshot();
   }
 
   return (
@@ -181,7 +175,6 @@ function renderProfileEdit(setEditMode, user, props) {
             defaultValue={user.description}
           />
         </div>
-        {/* {renderStatusButtons(props, user)} */}
         <div className="has-text-centered">
           <button style={styles.button}
             className="button is-dark is-centered"
@@ -207,9 +200,6 @@ function renderFriendsList(friendsList) {
             <article
               className="media custom-is-hoverable"
               key={obj.username}
-              // onMouseEnter={(e) =>
-              //   (e.currentTarget.style.boxShadow = "0 0 5px #888888")
-              // }
               onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "")}
             >
               <div className="media-left">
@@ -245,72 +235,10 @@ function Profile(props) {
   const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
   const [usernameList, setUsernameList] = useState([])
 
-  // const getSnapshot = () => {
-  //   let snapPromise = props.firebase.getCurrentUser();
-  //   snapPromise.then((val) => setSnapshot(val));
-  // };
-
-  // useEffect(getSnapshot, []);
-
   function getUserList(usernameList) {
     let userList = usernameList.map((obj) => (obj.username));
     return userList;
   }
-
-  // gets all list of all usernames
-  // const getAllUsers = () => {
-  //   const db = props.firebase.getDB();
-  //   let usernames = []; 
-
-  //   try {
-  //     let listener = db.ref(`/users`).on("value", snapshot => {
-  //       console.log(snapshot.val())
-  //       if (snapshot !== null) {
-  //         snapshot.forEach(function(child) {
-  //           usernames[usernames.length] = snapshot.val()[child.key].username
-  //         })
-  //       }
-  //     })
-
-
-
-  //     return usernames;
-  //   } catch(error) {
-  //     return error;
-  //   }
-  // };
-
-  // const getUserList = () => {
-  //   const db = props.firebase.getDB();
-  //   const uid = props.user.uid;
-
-  //   try {
-  //     let listener = db.ref(`/users`).on("value", snapshot => {
-  //       // let self = snapshot.val()[uid];
-  //       // setSnapshot(self)
-  //       // let friends = self.friends;
-  //       // let friendInfo = [];
-  //       let usernames = [];
-  //       console.log(snapshot.val());
-  //       // for (let snap in snapshot.val()) {
-  //       //   if (friends && snap in friends) {
-  //       //     friendInfo.push({
-  //       //       ...snapshot.val()[snap],
-  //       //       key: snap
-  //       //     })
-  //       //   }
-  //       // }
-
-
-  //       snapshot.forEach(function(child) {
-  //         usernames[usernames.length] = snapshot.val()[child.key].username
-  //       })
-
-  //       //setUsernameList(usernames);
-
-  // };
-
-  // console.log(getUserList());
 
   const getFriendsList = () => {
     const db = props.firebase.getDB();
@@ -329,10 +257,12 @@ function Profile(props) {
         let friendInfo = [];
         let userList = [];
         for (let snap in snapshot.val()) {
-          userList.push({
-            ...snapshot.val()[snap],
-            key: snap
-          })
+          if (snapshot.val()[snap].username != null) {
+            userList.push({
+              ...snapshot.val()[snap],
+              key: snap
+            })
+          }
           if (friends && snap in friends) {
             friendInfo.push({
               ...snapshot.val()[snap],
@@ -418,7 +348,6 @@ function Profile(props) {
         <div className="columns is-vcentered is-centered" style={{ height: 'calc(100vh - 90px)' }}>
           <div
             className="column is-5 is-narrow"
-            style={styles.overallContainerStyle}
           >
             {renderProfile(editMode, setEditMode, snapshot, props)}
           </div>
@@ -432,12 +361,6 @@ function Profile(props) {
                     <div className="field has-addons">
                       {/* Input field */}
                       <div className="control is-expanded" style={{ position: 'relative' }}>
-                        {/* <input
-                        className="input is-fullwidth"
-                        type="text"
-                        id="friendInput"
-                        placeholder="Enter username here"
-                      ></input> */}
                         {/* get all the usernames here */}
                         <Autocomplete suggestions={getUserList(usernameList)} />
                       </div>
