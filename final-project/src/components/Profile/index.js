@@ -41,9 +41,6 @@ const styles = {
   title: {
     margin: "0px",
   },
-  button: {
-    margin: "10px",
-  }
 };
 
 // Render status buttons
@@ -113,7 +110,7 @@ function renderProfile(editMode, setEditMode, user, props) {
           {renderStatusButtons(props, user)}
           <br></br>
           <div className="has-text-centered">
-            <button style={styles.button}
+            <button
               className="button is-dark is-centered"
               onClick={() => setEditMode(true)}
             >
@@ -176,7 +173,7 @@ function renderProfileEdit(setEditMode, user, props) {
           />
         </div>
         <div className="has-text-centered">
-          <button style={styles.button}
+          <button
             className="button is-dark is-centered"
             onClick={() => updateProfile()}
           >

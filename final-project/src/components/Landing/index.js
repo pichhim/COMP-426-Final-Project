@@ -4,8 +4,14 @@ import 'font-awesome/css/font-awesome.min.css';
 import { Section, Container, Level, Heading, Button, Card } from 'react-bulma-components';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components'
-import squiggle from './boba-squiggle.png'
+import styled, { keyframes } from 'styled-components';
+import squiggle from './boba-squiggle.png';
+import eden from './eden.JPG';
+import lucas from './lucas.JPG';
+import jessica from './jessica.jpeg';
+import pich from './pich.jpeg'
+
+
 
 // fading animation
 const fadeIn = keyframes`
@@ -500,19 +506,19 @@ function Landing() {
                             <Heading style={style.landingTitle}>developers</Heading>
                             <Level style={style.devSection}>
                                 <Level.Item style={style.styleBlock}>
-                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/b/bc/Rin_Nohara.png/revision/latest?cb=20150805145941' />
+                                    <img alt="" style={imageStyle(250)} src={pich} />
                                     <Heading style={style.descPadding}>pich</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/0/09/Naruto_newshot.png/revision/latest/scale-to-width-down/340?cb=20170621101134' />
+                                    <img alt="" style={imageStyle(250)} src={eden} />
                                     <Heading style={style.descPadding}>eden</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/97/Hinata.png/revision/latest?cb=20141010104729' />
+                                    <img alt="" style={imageStyle(250)} src={jessica} />
                                     <Heading style={style.descPadding}>jessica</Heading>
                                 </Level.Item>
                                 <Level.Item style={style.styleBlock}>
-                                    <img alt="" style={imageStyle(250)} src='https://vignette.wikia.nocookie.net/naruto/images/9/9a/Shikamaru_Nara.png/revision/latest?cb=20180701024126' />
+                                    <img alt="" style={imageStyle(250)} src={lucas} />
                                     <Heading style={style.descPadding}>lucas</Heading>
                                 </Level.Item>
                             </Level>
