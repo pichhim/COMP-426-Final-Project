@@ -295,6 +295,52 @@ const INITIAL_STATE = {
     error: null,
 };
 
+const COLORS = {
+    one: 'FFAA7B', // orange
+    two: 'C58E4C', // coffee
+    three: 'ECCDC2', // pink
+    four: 'AFA4CE', // purple
+    five: 'C1D6EC', // blue
+}
+
+export const generateAvatar = (name) => {
+    let res = name.split(" ");
+    const [first, last] = [res[0], res[1]];
+
+    let random = Math.floor(Math.random() * 10); // randomly picks a number 
+    let color = "";
+    console.log(random);
+    switch (random) {
+        case 0:
+        case 1:
+            color += COLORS.one;
+            break;
+        
+        case 2:
+        case 3:
+            color += COLORS.two;
+            break;
+
+        case 4:
+        case 5:
+            color += COLORS.three;
+            break;
+
+        case 6:
+        case 7:
+            color += COLORS.four;
+            break;
+
+        case 8:
+        case 9:
+            color += COLORS.five;
+            break;
+    }
+
+    let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=256&rounded=true';
+    return url;
+};
+
 class SignUpForm extends Component {
     constructor(props) {
         super(props);
@@ -312,7 +358,7 @@ class SignUpForm extends Component {
                     .getUser(authUser.user.uid) // Creates user based on Firebase uid
                     .set({
                         fullname, username, email, 
-                        picture : this.generateAvatar(fullname), 
+                        picture : generateAvatar(fullname), 
                         description, status, friends, // Additional info about user
                     });
             })
@@ -329,16 +375,6 @@ class SignUpForm extends Component {
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
-    };
-
-    generateAvatar(name) {
-        let res = name.split(" ");
-        const [first, last] = [res[0], res[1]];
-        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=random';
-        // console.log('url: ');
-        // console.log(url);
-        
-        return url;
     };
 
     render() {
