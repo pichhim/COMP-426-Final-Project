@@ -10,7 +10,6 @@ const SignUpPage = () => (
 );
  
 const INITIAL_STATE = {
-    // fullname: '',
     fullname: '',
     username: '',
     email: '',

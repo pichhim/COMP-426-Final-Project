@@ -268,6 +268,8 @@ export const generateAvatar = (name) => {
         case 9:
             color += COLORS.five;
             break;
+        default:
+            break;
     }
 
     let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=512&rounded=true';

@@ -66,7 +66,6 @@ const NavAuth = withFirebase(props => {
   useEffect(getUserData, []);
 
   let getProfilePicture = () => {
-    // console.log(currUser);
     return currUser.picture; 
   }
   
@@ -96,7 +95,6 @@ const NavAuth = withFirebase(props => {
         <div className="navbar-item has-dropdown is-hoverable">
           <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
-              {/* {console.log(currUser)} */}
               {currUser ? <img alt="" style={imageStyle(45)} src= {getProfilePicture()}/> : null}
             </div>
           </Link>
