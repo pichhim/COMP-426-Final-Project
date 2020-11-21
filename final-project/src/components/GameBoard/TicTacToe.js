@@ -11,6 +11,7 @@ function TicTacToe(props) {
 
         const uid = String(props.uid);
 
+        // Checks if the player won
         for (let i = 0; i < rows; i++) {
             if (board[i][0] === uid && board[i][1] === uid && board[i][2] === uid) {
                 return uid
@@ -26,12 +27,14 @@ function TicTacToe(props) {
         if (board[0][0] === uid && board[1][1] === uid && board[2][2] === uid) return uid;
         if (board[0][2] === uid && board[1][1] === uid && board[2][0] === uid) return uid;
 
+        // Checks if there is still an empty space on the board
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
                 if (board[i][j] === 'SYSTEM') return "NONE"
             }
         }
 
+        // If the board is full and there is no winner, the system wins I guess
         return "SYSTEM"
     }
 

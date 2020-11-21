@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 import TicTacToe from '../GameBoard/TicTacToe';
+import { Redirect } from "react-router-dom";
 
 function ChatWindow(props) {
 
@@ -19,6 +20,7 @@ function ChatWindow(props) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [showBoard, setShowBoard] = useState(false);
     const [lastState, setLastState] = useState(null);
+    const [redirect, setRedirect] = useState(null);
 
     function initChat() {
         const db = props.firebase.getDB();
@@ -30,6 +32,7 @@ function ChatWindow(props) {
             let listener = db.ref(`/channels/${channelId}`).on("value", snapshot => {
 
                 if (snapshot.val() == null) {
+                    setRedirect(true)
                     return () => db.ref(`/channels/${channelId}`).off("value", listener);
                 }
 
@@ -42,13 +45,17 @@ function ChatWindow(props) {
                 }
                 newThread = newThread.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                let gameState = newThread.find(item => item.type !== 'TEXT');
+                let gameState = newThread.find(item => item.type !== 'TEXT' && item.type !== 'SYSTEM');
                 if (gameState) {
                     setLastState(gameState);
-                    // Fix this part
-                    let isPlaying = String(gameState.content.nextPlayer) === String(uid);
-                    setIsPlaying(isPlaying);
-                    setShowBoard(isPlaying);
+                    if (gameState.content.winner === 'NONE') {
+                        let isPlaying = String(gameState.content.nextPlayer) === String(uid);
+                        setIsPlaying(isPlaying);
+                        setShowBoard(isPlaying);
+                    } else {
+                        setIsPlaying(false);
+                        setShowBoard(false);
+                    }
                 }
 
                 setThread(newThread)
@@ -59,10 +66,6 @@ function ChatWindow(props) {
         }
     }
 
-    // TO DO: Fix messages and other updates closing the start board
-    // TO DO: Improve Styling, like a lot
-    // TO DO: Fix new messages automatically scrolling user to the bottom
-    // TO DO: Figure out how to attach new chat windows to a route switch
     // TO DO: Add more games?
 
     function sendTextMessage(e) {
@@ -70,7 +73,6 @@ function ChatWindow(props) {
         const db = props.firebase.getDB();
 
         let channelId = uid > friendID ? `${uid}<=>${friendID}` : `${friendID}<=>${uid}`;
-        console.log('clicked')
 
         if (textMessage.length > 0) {
             try {
@@ -89,9 +91,7 @@ function ChatWindow(props) {
 
     function startGame(e) {
         e.preventDefault();
-
-        if (lastState && lastState.content.winner === 'NONE') console.log('Still Playing')
-        else {
+        if (lastState == null || lastState.content.winner !== 'NONE') {
             sendSystemMessage(`${props.user.username} is starting a new game...`)
             const tempState = {
                 date: new Date().toISOString(),
@@ -131,7 +131,7 @@ function ChatWindow(props) {
         if (String(uid) === String(winner)) {
             sendSystemMessage(`Congratuations, ${props.user.username} won!`)
         } else if (String(winner) === 'SYSTEM') {
-            sendSystemMessage(`The System Won! HAHAHAHAHA`)
+            sendSystemMessage(`Nobody Won! HAHAHAHAHA`)
         }
     }
 
@@ -249,7 +249,7 @@ function ChatWindow(props) {
                     <div className="control">
                         {isPlaying && lastState && lastState.content.winner === 'NONE' ?
                             <span className="button is-info" onClick={toggleBoard}>{!showBoard ? "Show Board" : "Close Board"}</span>
-                            : <span className="button is-info" onClick={startGame}>Start Game</span>}
+                            : <span className="button is-info" onClick={startGame}>{lastState && lastState.content.winner === 'NONE' ? "Waiting..." : "Start Game"}</span>}
                     </div>
                     <div className="control">
                         <span className="button is-info is-rounded" onClick={sendTextMessage}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
@@ -257,7 +257,7 @@ function ChatWindow(props) {
                     </div>
                 </form>
             </div>
-
+            {redirect ? <Redirect to="/messages"></Redirect> : null}
         </div>
     )
 }

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import 'react-bulma-components/dist/react-bulma-components.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { Section, Container, Level, Heading, Button, Card } from 'react-bulma-components';
-import { Parallax } from "react-parallax";
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components'
@@ -17,74 +16,8 @@ const fadeIn = keyframes`
             opacity: 1;
         }
     `
-
-// moving boba
-const move = () => keyframes`
-        0%, 100% {
-            right: 0px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;
-            
-        }
-        10% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px; 
-        }
-        20% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;     
-           }
-        30% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        40% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;      
-          }
-        50% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;     
-           }
-        60% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;      
-          }
-        70% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        80% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-        90% {
-            right: ${Math.floor((Math.random() * window.innerWidth) + 1)}px;
-            left: ${Math.floor((Math.random() * window.innerWidth) + 1)}px; 
-            top: ${Math.floor(Math.random() * (window.innerHeight - ((window.innerHeight / 3) * 2)) + (window.innerHeight / 3) * 2)}px;    
-            }
-    `
-
 const FadingDiv = styled.div`
         animation: 0.5s ${fadeIn} ease-out;
-    `
-const Boba = styled.div`
-        height: 50px;
-        width: 50px;
-        background-color: #000;
-        border-radius: 50%;
-        display: inline-block;
-        position: fixed;
-        zIndex: -2;
-        animation: ${move} 200s linear infinite;
     `
 
     const style = {
@@ -179,7 +112,7 @@ const Boba = styled.div`
             backgroundImage: `url(${squiggle})`,
             backgroundSize: 'cover',
             zIndex: '3',
-            height: '90px',
+            height: '116px',
         },
 
         error: {
@@ -295,6 +228,52 @@ const INITIAL_STATE = {
     error: null,
 };
 
+const COLORS = {
+    one: 'FFAA7B', // orange
+    two: 'C58E4C', // coffee
+    three: 'ECCDC2', // pink
+    four: 'AFA4CE', // purple
+    five: 'C1D6EC', // blue
+}
+
+export const generateAvatar = (name) => {
+    let res = name.split(" ");
+    const [first, last] = [res[0], res[1]];
+
+    let random = Math.floor(Math.random() * 10); // randomly picks a number 
+    let color = "";
+    console.log(random);
+    switch (random) {
+        case 0:
+        case 1:
+            color += COLORS.one;
+            break;
+        
+        case 2:
+        case 3:
+            color += COLORS.two;
+            break;
+
+        case 4:
+        case 5:
+            color += COLORS.three;
+            break;
+
+        case 6:
+        case 7:
+            color += COLORS.four;
+            break;
+
+        case 8:
+        case 9:
+            color += COLORS.five;
+            break;
+    }
+
+    let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=512&rounded=true';
+    return url;
+};
+
 class SignUpForm extends Component {
     constructor(props) {
         super(props);
@@ -311,7 +290,9 @@ class SignUpForm extends Component {
                 return this.props.firebase
                     .getUser(authUser.user.uid) // Creates user based on Firebase uid
                     .set({
-                        fullname, username, email, picture, description, status, friends, // Additional info about user
+                        fullname, username, email, 
+                        picture : generateAvatar(fullname), 
+                        description, status, friends, // Additional info about user
                     });
             })
             .then(authUser => {
@@ -327,16 +308,6 @@ class SignUpForm extends Component {
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
-    };
-
-    generateAvatar(name) {
-        let res = name.split(" ");
-        const [first, last] = [res[0], res[1]];
-        let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=random';
-        // console.log('url: ');
-        // console.log(url);
-        
-        return url;
     };
 
     render() {
@@ -465,7 +436,7 @@ function Landing() {
     };
 
     return (
-        <Parallax bgImage={bobaBackground} strength={window.innerWidth}>
+        <div>
             <div style={style.wave}></div>
             <div id='box'></div>
             <Section id="landing" style={style.landingSpacing}>
@@ -483,37 +454,6 @@ function Landing() {
                         <SignInFormV2></SignInFormV2>
                     </Level.Item>
                 </Level>
-                <Container>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                    <Boba></Boba>
-                </Container>
             </Section>
             <Section style={whiteSection}>
                 <Level>
@@ -581,7 +521,8 @@ function Landing() {
             <Section style={style.emptySpace}>
                 <div style={style.readme}><a target="_blank" rel="noopener noreferrer" href="https://github.com/pichhim/COMP-426-Final-Project#comp-426-final-project"><Button size="large">README.md</Button></a></div>
             </Section>
-        </Parallax>
+        </div>
+            
     )
 }
 

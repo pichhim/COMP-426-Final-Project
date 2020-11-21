@@ -29,7 +29,12 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => {
+    // Marks the user as away
+    this.writeUserData("status", "Away");
+    // Signs out
+    this.auth.signOut();
+  }
 
   // User API for Firebase - gets user by uid or gets all users
   getUser = (uid) => this.db.ref(`users/${uid}`);
