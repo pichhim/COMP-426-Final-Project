@@ -96,7 +96,7 @@ function Messages(props) {
                 <div className="card">
                     <div className="card-content has-text-centered" style={styles.windowStyle}>
                         {currWindow.length > 0 ? currWindow.map(friend => <ChatWindow key={friend.key} user={self} friend={friend}></ChatWindow>)
-                            : <h3>Please Select a Friend to Chat With</h3>}
+                            : <h3>please select a friend to chat with</h3>}
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@ function ChatsMenu(props) {
                     <figure className="media-left">
                         <img className="image is-64x64" src={user.picture} style={{ borderRadius: "50%" }}></img>
                     </figure>
-                    <h1 className="title"><b>chats</b></h1>
+                    <h1 className="title is-2">chats</h1>
                 </article>
 
                 <div className="field">
