@@ -86,7 +86,7 @@ const NavAuth = withFirebase(props => {
 
       <div className="navbar-end">
         <div className="navbar-item">
-          {currUser ? <h1 className="subtitle is-5">Welcome, {currUser.fullname.split(" ")[0]}!</h1> : null}
+          {currUser ? <h1 className="subtitle is-5">welcome, {currUser.fullname.toLowerCase().split(" ")[0]}!</h1> : null}
         </div>
         <div className="navbar-item has-dropdown is-hoverable">
           <Link to="/profile" className="navbar-link is-arrowless">
@@ -97,7 +97,7 @@ const NavAuth = withFirebase(props => {
           </Link>
           <div className="navbar-dropdown">
             <Link to="/profile" className="navbar-link is-arrowless">
-              Profile
+              profile
             </Link>
             <Link className="navbar-item" to="/">
               <SignOutButton />

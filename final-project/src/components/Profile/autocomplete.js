@@ -107,7 +107,7 @@ export class Autocomplete extends Component {
       } else {
         suggestionsListComponent = (
           <div className="no-suggestions" style={styles.noAvail}>
-            <em>No suggestions!</em>
+            <em>no suggestions!</em>
           </div>
         );
       }
@@ -119,7 +119,7 @@ export class Autocomplete extends Component {
           className="input is-fullwidth"
           type="text"
           id="friendInput"
-          placeholder="Enter username here"
+          placeholder="enter username here"
           onChange={onChange}
           value={userInput}
         />

@@ -249,7 +249,7 @@ function ChatWindow(props) {
                     <div className="control">
                         {isPlaying && lastState && lastState.content.winner === 'NONE' ?
                             <span className="button is-info" onClick={toggleBoard}>{!showBoard ? "Show Board" : "Close Board"}</span>
-                            : <span className="button is-info" onClick={startGame}>Start Game</span>}
+                            : <span className="button is-info" onClick={startGame}>start game</span>}
                     </div>
                     <div className="control">
                         <span className="button is-info is-rounded" onClick={sendTextMessage}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>

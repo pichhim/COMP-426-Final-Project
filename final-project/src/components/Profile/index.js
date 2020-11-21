@@ -41,6 +41,12 @@ const styles = {
       color: `#${color}`,
     };
   },
+  title: {
+    margin: "0px",
+  },
+  button: {
+    margin: "10px",
+  }
 };
 
 // Render status buttons
@@ -65,14 +71,14 @@ function renderStatusButtons(props, user) {
       {status_colors.map((color) => (
         <div className="column is-narrow" key={color.color}>
           <img
-            data-tip={color.status}
+            data-tip={color.status.toLowerCase()}
             data-place="top"
             onMouseEnter={(e) => handleCursor(e, "enter")}
             onMouseLeave={(e) => handleCursor(e, "leave")}
             onClick={(e) => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
-            alt={color.status}
+            alt={color.status.toLowerCase()}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
@@ -95,30 +101,30 @@ function renderProfile(editMode, setEditMode, user, props) {
               style={styles.imageStyle(200)}
               // src={demoProfile.image}
               src={user.picture}
-              alt={`Profile: ${user.fullname}`}
+              alt={`Profile: ${user.fullname.toLowerCase()}`}
             ></img>
           </figure>
         </div>
         <div className="card-content">
           <div className="has-text-centered">
-            <strong>{user.fullname}</strong>
+            <strong>{user.fullname.toLowerCase()}</strong>
             <br></br>
-            <em>{user.username}</em>
+            <em>{user.username.toLowerCase()}</em>
             <div>
-              <p style={styles.statusStyle(user.status)}>{user.status}</p>
+              <p style={styles.statusStyle(user.status)}>{user.status.toLowerCase()}</p>
             </div>
           </div>
           <br></br>
-          <p> {user.description}</p>
+          <p> {user.description.toLowerCase()}</p>
           <br></br>
           {renderStatusButtons(props, user)}
           <br></br>
           <div className="has-text-centered">
-            <button
+            <button style={styles.button}
               className="button is-dark is-centered"
               onClick={() => setEditMode(true)}
             >
-              Edit
+              edit
             </button>
           </div>
         </div>
@@ -146,7 +152,7 @@ function renderProfileEdit(setEditMode, user, props) {
             <img
               style={styles.imageStyle(200)}
               src={user.picture}
-              alt={`Profile: ${user.fullname}`}
+              alt={`profile: ${user.fullname.toLowerCase()}`}
             ></img>
           </figure>
         </div>
@@ -156,17 +162,17 @@ function renderProfileEdit(setEditMode, user, props) {
               className="input"
               type="text"
               id="fullname"
-              placeholder="Full name"
+              placeholder="full name"
               onChange={(e) => (user.fullname = e.target.value)}
-              defaultValue={user.fullname}
+              defaultValue={user.fullname.toLowerCase()}
             />
             <textarea
               className="input"
               type="text"
               id="username"
-              placeholder="Username"
+              placeholder="username"
               onChange={(e) => (user.username = e.target.value)}
-              defaultValue={user.username}
+              defaultValue={user.username.toLowerCase()}
             />
           </div>
           <div style={styles.inputStyle}>
@@ -174,9 +180,9 @@ function renderProfileEdit(setEditMode, user, props) {
               className="textarea"
               type="text"
               id="description"
-              placeholder="Description"
+              placeholder="description"
               onChange={(e) => (user.description = e.target.value)}
-              defaultValue={user.description}
+              defaultValue={user.description.toLowerCase()}
             />
           </div>
         </div>
@@ -184,11 +190,11 @@ function renderProfileEdit(setEditMode, user, props) {
         {renderStatusButtons(props, user)}
         <br></br>
         <div className="has-text-centered">
-          <button
+          <button style={styles.button}
             className="button is-dark is-centered"
             onClick={() => updateProfile()}
           >
-            Save
+            save
           </button>
         </div>
       </div>
@@ -216,17 +222,17 @@ function renderFriendsList(friendsList) {
               <img
                 style={styles.imageStyle(100)}
                 src={obj.picture}
-                alt={obj.fullname + " profile"}
+                alt={obj.fullname.toLowerCase() + " profile"}
               ></img>
             </figure>
           </div>
           <div className="media-content">
             <div className="content">
               <div>
-                <strong>{obj.fullname}</strong>
+                <strong>{obj.fullname.toLowerCase()}</strong>
                 <br></br>
-                <em>{obj.username}</em>
-                <p style={styles.statusStyle(obj.status)}>{obj.status}</p>
+                <em>{obj.username.toLowerCase()}</em>
+                <p style={styles.statusStyle(obj.status)}>{obj.status.toLowerCase()}</p>
               </div>
             </div>
           </div>
@@ -339,7 +345,7 @@ function Profile(props) {
       })
       return () => db.ref(`/users`).off("value", listener);
     } catch (error) {
-      alert("Error reading friend info");
+      alert("error reading friend info");
     }
   };
 
@@ -353,23 +359,23 @@ function Profile(props) {
       message = await props.firebase.pushUserData("friends", username);
     }
     switch (message) {
-      case "Invalid user":
+      case "invalid user":
         NotificationManager.warning(
           "",
-          `Username ${username} is an invalid user.`
+          `username ${username.toLowerCase()} is an invalid user.`
         );
         break;
-      case "Already added":
+      case "already added":
         NotificationManager.warning(
           "",
-          `You have already added ${username} as a friend.`
+          `you have already added ${username.toLowerCase()} as a friend.`
         );
         break;
-      case "Success":
+      case "success":
         getFriendsList();
         NotificationManager.success(
           "",
-          `You have added ${username} as a friend.`
+          `you have added ${username.toLowerCase()} as a friend.`
         );
         break;
       default:
@@ -386,18 +392,18 @@ function Profile(props) {
       case "Invalid user":
         NotificationManager.warning(
           "",
-          `Username ${username} is an invalid user.`
+          `username ${username.toLowerCase()} is an invalid user.`
         );
         break;
-      case "Not in friend's list":
+      case "not in friend's list":
         NotificationManager.warning(
           "",
-          `You do not have ${username} added as a friend.`
+          `you do not have ${username.toLowerCase()} added as a friend.`
         );
         break;
-      case "Success":
+      case "success":
         getFriendsList();
-        NotificationManager.error("", `You have unfriended ${username}.`);
+        NotificationManager.error("", `you have unfriended ${username.toLowerCase()}.`);
         break;
       default:
         break; // No input: do nothing
@@ -416,7 +422,7 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode, snapshot, props)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <u className="title">Friends</u>
+                <h1 className="title is-2" style={styles.title}>friends</h1>
                 <br></br>&nbsp;
                 <div>
                   <div className="field has-addons">
