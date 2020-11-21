@@ -56,15 +56,15 @@ export class Autocomplete extends Component {
         const { suggestions } = this.props;
         const userInput = e.currentTarget.value;
 
-        this.setState({
-          showSuggestions: true,
-          userInput: e.currentTarget.value
-        });
-
         // acts as debouncing, returns filtered results after 30 seconds of waiting
-        const filteredSuggestions = wait(50, suggestions, userInput);
+        //const filteredSuggestions = wait(50, suggestions, userInput);
+        const filteredSuggestions = suggestions.filter(
+          (suggestion) =>
+            suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        );
 
         this.setState({
+          activeSuggestion: 0,
           filteredSuggestions,
           showSuggestions: true,
           userInput: e.currentTarget.value
@@ -73,12 +73,14 @@ export class Autocomplete extends Component {
 
       onClick = (e) => {
         this.setState({
+          activeSuggestion: 0,
           filteredSuggestions: [],
           showSuggestions: false,
           userInput: e.currentTarget.innerText
         });
       },
       state: {
+        activeSuggestion,
         filteredSuggestions,
         showSuggestions,
         userInput
@@ -102,7 +104,7 @@ export class Autocomplete extends Component {
       } else {
         suggestionsListComponent = (
           <div className="no-suggestions" style={styles.absolute}>
-            <em>No suggestions!</em>
+            <em>no suggestions!</em>
           </div>
         );
       }
@@ -114,8 +116,9 @@ export class Autocomplete extends Component {
             className="input is-fullwidth"
             type="text"
             id="friendInput"
-            placeholder="Enter username here"
+            placeholder="enter username here"
             onChange={onChange}
+            onClick={onClick}
             value={userInput}
           />
           {suggestionsListComponent}

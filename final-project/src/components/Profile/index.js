@@ -105,11 +105,11 @@ function renderProfile(editMode, setEditMode, user, props) {
         </div>
         <div className="card-content">
           <div className="has-text-centered">
-            <strong>{user.fullname.toLowerCase()}</strong>
+            <strong>{user.fullname}</strong>
             <br></br>
             <em>{user.username.toLowerCase()}</em>
             <div>
-              <p style={styles.statusStyle(user.status)}>{user.status.toLowerCase()}</p>
+              <p style={styles.statusStyle(user.status)}>{user.status}</p>
             </div>
           </div>
           <br></br>
@@ -350,6 +350,7 @@ function Profile(props) {
     }
   };
 
+  console.log(getUserList(usernameList));
   useEffect(getFriendsList, []);
 
   // Takes in input and Adds or Removes friend (based on click)
@@ -426,7 +427,7 @@ function Profile(props) {
             <div className="card has-text-centered" id="friends-list" style={{ height: 'calc(100vh - 200px)' }}>
               <div className="card-content">
                 <figure style={{ height: '100px', zIndex: '100' }}>
-                  <u className="title">Friends</u>
+                  <h1 className="title is-2" style={{ marginBottom: '0px', }}>friends</h1>
                   <br></br>&nbsp;
                 <div>
                     <div className="field has-addons">
@@ -446,7 +447,7 @@ function Profile(props) {
                         {/* Friend adder */}
                         <button
                           className="button"
-                          data-tip="Add Friend"
+                          data-tip="add friend"
                           data-place="top"
                           onClick={() => addFriend()}
                         >
@@ -457,7 +458,7 @@ function Profile(props) {
                         {/* Friend remover */}
                         <button
                           className="button"
-                          data-tip="Unfriend"
+                          data-tip="unfriend"
                           data-place="top"
                           onClick={() => removeFriend()}
                         >
