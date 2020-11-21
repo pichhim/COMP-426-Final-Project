@@ -49,7 +49,6 @@ function renderStatusButtons(props, user) {
   function updateStatus(e) {
     // Updates status by writing to Firebase DB
     props.firebase.writeUserData("status", e.currentTarget.alt);
-    // getSnapshot();
   }
   function handleCursor(e, action) {
     // Cursor and border effect for buttons
@@ -84,7 +83,6 @@ function renderStatusButtons(props, user) {
 
 // Render profile card
 function renderProfile(editMode, setEditMode, user, props) {
-  // console.log(user);
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
@@ -94,7 +92,6 @@ function renderProfile(editMode, setEditMode, user, props) {
           <figure className="image" style={{ margin: "10px" }}>
             <img
               style={styles.imageStyle(200)}
-              // src={demoProfile.image}
               src={user.picture}
               alt={`Profile: ${user.fullname}`}
             ></img>
@@ -134,9 +131,7 @@ function renderProfileEdit(setEditMode, user, props) {
     props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
-    // props.firebase.writeUserData("picture", user.picture);
     setEditMode(false);
-    // getSnapshot();
   }
 
   return (
@@ -242,13 +237,6 @@ function Profile(props) {
   const [editMode, setEditMode] = useState(false); // Renders Editable profile if in Edit mode
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
   const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
-
-  // const getSnapshot = () => {
-  //   let snapPromise = props.firebase.getCurrentUser();
-  //   snapPromise.then((val) => setSnapshot(val));
-  // };
-
-  // useEffect(getSnapshot, []);
 
   const getFriendsList = () => {
     const db = props.firebase.getDB();
