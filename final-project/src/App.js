@@ -18,12 +18,30 @@ class App extends Component {
     };
   }
 
+  setupStatus() {
+    const authUser = this.state.authUser;
+    const uid = authUser.uid;
+    const ref = this.props.firebase.getDB().ref(`users/${uid}/`);
+    // Once online, sets user to being online
+    ref.update({
+      status: "Online"
+    })
+    // If user disconnects, the user is now offline
+    ref.onDisconnect().update({
+      status: "Away"
+    });
+  }
+
   // Add new listener to listen and update auth state from Firebase
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-      authUser
-        ? this.setState({ authUser })
-        : this.setState({ authUser: null });
+      if (authUser) {
+        this.setState({ authUser });
+        this.setupStatus();
+
+      } else {
+        this.setState({ authUser: null });
+      }
     });
   }
 
