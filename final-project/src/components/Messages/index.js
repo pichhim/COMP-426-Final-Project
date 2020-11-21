@@ -37,7 +37,7 @@ function Messages(props) {
             })
             return () => db.ref(`/users`).off("value", listener);
         } catch (error) {
-            alert("Error reading user friends")
+            alert("error reading user friends")
         }
     }
 
@@ -66,7 +66,7 @@ function ChatsMenu(props) {
                 <figure className="media-left">
                     <img className="image is-64x64" src={'lmao'} style={{ borderRadius: "50%" }}></img>
                 </figure>
-                <h1 className="title"><b>Chats</b></h1>
+                <h1 className="title"><b>chats</b></h1>
             </article>
 
             <div className="field">
@@ -85,12 +85,12 @@ function ChatsMenu(props) {
                         onClick={() => props.chatSelect(chat.key)}>
                         <article className="media messages-is-clickable">
                             <figure className="media-left">
-                                <img className="image is-64x64" src={chat.img} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
+                                <img className="image is-64x64" src={chat.img} alt={`${chat.fullname.toLowerCase()}'s profile picture`} style={{ borderRadius: "50%" }}></img>
                             </figure>
                             <div className="media-content">
                                 <div className="content">
-                                    <h4>{chat.username}</h4>
-                                    <p><i>{chat.fullname}</i></p>
+                                    <h4>{chat.username.toLowerCase()}</h4>
+                                    <p><i>{chat.fullname.toLowerCase()}</i></p>
                                 </div>
                             </div>
                         </article>
