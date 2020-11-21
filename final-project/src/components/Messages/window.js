@@ -66,7 +66,6 @@ function ChatWindow(props) {
         }
     }
 
-    // TO DO: Update User Activitiy on Load and Before Unload
     // TO DO: Add more games?
 
     function sendTextMessage(e) {
