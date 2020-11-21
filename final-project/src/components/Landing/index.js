@@ -112,7 +112,7 @@ const FadingDiv = styled.div`
             backgroundImage: `url(${squiggle})`,
             backgroundSize: 'cover',
             zIndex: '3',
-            height: '90px',
+            height: '116px',
         },
 
         error: {
