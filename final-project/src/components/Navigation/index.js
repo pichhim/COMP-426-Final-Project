@@ -66,10 +66,8 @@ const NavAuth = withFirebase(props => {
   useEffect(getUserData, []);
 
   let getProfilePicture = () => {
-    console.log(currUser);
-    if (currUser != null) {
-      return currUser.picture; 
-    }
+    // console.log(currUser);
+    return currUser.picture; 
   }
   
   return (<nav className="navbar" role="navigation" aria-label="main navigation">
@@ -93,19 +91,18 @@ const NavAuth = withFirebase(props => {
 
       <div className="navbar-end">
         <div className="navbar-item">
-          {currUser ? <h1 className="subtitle is-5">Welcome, {currUser.fullname.split(" ")[0]}!</h1> : null}
+          {currUser ? <h1 className="subtitle is-5">welcome, {currUser.fullname.toLowerCase().split(" ")[0]}!</h1> : null}
         </div>
         <div className="navbar-item has-dropdown is-hoverable">
           <Link to="/profile" className="navbar-link is-arrowless">
             <div style={style.profilePic}>
               {/* {console.log(currUser)} */}
-              {/* <img alt="" style={imageStyle(45)} src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" /> */}
               {currUser ? <img alt="" style={imageStyle(45)} src= {getProfilePicture()}/> : null}
             </div>
           </Link>
           <div className="navbar-dropdown">
             <Link to="/profile" className="navbar-link is-arrowless">
-              Profile
+              profile
             </Link>
             <Link className="navbar-item" to="/">
               <SignOutButton />

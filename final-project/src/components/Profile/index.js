@@ -7,6 +7,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer, NotificationManager, } from "react-notifications";
 import Autocomplete from "./autocomplete";
+import { generateAvatar } from "../Landing/index.js";
 
 const styles = {
   overallContainerStyle: {
@@ -40,6 +41,12 @@ const styles = {
       color: `#${color}`,
     };
   },
+  title: {
+    margin: "0px",
+  },
+  button: {
+    margin: "10px",
+  }
 };
 
 // Render status buttons
@@ -64,14 +71,14 @@ function renderStatusButtons(props, user) {
       {status_colors.map((color) => (
         <div className="column is-narrow" key={color.color}>
           <img
-            data-tip={color.status}
+            data-tip={color.status.toLowerCase()}
             data-place="top"
             onMouseEnter={(e) => handleCursor(e, "enter")}
             onMouseLeave={(e) => handleCursor(e, "leave")}
             onClick={(e) => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
-            alt={color.status}
+            alt={color.status.toLowerCase()}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
@@ -91,18 +98,18 @@ function renderProfile(editMode, setEditMode, user, props) {
           <figure className="image is-inline-block" style={{ margin: "1rem" }}>
             <img
               style={styles.imageStyle(200)}
-              src={`${user.picture}&size=512`}
+              src={`${user.picture}`}
               alt={`Profile: ${user.fullname}`}
             ></img>
           </figure>
         </div>
         <div className="card-content">
           <div className="has-text-centered">
-            <strong>{user.fullname}</strong>
+            <strong>{user.fullname.toLowerCase()}</strong>
             <br></br>
-            <em>{user.username}</em>
+            <em>{user.username.toLowerCase()}</em>
             <div>
-              <p style={styles.statusStyle(user.status)}>{user.status}</p>
+              <p style={styles.statusStyle(user.status)}>{user.status.toLowerCase()}</p>
             </div>
           </div>
           <br></br>
@@ -111,11 +118,11 @@ function renderProfile(editMode, setEditMode, user, props) {
           {renderStatusButtons(props, user)}
           <br></br>
           <div className="has-text-centered">
-            <button
+            <button style={styles.button}
               className="button is-dark is-centered"
               onClick={() => setEditMode(true)}
             >
-              Edit
+              edit
             </button>
           </div>
         </div>
@@ -129,7 +136,7 @@ function renderProfileEdit(setEditMode, user, props) {
     props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
-    // props.firebase.writeUserData("picture", user.picture);
+    props.firebase.writeUserData("picture", generateAvatar(user.fullname));
     setEditMode(false);
     // getSnapshot();
   }
@@ -176,11 +183,11 @@ function renderProfileEdit(setEditMode, user, props) {
         </div>
         {/* {renderStatusButtons(props, user)} */}
         <div className="has-text-centered">
-          <button
+          <button style={styles.button}
             className="button is-dark is-centered"
             onClick={() => updateProfile()}
           >
-            Save
+            save
           </button>
         </div>
       </div>
@@ -339,7 +346,7 @@ function Profile(props) {
       })
       return () => db.ref(`/users`).off("value", listener);
     } catch (error) {
-      alert("Error reading friend info");
+      alert("error reading friend info");
     }
   };
 
@@ -353,23 +360,23 @@ function Profile(props) {
       message = await props.firebase.pushUserData("friends", username);
     }
     switch (message) {
-      case "Invalid user":
+      case "invalid user":
         NotificationManager.warning(
           "",
-          `Username ${username} is an invalid user.`
+          `username ${username.toLowerCase()} is an invalid user.`
         );
         break;
-      case "Already added":
+      case "already added":
         NotificationManager.warning(
           "",
-          `You have already added ${username} as a friend.`
+          `you have already added ${username.toLowerCase()} as a friend.`
         );
         break;
-      case "Success":
+      case "success":
         getFriendsList();
         NotificationManager.success(
           "",
-          `You have added ${username} as a friend.`
+          `you have added ${username.toLowerCase()} as a friend.`
         );
         break;
       default:
@@ -386,18 +393,18 @@ function Profile(props) {
       case "Invalid user":
         NotificationManager.warning(
           "",
-          `Username ${username} is an invalid user.`
+          `username ${username.toLowerCase()} is an invalid user.`
         );
         break;
-      case "Not in friend's list":
+      case "not in friend's list":
         NotificationManager.warning(
           "",
-          `You do not have ${username} added as a friend.`
+          `you do not have ${username.toLowerCase()} added as a friend.`
         );
         break;
-      case "Success":
+      case "success":
         getFriendsList();
-        NotificationManager.error("", `You have unfriended ${username}.`);
+        NotificationManager.error("", `you have unfriended ${username.toLowerCase()}.`);
         break;
       default:
         break; // No input: do nothing

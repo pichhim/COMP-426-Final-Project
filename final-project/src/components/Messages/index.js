@@ -74,7 +74,7 @@ function Messages(props) {
             })
             return () => db.ref(`/users`).off("value", listener);
         } catch (error) {
-            alert("Error reading user friends")
+            alert("error reading user friends")
         }
     }
 
