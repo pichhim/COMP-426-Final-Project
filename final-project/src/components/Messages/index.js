@@ -15,7 +15,7 @@ import './messages.css';
 const styles = {
     statusStyle: function (userStatus) {
         const color = status_colors.filter(
-            (color) => color.status === userStatus
+            (color) => color.status.toLowerCase() === userStatus.toLowerCase()
         )[0].hex;
         return {
             color: `#${color}`,

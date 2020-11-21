@@ -66,7 +66,6 @@ function ChatWindow(props) {
         }
     }
 
-    // TO DO: Improve Styling, like a lot (done?)
     // TO DO: Update User Activitiy on Load and Before Unload
     // TO DO: Add more games?
 
