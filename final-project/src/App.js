@@ -7,9 +7,6 @@ import './styles.css'
 import LandingPage from './components/Landing';
 import ProfilePage from './components/Profile';
 import MessagesPage from './components/Messages';
-import DemoBoard from './components/GameBoard/DemoBoard';
-import SignUpPage from './components/SignUp';
-import SignInPage from './components/SignIn';
 import Navigation from './components/Navigation';
 import Background from './components/Background';
 
