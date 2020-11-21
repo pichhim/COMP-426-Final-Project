@@ -147,7 +147,7 @@ function renderProfileEdit(setEditMode, user, props) {
         <figure className="image is-inline-block" style={{ margin: "1rem" }}>
           <img
             style={styles.imageStyle(200)}
-            src={`${user.picture}&size=512`}
+            src={`${user.picture}`}
             alt={`Profile: ${user.fullname}`}
           ></img>
         </figure>
@@ -216,7 +216,7 @@ function renderFriendsList(friendsList) {
                 <figure className="image">
                   <img
                     style={styles.imageStyle(100)}
-                    src={`${obj.picture}&size=512`}
+                    src={`${obj.picture}`}
                     alt={obj.fullname + " profile"}
                   ></img>
                 </figure>

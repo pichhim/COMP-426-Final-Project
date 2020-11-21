@@ -270,7 +270,7 @@ export const generateAvatar = (name) => {
             break;
     }
 
-    let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=256&rounded=true';
+    let url = 'https://ui-avatars.com/api/?name=' + first + '+' + last + '&background=' + color + '&size=512&rounded=true';
     return url;
 };
 
