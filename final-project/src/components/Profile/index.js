@@ -96,11 +96,7 @@ function renderProfile(editMode, setEditMode, user, props) {
           <figure className="image is-inline-block" style={{ margin: "1rem" }}>
             <img
               style={styles.imageStyle(200)}
-<<<<<<< HEAD
-              src={user.picture}
-=======
               src={`${user.picture}`}
->>>>>>> 7b72df9fb660d9bb84c23d24a38a7b6a09df49b2
               alt={`Profile: ${user.fullname}`}
             ></img>
           </figure>
@@ -138,10 +134,7 @@ function renderProfileEdit(setEditMode, user, props) {
     props.firebase.writeUserData("fullname", user.fullname);
     props.firebase.writeUserData("username", user.username);
     props.firebase.writeUserData("description", user.description);
-<<<<<<< HEAD
-=======
     props.firebase.writeUserData("picture", generateAvatar(user.fullname));
->>>>>>> 7b72df9fb660d9bb84c23d24a38a7b6a09df49b2
     setEditMode(false);
   }
 
