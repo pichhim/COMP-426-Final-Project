@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5a4709086ed45027ff2fb0401cce4ee0",
+    "revision": "8ed505b26257ac99231fdf28a77a6d5a",
     "url": "/COMP-426-Final-Project/index.html"
   },
   {
-    "revision": "d4a4363bd8591e194682",
+    "revision": "dc6d4a93835793df558d",
     "url": "/COMP-426-Final-Project/static/css/2.ffc89db8.chunk.css"
   },
   {
-    "revision": "d7fe9f066b600b44463f",
+    "revision": "67428f3fdf14ff20faea",
     "url": "/COMP-426-Final-Project/static/css/main.2e572941.chunk.css"
   },
   {
-    "revision": "d4a4363bd8591e194682",
-    "url": "/COMP-426-Final-Project/static/js/2.7b2dbf95.chunk.js"
+    "revision": "dc6d4a93835793df558d",
+    "url": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js"
   },
   {
     "revision": "8d1e2746909a67d5ee5a24b4222b85e2",
-    "url": "/COMP-426-Final-Project/static/js/2.7b2dbf95.chunk.js.LICENSE.txt"
+    "url": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d7fe9f066b600b44463f",
-    "url": "/COMP-426-Final-Project/static/js/main.2d10f0e9.chunk.js"
+    "revision": "67428f3fdf14ff20faea",
+    "url": "/COMP-426-Final-Project/static/js/main.4b86cd5b.chunk.js"
   },
   {
     "revision": "ec6807d11aea376d05b1",
@@ -30,6 +30,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "51f8d1b45dfd9688aaf60309f23828a6",
     "url": "/COMP-426-Final-Project/static/media/boba-squiggle.51f8d1b4.png"
+  },
+  {
+    "revision": "041ebb040a73496a981b7fd230a8c5ed",
+    "url": "/COMP-426-Final-Project/static/media/eden.041ebb04.JPG"
   },
   {
     "revision": "674f50d287a8c48dc19ba404d20fe713",
@@ -52,8 +56,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/COMP-426-Final-Project/static/media/fontawesome-webfont.fee66e71.woff"
   },
   {
+    "revision": "c97cf515e40c4bbda5447ebbac9e2b78",
+    "url": "/COMP-426-Final-Project/static/media/jessica.c97cf515.jpeg"
+  },
+  {
     "revision": "430685b1f2bcf1aa421c530b3933ee68",
     "url": "/COMP-426-Final-Project/static/media/logo.430685b1.png"
+  },
+  {
+    "revision": "6151eae216317e99c6460e87d0d65582",
+    "url": "/COMP-426-Final-Project/static/media/lucas.6151eae2.JPG"
   },
   {
     "revision": "0b4ac1dc75df35e169b70d7719afe4cc",
@@ -70,5 +82,9 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "c0d3c94cd6112550c51d7d1ed13b9da1",
     "url": "/COMP-426-Final-Project/static/media/notification.c0d3c94c.eot"
+  },
+  {
+    "revision": "714ee56c5191558aafeea8285f1e58dd",
+    "url": "/COMP-426-Final-Project/static/media/pich.714ee56c.jpeg"
   }
 ]);

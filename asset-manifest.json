@@ -1,29 +1,33 @@
 {
   "files": {
     "main.css": "/COMP-426-Final-Project/static/css/main.2e572941.chunk.css",
-    "main.js": "/COMP-426-Final-Project/static/js/main.2d10f0e9.chunk.js",
-    "main.js.map": "/COMP-426-Final-Project/static/js/main.2d10f0e9.chunk.js.map",
+    "main.js": "/COMP-426-Final-Project/static/js/main.4b86cd5b.chunk.js",
+    "main.js.map": "/COMP-426-Final-Project/static/js/main.4b86cd5b.chunk.js.map",
     "runtime-main.js": "/COMP-426-Final-Project/static/js/runtime-main.64160eee.js",
     "runtime-main.js.map": "/COMP-426-Final-Project/static/js/runtime-main.64160eee.js.map",
     "static/css/2.ffc89db8.chunk.css": "/COMP-426-Final-Project/static/css/2.ffc89db8.chunk.css",
-    "static/js/2.7b2dbf95.chunk.js": "/COMP-426-Final-Project/static/js/2.7b2dbf95.chunk.js",
-    "static/js/2.7b2dbf95.chunk.js.map": "/COMP-426-Final-Project/static/js/2.7b2dbf95.chunk.js.map",
+    "static/js/2.3519278f.chunk.js": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js",
+    "static/js/2.3519278f.chunk.js.map": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js.map",
     "index.html": "/COMP-426-Final-Project/index.html",
-    "precache-manifest.954b0dd5c71073ec3eeb1fa39e098c89.js": "/COMP-426-Final-Project/precache-manifest.954b0dd5c71073ec3eeb1fa39e098c89.js",
+    "precache-manifest.0994a49321a8a40808a81ae43577fb79.js": "/COMP-426-Final-Project/precache-manifest.0994a49321a8a40808a81ae43577fb79.js",
     "service-worker.js": "/COMP-426-Final-Project/service-worker.js",
     "static/css/2.ffc89db8.chunk.css.map": "/COMP-426-Final-Project/static/css/2.ffc89db8.chunk.css.map",
     "static/css/main.2e572941.chunk.css.map": "/COMP-426-Final-Project/static/css/main.2e572941.chunk.css.map",
-    "static/js/2.7b2dbf95.chunk.js.LICENSE.txt": "/COMP-426-Final-Project/static/js/2.7b2dbf95.chunk.js.LICENSE.txt",
+    "static/js/2.3519278f.chunk.js.LICENSE.txt": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js.LICENSE.txt",
     "static/media/boba-squiggle.png": "/COMP-426-Final-Project/static/media/boba-squiggle.51f8d1b4.png",
+    "static/media/eden.JPG": "/COMP-426-Final-Project/static/media/eden.041ebb04.JPG",
     "static/media/font-awesome.min.css": "/COMP-426-Final-Project/static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/jessica.jpeg": "/COMP-426-Final-Project/static/media/jessica.c97cf515.jpeg",
     "static/media/logo.png": "/COMP-426-Final-Project/static/media/logo.430685b1.png",
-    "static/media/notifications.css": "/COMP-426-Final-Project/static/media/notification.c0d3c94c.eot"
+    "static/media/lucas.JPG": "/COMP-426-Final-Project/static/media/lucas.6151eae2.JPG",
+    "static/media/notifications.css": "/COMP-426-Final-Project/static/media/notification.c0d3c94c.eot",
+    "static/media/pich.jpeg": "/COMP-426-Final-Project/static/media/pich.714ee56c.jpeg"
   },
   "entrypoints": [
     "static/js/runtime-main.64160eee.js",
     "static/css/2.ffc89db8.chunk.css",
-    "static/js/2.7b2dbf95.chunk.js",
+    "static/js/2.3519278f.chunk.js",
     "static/css/main.2e572941.chunk.css",
-    "static/js/main.2d10f0e9.chunk.js"
+    "static/js/main.4b86cd5b.chunk.js"
   ]
 }
