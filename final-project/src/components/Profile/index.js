@@ -41,6 +41,12 @@ const styles = {
       color: `#${color}`,
     };
   },
+  title: {
+    margin: "0px",
+  },
+  button: {
+    margin: "10px",
+  }
 };
 
 // Render status buttons
@@ -65,14 +71,14 @@ function renderStatusButtons(props, user) {
       {status_colors.map((color) => (
         <div className="column is-narrow" key={color.color}>
           <img
-            data-tip={color.status}
+            data-tip={color.status.toLowerCase()}
             data-place="top"
             onMouseEnter={(e) => handleCursor(e, "enter")}
             onMouseLeave={(e) => handleCursor(e, "leave")}
             onClick={(e) => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
-            alt={color.status}
+            alt={color.status.toLowerCase()}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
@@ -95,7 +101,7 @@ function renderProfile(editMode, setEditMode, user, props) {
               style={styles.imageStyle(200)}
               // src={demoProfile.image}
               src={user.picture}
-              alt={`Profile: ${user.fullname}`}
+              alt={`Profile: ${user.fullname.toLowerCase()}`}
             ></img>
           </figure>
         </div>
@@ -114,11 +120,11 @@ function renderProfile(editMode, setEditMode, user, props) {
           {renderStatusButtons(props, user)}
           <br></br>
           <div className="has-text-centered">
-            <button
+            <button style={styles.button}
               className="button is-dark is-centered"
               onClick={() => setEditMode(true)}
             >
-              Edit
+              edit
             </button>
           </div>
         </div>
@@ -184,11 +190,11 @@ function renderProfileEdit(setEditMode, user, props) {
         {renderStatusButtons(props, user)}
         <br></br>
         <div className="has-text-centered">
-          <button
+          <button style={styles.button}
             className="button is-dark is-centered"
             onClick={() => updateProfile()}
           >
-            Save
+            save
           </button>
         </div>
       </div>
@@ -416,7 +422,7 @@ function Profile(props) {
             {renderProfile(editMode, setEditMode, snapshot, props)}
             <div className="tile is-parent is-vertical" id="friends-list">
               <figure>
-                <u className="title">friends</u>
+                <h1 className="title is-2" style={styles.title}>friends</h1>
                 <br></br>&nbsp;
                 <div>
                   <div className="field has-addons">

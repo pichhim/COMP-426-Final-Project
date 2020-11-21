@@ -66,7 +66,7 @@ function ChatsMenu(props) {
                 <figure className="media-left">
                     <img className="image is-64x64" src={'lmao'} style={{ borderRadius: "50%" }}></img>
                 </figure>
-                <h1 className="title"><b>chats</b></h1>
+                <h1 className="title is-2">chats</h1>
             </article>
 
             <div className="field">
