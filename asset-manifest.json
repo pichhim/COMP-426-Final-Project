@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/COMP-426-Final-Project/static/css/main.2e572941.chunk.css",
-    "main.js": "/COMP-426-Final-Project/static/js/main.4b86cd5b.chunk.js",
-    "main.js.map": "/COMP-426-Final-Project/static/js/main.4b86cd5b.chunk.js.map",
+    "main.js": "/COMP-426-Final-Project/static/js/main.6fb52ce5.chunk.js",
+    "main.js.map": "/COMP-426-Final-Project/static/js/main.6fb52ce5.chunk.js.map",
     "runtime-main.js": "/COMP-426-Final-Project/static/js/runtime-main.64160eee.js",
     "runtime-main.js.map": "/COMP-426-Final-Project/static/js/runtime-main.64160eee.js.map",
     "static/css/2.ffc89db8.chunk.css": "/COMP-426-Final-Project/static/css/2.ffc89db8.chunk.css",
-    "static/js/2.3519278f.chunk.js": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js",
-    "static/js/2.3519278f.chunk.js.map": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js.map",
+    "static/js/2.ee5b40c9.chunk.js": "/COMP-426-Final-Project/static/js/2.ee5b40c9.chunk.js",
+    "static/js/2.ee5b40c9.chunk.js.map": "/COMP-426-Final-Project/static/js/2.ee5b40c9.chunk.js.map",
     "index.html": "/COMP-426-Final-Project/index.html",
-    "precache-manifest.0994a49321a8a40808a81ae43577fb79.js": "/COMP-426-Final-Project/precache-manifest.0994a49321a8a40808a81ae43577fb79.js",
+    "precache-manifest.e6f329f43c96fe17f1ebe7cab281ca6a.js": "/COMP-426-Final-Project/precache-manifest.e6f329f43c96fe17f1ebe7cab281ca6a.js",
     "service-worker.js": "/COMP-426-Final-Project/service-worker.js",
     "static/css/2.ffc89db8.chunk.css.map": "/COMP-426-Final-Project/static/css/2.ffc89db8.chunk.css.map",
     "static/css/main.2e572941.chunk.css.map": "/COMP-426-Final-Project/static/css/main.2e572941.chunk.css.map",
-    "static/js/2.3519278f.chunk.js.LICENSE.txt": "/COMP-426-Final-Project/static/js/2.3519278f.chunk.js.LICENSE.txt",
+    "static/js/2.ee5b40c9.chunk.js.LICENSE.txt": "/COMP-426-Final-Project/static/js/2.ee5b40c9.chunk.js.LICENSE.txt",
     "static/media/boba-squiggle.png": "/COMP-426-Final-Project/static/media/boba-squiggle.51f8d1b4.png",
     "static/media/eden.JPG": "/COMP-426-Final-Project/static/media/eden.041ebb04.JPG",
     "static/media/font-awesome.min.css": "/COMP-426-Final-Project/static/media/fontawesome-webfont.fee66e71.woff",
@@ -26,8 +26,8 @@
   "entrypoints": [
     "static/js/runtime-main.64160eee.js",
     "static/css/2.ffc89db8.chunk.css",
-    "static/js/2.3519278f.chunk.js",
+    "static/js/2.ee5b40c9.chunk.js",
     "static/css/main.2e572941.chunk.css",
-    "static/js/main.4b86cd5b.chunk.js"
+    "static/js/main.6fb52ce5.chunk.js"
   ]
 }
