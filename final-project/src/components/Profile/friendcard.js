@@ -122,7 +122,7 @@ function FriendCard(props) {
 
   function initWidth() {
     // makes sure that the search term width is always the same as the input menu
-    if (inputRef.current != null && inputRef.current.offsetWidth != null && inputRef.current.offsetWidth != inputWidth) {
+    if (inputRef.current != null && inputRef.current.offsetWidth != null && inputRef.current.offsetWidth !== inputWidth) {
       setInputWidth(inputRef.current.offsetWidth);
     }
   }

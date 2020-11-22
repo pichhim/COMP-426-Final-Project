@@ -7,8 +7,7 @@ import { withFirebase } from '../Firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { useRouteMatch, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 
 import './messages.css';
 
@@ -48,8 +47,7 @@ function Messages(props) {
     function initFriends() {
         const db = props.firebase.getDB();
         const uid = props.user.uid;
-        // Set current location
-        // Need to find way getting uid to not be null
+
         try {
             let listener = db.ref(`/users`).on("value", snapshot => {
 
@@ -79,6 +77,7 @@ function Messages(props) {
 
     // Sets current window location using parameters in route
     function setLocation() {
+        console.log(location.pathname)
         setCurrChat(location.pathname.replace(match.path, ''))
     }
 
@@ -115,7 +114,7 @@ function ChatsMenu(props) {
             <div className="card-content" style={{ height: 'calc(100vh - 200px)' }}>
                 <article className="tile is-parent media">
                     <figure className="media-left">
-                        <img className="image is-64x64" src={user.picture} style={{ borderRadius: "50%" }}></img>
+                        <img className="image is-64x64" src={user.picture} style={{ borderRadius: "50%" }} alt={`User profile`}></img>
                     </figure>
                     <h1 className="title is-2">chats</h1>
                 </article>
@@ -137,7 +136,7 @@ function ChatsMenu(props) {
                             <Link to={`/messages/${chat.key}`}>
                                 <article className="media custom-is-clickable">
                                     <figure className="media-left">
-                                        <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile picture`} style={{ borderRadius: "50%" }}></img>
+                                        <img className="image is-64x64" src={chat.picture} alt={`${chat.fullname}'s profile`} style={{ borderRadius: "50%" }}></img>
                                     </figure>
                                     <div className="media-content">
                                         <div className="content">

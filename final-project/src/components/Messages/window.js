@@ -260,7 +260,7 @@ function ChatWindow(props) {
                             </span>
                             : <span className="button is-info" onClick={startGame}
                                 data-tip={lastState && lastState.content.winner === 'NONE' ? `waiting for ${props.friend.username} to play` : 'start a new game of tic-tac-toe'}>
-                                {lastState && lastState.content.winner === 'NONE' ? "waiting..." : "start Game"}
+                                {lastState && lastState.content.winner === 'NONE' ? "waiting..." : "start game"}
                             </span>}
                         <ReactTooltip></ReactTooltip>
                     </div>
