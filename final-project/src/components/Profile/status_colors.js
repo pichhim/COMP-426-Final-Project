@@ -21,7 +21,7 @@ export default [
     },
     {
         color: "yellow",
-        hex: "F4EF6E",
+        hex: "E4DF5E",
         link: "https://i.ibb.co/PWV2BZW/426yellow.jpg",
         status: "Away"
     }
