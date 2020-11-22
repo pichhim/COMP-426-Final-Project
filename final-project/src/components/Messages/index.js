@@ -122,7 +122,7 @@ function ChatsMenu(props) {
 
                 <div className="field">
                     <div className="control has-icons-left">
-                        <input className="input is-rounded" type="text" placeholder="Search chats" value={query} onChange={(e) => setQuery(e.target.value)}></input>
+                        <input className="input is-rounded" type="text" placeholder="search chats" value={query} onChange={(e) => setQuery(e.target.value)}></input>
                         <span className="icon is-left">
                             <FontAwesomeIcon icon={faSearch} />
                         </span>

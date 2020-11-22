@@ -57,7 +57,7 @@ border: none;
     background-color: #ECCDC2;
 };
 `
-// Debouncer
+// Debouncer as a hook
 function useDebounce(value, delay) {
 
   const [debouncedValue, setDebouncedValue] = useState(value);
