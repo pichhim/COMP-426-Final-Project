@@ -69,7 +69,7 @@ function renderStatusButtons(props, user) {
             onClick={(e) => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
-            alt={color.status.toLowerCase()}
+            alt={color.status}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
