@@ -201,7 +201,7 @@ class SignInForm extends Component {
                             />
                             <Level>
                                 <Level.Item>
-                                    <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>login</button>
+                                    <button className="button" disabled={isInvalid} onClick={closePopup} type="submit" style={style.submitButton}>login</button>
                                 </Level.Item>
                             </Level>
                             <Level>
@@ -383,7 +383,7 @@ class SignUpForm extends Component {
                             />
                             <Level>
                                 <Level.Item>
-                                    <button className="button" disabled={isInvalid} type="submit" style={style.submitButton}>submit</button>
+                                    <button className="button" onClick={closePopup} disabled={isInvalid} type="submit" style={style.submitButton}>submit</button>
                                     {error && <p>{error.message}</p>}
                                 </Level.Item>
                             </Level>
