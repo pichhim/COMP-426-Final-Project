@@ -8,6 +8,9 @@ import FriendCard from "./friendcard";
 import { generateAvatar } from "../Landing/index.js";
 
 const styles = {
+  textareaStyle: {
+    height: "10px",
+  },
   inputStyle: {
     margin: "20px",
   },
@@ -74,7 +77,7 @@ function renderStatusButtons(props, user) {
             onClick={(e) => updateStatus(e)}
             style={styles.imageStyle(55)}
             src={color.link}
-            alt={color.status.toLowerCase()}
+            alt={color.status}
           ></img>
           <ReactTooltip></ReactTooltip>
         </div>
@@ -90,9 +93,9 @@ function renderProfile(editMode, setEditMode, user, props) {
   ) : (
       <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
         <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
-          <figure className="image is-inline-block" style={{ margin: "1rem" }}>
+          <figure className="image is-inline-block" style={{ marginTop: "1rem" }}>
             <img
-              style={styles.imageStyle(200)}
+              style={styles.imageStyle(175)}
               src={`${user.picture}`}
               alt={`Profile: ${user.fullname}`}
             ></img>
@@ -108,10 +111,9 @@ function renderProfile(editMode, setEditMode, user, props) {
             </div>
           </div>
           <br></br>
-          <p className="has-text-centered"> {user.description}</p>
+          <p className="has-text-centered" style={{ overflow: 'auto', maxHeight: "12vh" }}> {user.description}</p>
           <br></br>
           {renderStatusButtons(props, user)}
-          <br></br>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button
               className="button is-dark is-centered"
@@ -139,9 +141,9 @@ function renderProfileEdit(setEditMode, user, props) {
   return (
     <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
       <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
-        <figure className="image is-inline-block" style={{ margin: "1rem" }}>
+        <figure className="image is-inline-block" style={{ marginTop: "1rem" }}>
           <img
-            style={styles.imageStyle(200)}
+            style={styles.imageStyle(175)}
             src={`${user.picture}`}
             alt={`Profile: ${user.fullname}`}
           ></img>
@@ -149,7 +151,7 @@ function renderProfileEdit(setEditMode, user, props) {
       </div>
       <div className="card-content">
         <div className="has-text-centered" style={styles.inputStyle}>
-          <textarea
+          <input
             className="input"
             type="text"
             id="fullname"
@@ -157,7 +159,7 @@ function renderProfileEdit(setEditMode, user, props) {
             onChange={(e) => (user.fullname = e.target.value)}
             defaultValue={user.fullname}
           />
-          <textarea
+          <input
             className="input"
             type="text"
             id="username"
@@ -168,8 +170,9 @@ function renderProfileEdit(setEditMode, user, props) {
         </div>
         <div style={styles.inputStyle}>
           <textarea
-            className="textarea"
+            className="has-fixed-size textarea"
             type="text"
+            rows="5"
             id="description"
             placeholder="Description"
             onChange={(e) => (user.description = e.target.value)}
