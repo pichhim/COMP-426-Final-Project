@@ -77,7 +77,6 @@ function Messages(props) {
 
     // Sets current window location using parameters in route
     function setLocation() {
-        console.log(location.pathname)
         setCurrChat(location.pathname.replace(match.path, ''))
     }
 

@@ -111,7 +111,7 @@ function renderProfile(editMode, setEditMode, user, props) {
             </div>
           </div>
           <br></br>
-          <p className="has-text-centered" style={{ overflow: 'auto', maxHeight: "12vh" }}> {user.description}</p>
+          <p className="has-text-centered" style={{ overflow: 'auto', maxHeight: "10.5vh" }}> {user.description}</p>
           <br></br>
           {renderStatusButtons(props, user)}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -172,7 +172,7 @@ function renderProfileEdit(setEditMode, user, props) {
           <textarea
             className="has-fixed-size textarea"
             type="text"
-            rows="5"
+            style={{ height: 'calc(100vh - 610px)' }}
             id="description"
             placeholder="Description"
             onChange={(e) => (user.description = e.target.value)}
