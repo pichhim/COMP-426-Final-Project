@@ -86,55 +86,82 @@ function renderProfile(editMode, setEditMode, user, props) {
   return editMode ? (
     renderProfileEdit(setEditMode, user, props)
   ) : (
-      <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
-        <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
-          <figure className="image is-inline-block" style={{ marginTop: "1rem" }}>
-            <img
-              style={styles.imageStyle(175)}
-              src={`${user.picture}`}
-              alt={`Profile: ${user.fullname}`}
-            ></img>
-          </figure>
+    <div
+      className="card"
+      id="profile-card"
+      style={{ height: "calc(100vh - 200px)" }}
+    >
+      <div
+        className="card-image  has-text-centered"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <figure className="image is-inline-block" style={{ marginTop: "1rem" }}>
+          <img
+            style={styles.imageStyle(175)}
+            src={`${user.picture}`}
+            alt={`Profile: ${user.fullname}`}
+          ></img>
+        </figure>
+      </div>
+      <div className="card-content">
+        <div className="has-text-centered">
+          <strong>{user.fullname}</strong>
+          <br></br>
+          <em>{user.username.toLowerCase()}</em>
+          <div>
+            <p style={styles.statusStyle(user.status)}>{user.status}</p>
+          </div>
         </div>
-        <div className="card-content">
-          <div className="has-text-centered">
-            <strong>{user.fullname}</strong>
-            <br></br>
-            <em>{user.username.toLowerCase()}</em>
-            <div>
-              <p style={styles.statusStyle(user.status)}>{user.status}</p>
-            </div>
-          </div>
-          <br></br>
-          <p className="has-text-centered" style={{ overflow: 'auto', maxHeight: '10.5vh'}}> {user.description}</p>
-          <br></br>
-          {renderStatusButtons(props, user)}
-          <div className="has-text-centered">
-            <button
-              className="button is-dark is-centered"
-              onClick={() => setEditMode(true)}
-            >
-              edit
-            </button>
-          </div>
+        <br></br>
+        <p
+          className="has-text-centered"
+          style={{ overflow: "auto", maxHeight: "12vh" }}
+        >
+          {" "}
+          {user.description}
+        </p>
+        <br></br>
+        {renderStatusButtons(props, user)}
+        <div className="has-text-centered">
+          <button
+            className="button is-dark is-centered"
+            onClick={() => setEditMode(true)}
+          >
+            edit
+          </button>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 // Edit mode for user profile
 function renderProfileEdit(setEditMode, user, props) {
   function updateProfile() {
-    props.firebase.writeUserData("fullname", user.fullname);
-    props.firebase.writeUserData("username", user.username);
-    props.firebase.writeUserData("description", user.description);
-    props.firebase.writeUserData("picture", generateAvatar(user.fullname));
+    props.firebase.writeUserData("fullname", edited.fullname);
+    props.firebase.writeUserData("username", edited.username);
+    props.firebase.writeUserData("description", edited.description);
+    if (edited.fullname !== user.fullname) {
+      props.firebase.writeUserData("picture", generateAvatar(user.fullname));
+    }
     setEditMode(false);
   }
+  let edited = {
+    fullname: user.fullname,
+    username: user.username,
+    description: user.description,
+  };
 
   return (
-    <div className="card" id="profile-card" style={{ height: 'calc(100vh - 200px)' }}>
-      <div className="card-image  has-text-centered" style={{ display: 'flex', justifyContent: 'center' }}>
+    <div
+      className="card"
+      id="profile-card"
+      style={{ height: "calc(100vh - 200px)" }}
+    >
+      <div
+        className="card-image  has-text-centered"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <figure className="image is-inline-block" style={{ marginTop: "1rem" }}>
           <img
             style={styles.imageStyle(175)}
@@ -150,7 +177,7 @@ function renderProfileEdit(setEditMode, user, props) {
             type="text"
             id="fullname"
             placeholder="Full name"
-            onChange={(e) => (user.fullname = e.target.value)}
+            onChange={(e) => (edited.fullname = e.target.value)}
             defaultValue={user.fullname}
           />
           <input
@@ -158,7 +185,7 @@ function renderProfileEdit(setEditMode, user, props) {
             type="text"
             id="username"
             placeholder="Username"
-            onChange={(e) => (user.username = e.target.value)}
+            onChange={(e) => (edited.username = e.target.value)}
             defaultValue={user.username}
           />
         </div>
@@ -166,10 +193,10 @@ function renderProfileEdit(setEditMode, user, props) {
           <textarea
             className="has-fixed-size textarea"
             type="text"
-            style={{ height: 'calc(100vh - 610px)' }}
+            style={{ height: "calc(100vh - 610px)" }}
             id="description"
             placeholder="Description"
-            onChange={(e) => (user.description = e.target.value)}
+            onChange={(e) => (edited.description = e.target.value)}
             defaultValue={user.description}
           />
         </div>
@@ -182,7 +209,6 @@ function renderProfileEdit(setEditMode, user, props) {
           </button>
         </div>
       </div>
-
     </div>
   );
 }
@@ -193,14 +219,12 @@ function Profile(props) {
   const [snapshot, setSnapshot] = useState(null); // Holds logged in user data
   const [friendsList, setFriendsList] = useState([]); // Holds Friends list data
 
-
   const getFriendsList = () => {
     const db = props.firebase.getDB();
     const uid = props.user.uid;
 
     try {
       let listener = db.ref(`/users`).on("value", (snapshot) => {
-
         if (snapshot.val() == null) {
           return () => db.ref(`/users`).off("value", listener);
         }
@@ -218,8 +242,8 @@ function Profile(props) {
           }
         }
 
-        setFriendsList(friendInfo)
-      })
+        setFriendsList(friendInfo);
+      });
       return () => db.ref(`/users`).off("value", listener);
     } catch (error) {
       alert("error reading friend info");
@@ -232,29 +256,31 @@ function Profile(props) {
     <section>
       <NotificationContainer />
       <div className="container">
-        <div className="columns is-vcentered is-centered" style={{ height: 'calc(100vh - 90px)' }}>
-          <div
-            className="column is-5 is-narrow"
-          >
+        <div
+          className="columns is-vcentered is-centered"
+          style={{ height: "calc(100vh - 90px)" }}
+        >
+          <div className="column is-5 is-narrow">
             {renderProfile(editMode, setEditMode, snapshot, props)}
           </div>
           <div className="column is-5 is-narrow">
-            <div className="card has-text-centered" id="friends-list" style={{ height: 'calc(100vh - 200px)' }}>
+            <div
+              className="card has-text-centered"
+              id="friends-list"
+              style={{ height: "calc(100vh - 200px)" }}
+            >
               <div className="card-content">
                 {/* Autocomplete is in here */}
-                <FriendCard
-                  friendsList={friendsList}
-                />
+                <FriendCard friendsList={friendsList} />
               </div>
             </div>
-
           </div>
         </div>
       </div>
-    </section >
+    </section>
   ) : (
-      <p></p>
-    );
+    <p></p>
+  );
 }
 
 export default withFirebase(Profile);
