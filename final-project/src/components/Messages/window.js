@@ -7,6 +7,8 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import TicTacToe from '../GameBoard/TicTacToe';
 import { Redirect } from "react-router-dom";
 
+import ReactTooltip from "react-tooltip";
+
 function ChatWindow(props) {
 
     const friend = props.friend;
@@ -131,6 +133,12 @@ function ChatWindow(props) {
             sendSystemMessage(`Congratuations, ${props.user.username} won!`)
         } else if (String(winner) === 'SYSTEM') {
             sendSystemMessage(`Nobody Won! HAHAHAHAHA`)
+        } else {
+            if (String(uid) === String(state.content.started)) {
+                sendSystemMessage(`${props.user.username} (X) just made a move, ${props.friend.username} (O) to play...`);
+            } else {
+                sendSystemMessage(`${props.user.username} (O) just made a move, ${props.friend.username} (X) to play...`);
+            }
         }
     }
 
@@ -242,16 +250,24 @@ function ChatWindow(props) {
             <div className="tile is-vertical is-child is-12">
                 <form className="field has-addons" onSubmit={sendTextMessage}>
                     <div className="control" style={{ width: '100%' }}>
-                        <input className="input is-rounded" type="text" placeholder="Type a message..." value={textMessage} onChange={handleUpdateInput}></input>
+                        <input className="input is-rounded" type="text" placeholder="type a message..." value={textMessage} onChange={handleUpdateInput}></input>
                     </div>
                     <div className="control">
                         {isPlaying && lastState && lastState.content.winner === 'NONE' ?
-                            <span className="button is-info" onClick={toggleBoard}>{!showBoard ? "Show Board" : "Close Board"}</span>
-                            : <span className="button is-info" onClick={startGame}>{lastState && lastState.content.winner === 'NONE' ? "Waiting..." : "Start Game"}</span>}
+                            <span className="button is-info" onClick={toggleBoard}
+                                data-tip={!showBoard ? "show tic-tac-toe board" : "close board"}>
+                                {!showBoard ? "show Board" : "close Board"}
+                            </span>
+                            : <span className="button is-info" onClick={startGame}
+                                data-tip={lastState && lastState.content.winner === 'NONE' ? `waiting for ${props.friend.username} to play` : 'start a new game of tic-tac-toe'}>
+                                {lastState && lastState.content.winner === 'NONE' ? "waiting..." : "start game"}
+                            </span>}
+                        <ReactTooltip></ReactTooltip>
                     </div>
                     <div className="control">
-                        <span className="button is-info is-rounded" onClick={sendTextMessage}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+                        <span className="button is-info is-rounded" onClick={sendTextMessage} data-tip={'send a message'}><FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
                         </span>
+                        <ReactTooltip></ReactTooltip>
                     </div>
                 </form>
             </div>
