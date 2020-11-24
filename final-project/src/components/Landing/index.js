@@ -419,8 +419,6 @@ function Landing() {
         };
     };
 
-
-
     // popup for login and signup loads when buttons are pressed
     function login() {
         if (document.getElementById("signupPopup").style.display !== "none") {
