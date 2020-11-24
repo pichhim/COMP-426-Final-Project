@@ -36,6 +36,16 @@ const style = {
 
   logo: {
     padding: "8px",
+  },
+
+  navMenu: {
+    display: 'flex',
+  },
+
+  navDropdown: {
+    display: 'flex',
+    paddingLeft: '35vw',
+
   }
 }
 
@@ -74,53 +84,10 @@ const NavAuth = withFirebase(props => {
       <Link to="/">
         <img style={style.logo} alt="logo" src={logo} width="80" height="80" />
       </Link>
-      {/* <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a> */}
-
-      {/* <Link to="/" className="navbar-item">
-        <h1 className="subtitle is-4">home</h1>
-      </Link>
-      <Link to="/messages" className="navbar-item">
-        <h1 className="subtitle is-4">messages</h1>
-      </Link>
-      <Link to="/profile" className="navbar-item">
-        <h1 className="subtitle is-4">profile</h1>
-      </Link> */}
-
-      {/* <div className="navbar-menu is-active">
-        <div className="navbar-start">
-          <div className="navbar-item"> stopnit</div>
-          <div className="navbar-item"></div>
-          <div className="navbar-item"></div>
-        </div>
-        <div className="navbar-end">
-          <div className="navbar-item">
-            {currUser ? <h1 className="subtitle is-5">welcome, {currUser.fullname.toLowerCase().split(" ")[0]}!</h1> : null}
-          </div>
-          <div className="navbar-item has-dropdown is-hoverable">
-            <Link to="/profile" className="navbar-link is-arrowless">
-              <div style={style.profilePic}>
-                {currUser ? <img alt="" style={imageStyle(45)} src={getProfilePicture()} /> : null}
-              </div>
-            </Link>
-            <div className="navbar-dropdown">
-              <Link to="/profile" className="navbar-link is-arrowless">
-                profile
-            </Link>
-              <Link className="navbar-item" to="/">
-                <SignOutButton />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
 
-    <div className="navbar-menu is-active">
-      <div className="navbar-start">
+    <div className="navbar-menu is-active" style={style.navMenu}>
+      <div className="navbar-start" style={style.navMenu}>
         <Link to="/" className="navbar-item">
           <h1 className="subtitle is-4">home</h1>
         </Link>
@@ -132,7 +99,7 @@ const NavAuth = withFirebase(props => {
         </Link>
       </div>
 
-      <div className="navbar-end">
+      <div className="navbar-end" style={style.navDropdown}>
         <div className="navbar-item">
           {currUser ? <h1 className="subtitle is-5">welcome, {currUser.fullname.toLowerCase().split(" ")[0]}!</h1> : null}
         </div>
@@ -143,7 +110,7 @@ const NavAuth = withFirebase(props => {
             </div>
           </Link>
           <div className="navbar-dropdown">
-            <Link to="/profile" className="navbar-link is-arrowless">
+            <Link to="/profile" className="navbar-item">
               profile
             </Link>
             <Link className="navbar-item" to="/">
