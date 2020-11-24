@@ -289,7 +289,7 @@ class SignUpForm extends Component {
     }
 
     onSubmit = event => {
-        const { fullname, username, email, passwordOne, picture, description, status, friends } = this.state;
+        const { fullname, username, email, passwordOne, description, status, friends } = this.state;
 
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -418,9 +418,6 @@ function Landing() {
             border: "0px solid",
         };
     };
-
-    const bobaBackground =
-        "https://color-hex.org/colors/eccdc2.png";
 
 
 

@@ -42,6 +42,11 @@ const styles = {
   title: {
     margin: "0px",
   },
+  profileButton: {
+    position: 'absolute',
+    bottom: '1rem',
+    textAlign: 'center'
+  }
 };
 
 // Render status buttons
@@ -122,10 +127,11 @@ function renderProfile(editMode, setEditMode, user, props) {
         </p>
         <br></br>
         {renderStatusButtons(props, user)}
-        <div className="has-text-centered">
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button
             className="button is-dark is-centered"
             onClick={() => setEditMode(true)}
+            style={styles.profileButton}
           >
             edit
           </button>
@@ -200,10 +206,11 @@ function renderProfileEdit(setEditMode, user, props) {
             defaultValue={user.description}
           />
         </div>
-        <div className="has-text-centered">
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button
             className="button is-dark is-centered"
             onClick={() => updateProfile()}
+            style={styles.profileButton}
           >
             save
           </button>
